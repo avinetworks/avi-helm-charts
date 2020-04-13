@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: ako:0.1.0-beta
+  repository: ako:0.9.1-beta
   pullPolicy: IfNotPresent
 
 configs:
