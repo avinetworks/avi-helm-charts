@@ -50,7 +50,7 @@ securityContext: {}
 
 avicredentials:
   username: # Avi controller username
-  password: # Avi controller password
+  password: # Avi controller passwordd
 
 
 service:
