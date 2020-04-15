@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: ako:0.1.0-beta
+  repository: avinetworks/ako
   pullPolicy: IfNotPresent
 
 configs:
@@ -50,7 +50,7 @@ securityContext: {}
 
 avicredentials:
   username: # Avi controller username
-  password: # Avi controller password
+  password: # Avi controller passwordd
 
 
 service:
