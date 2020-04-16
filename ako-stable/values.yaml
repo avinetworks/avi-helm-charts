@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: avinetworks/ako:0.9.1-beta
+  repository: avinetworks/ako
   pullPolicy: IfNotPresent
 
 configs:

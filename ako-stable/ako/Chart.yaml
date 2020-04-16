@@ -1,6 +1,0 @@
-apiVersion: v2
-appVersion: 0.9.1-beta
-description: A Helm chart for Avi Kubernetes Operator
-name: ako
-type: application
-version: 0.9.1-beta
