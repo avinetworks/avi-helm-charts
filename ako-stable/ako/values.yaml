@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: avinetworks/ako
+  repository: avinetworks/ako:0.9.1-beta
   pullPolicy: IfNotPresent
 
 configs:
@@ -20,9 +20,10 @@ configs:
   defaultIngController: "true"
   subnetIP: "" # Subnet IP of the data network
   CIDR: "" # CIDR of the data network
-  NetworkName: "" # Network Name of the vip network
+  NetworkName: "" # Network Name of the data network
   L7ShardingScheme: "hostname"
   cniPlugin: "" #enum: calico|canal|flannel
+  syncNamespace: "" # if this knob is set, AKO will only sync objects from this namespace. Ingress class gets applied inside it if applicable.
 
 imagePullSecrets: []
 nameOverride: ""
@@ -50,7 +51,7 @@ securityContext: {}
 
 avicredentials:
   username: # Avi controller username
-  password: # Avi controller passwordd
+  password: # Avi controller password 
 
 
 service:
