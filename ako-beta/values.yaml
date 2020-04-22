@@ -12,7 +12,7 @@ configs:
   controllerVersion: "18.2.8"
   shardVSSize: "LARGE"
   shardVSPrefix: ""
-  fullSyncFrequency: "300"
+  fullSyncFrequency: "1800" #seconds
   cloudName: "Default-Cloud"
   vrfRefName: "global"
   disableStaticRouteSync: "false"
