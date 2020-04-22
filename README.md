@@ -14,17 +14,19 @@ AKO runs as a POD inside the kubernetes cluster.
 To Run AKO you need the following pre-requisites:
  - ***Step 1***: An Avi Controller with a vCenter cloud.
 
- - ***Step 2***: If your POD CIDRs are not routable:
+ - ***Step 2***: 
+     - Make sure a PG network is part of the NS IPAM configured in the vCenter cloud.
+
+ - ***Step 3***: If your POD CIDRs are not routable:
     - Create a VRF context object in Avi for the kubernetes controller.
     - Get the name the PG network which the kubernetes nodes are part of. 
+    - Configure the PG network in step 2 with the vrf mentioned in the previous step using the Avi CLI.
     
       *NOTE: If you are using AKO for test puposes you can use the `global` vrf but you cannot manage multiple kubernetes clusters in the same cloud with this setting.*
-    - Configure this PG network with the vrf mentioned in the previous step using the Avi CLI.
-    - Make sure this PG network is part of the NS IPAM configured in the vCenter cloud.
 
- - ***Step 2.1***: If your POD CIDRs are routable then you can skip step 2. Ensure that you skip static route syncing in this case using the `disableStaticRouteSync` flag in the `values.yaml` of your helm chart.
- - ***Step 3:*** Kubernetes 1.14+.
- - ***Step 4:*** `helm` cli pointing to your kubernetes cluster.
+ - ***Step 3.1***: If your POD CIDRs are routable then you can skip step 2. Ensure that you skip static route syncing in this case using the `disableStaticRouteSync` flag in the `values.yaml` of your helm chart.
+ - ***Step 4:*** Kubernetes 1.14+.
+ - ***Step 5:*** `helm` cli pointing to your kubernetes cluster.
 
 #### Install using *helm*
 
@@ -35,9 +37,9 @@ To Run AKO you need the following pre-requisites:
 
   Step 2: Add this repository to your helm CLI
     
-    helm repo add stable //avinetworks.github.io/avi-helm-charts/ako-beta
+    helm repo add stable https://avinetworks.github.io/avi-helm-charts/ako-beta
 
-Use the `helm/akc/values.yaml` to edit values related to Avi configuration. Values and their corresponding index can be found [here](#parameters) 
+Use the `values.yaml` to edit values related to Avi configuration. Values and their corresponding index can be found [here](#parameters) 
 
   Step 3: Search the available charts for AKO
 
@@ -66,18 +68,26 @@ Simply run:
 ## Parameters
 
 
-The following table lists the configurable parameters of the AKC chart and their default values.
+The following table lists the configurable parameters of the AKO chart and their default values.
 
 | **Parameter**                                   | **Description**                                         | **Default**                                                           |
 |---------------------------------------------|-----------------------------------------------------|-------------------------------------------------------------------|
 | `configs.controllerVersion`                      | Avi Controller version                       | 18.2.8                                                            |
 | `configs.controllerIP`                         | Specify Avi controller IP    | `nil`      |
 | `configs.shardVSSize`                   | Shard VS size enum values: LARGE, MEDIUM, SMALL     | LARGE      |
-| `configs.fullSyncFrequency`                       | Full sync frequency       | 300                                                            |
+| `configs.fullSyncFrequency`                       | Full sync frequency       | 300                                                            
+| `configs.ingressApi`                      | Support for default ingress API                      | corev1                                                           |
+| `configs.defaultIngController`                         | AKO is the default ingress controller   | true      |               |
+| `configs.subnetIP`                   | Subnet IP of the data network     | LARGE      | |
+| `configs.subnetPrefix`                       | Subnet Prefix of the data network       | empty |                   
+| `configs.networkName`                         | Network Name of the data network    | empty      |
+| `configs.l7ShardingScheme`                   | Sharding scheme to use. Choices: hostname, namespace     | hostname      |
+| `configs.cniPlugin`                       | Specify the CNI used, only in case of calico      | empty                                                            |
 | `configs.cloudName`                            | Name of the VCenter cloud managed in Avi                              | Default-Cloud                                                       |
+| `configs.disableStaticRouteSync`                          | Disable static route sync                                  | false                                                 |
 | `configs.vrfRefName`                          | VRF context name to be used for the kubernetes cluster                                  | global                                                 |
 | `avicredentials.username`                                 | Avi controller username                                  | admin                                                      |
 | `avicredentials.password`                          | Avi controller password                          | admin                                                    |
-| `image.repository`                         | Specify docker-registry that has the akc image    | avinetworks/ako     |
+| `image.repository`                         | Specify docker-registry that has the ako image    | avinetworks/ako     |
 
 
