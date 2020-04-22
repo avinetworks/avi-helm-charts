@@ -3,12 +3,12 @@ entries:
   ako:
   - apiVersion: v2
     appVersion: 0.9.1-beta
-    created: "2020-04-22T15:10:43.661872+05:30"
+    created: "2020-04-22T15:18:25.79924+05:30"
     description: A Helm chart for Kubernetes
-    digest: 8ccaff36629083fc7e02e9258dc70d40232491cecf84b77eaf43c47d5679c765
+    digest: ffd845daf0bc1a2fc2f9232b5f390db5d93e984f8d5cd8e4e5ab0e4ab6761af3
     name: ako
     type: application
     urls:
     - https://avinetworks.github.io/avi-helm-charts/ako-beta/ako-0.9.1-beta.tgz
     version: 0.9.1-beta
-generated: "2020-04-22T15:10:43.659239+05:30"
+generated: "2020-04-22T15:18:25.797877+05:30"
