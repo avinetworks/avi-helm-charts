@@ -51,8 +51,8 @@ Use the `values.yaml` from this repository to edit values related to Avi configu
 
     helm search repo --devel
     
-    NAME   	CHART VERSION	APP VERSION	DESCRIPTION
-    ako/ako	0.9.1-beta   	0.9.1-beta 	A Helm chart for Avi Kubernetes Operator
+    NAME      	CHART VERSION  	APP VERSION    	DESCRIPTION
+    ako/ako   	0.9.1-5047-beta	0.9.1-5047-beta	A Helm chart for Kubernetes
 
  Step 4: Install AKO
 
