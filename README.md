@@ -9,6 +9,7 @@ This repository is used to host helm charts from Avi Networks (A VMware Company)
 
 AKO runs as a POD inside the kubernetes cluster.
 
+
 #### Pre-requisites
 
 To Run AKO you need the following pre-requisites:
@@ -21,6 +22,10 @@ To Run AKO you need the following pre-requisites:
     - Create a VRF context object in Avi for the kubernetes controller.
     - Get the name the PG network which the kubernetes nodes are part of. 
     - Configure the PG network in step 2 with the vrf mentioned in the previous step using the Avi CLI.
+    
+    Data path flow is as described below:
+    
+    ![Alt text](docs/data_path_flow.png?raw=true "Title")
     
       *NOTE: If you are using AKO for test puposes you can use the `global` vrf but you cannot manage multiple kubernetes clusters in the same cloud with this setting.*
 
