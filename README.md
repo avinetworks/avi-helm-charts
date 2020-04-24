@@ -56,7 +56,7 @@ Use the `values.yaml` from this repository to edit values related to Avi configu
 
  Step 4: Install AKO
 
-    helm install  ako/ako  --generate-name --devel -f ../values.yaml --set configs.controllerIP=<avi-controller-ip> --version 0.9.1-5047-beta -n avi-system
+    helm install  ako/ako  --generate-name --devel -f values.yaml --set configs.controllerIP=<avi-controller-ip> --version 0.9.1-5047-beta -n avi-system
     
 #### Uninstall using *helm*
 
@@ -74,7 +74,7 @@ Simply run:
 ## Parameters
 
 
-The following table lists the configurable parameters of the AKO chart and their default values.
+The following table lists the configurable parameters of the AKO chart and their default values. Please refer to this link for more details on each parameter.
 
 | **Parameter**                                   | **Description**                                         | **Default**                                                           |
 |---------------------------------------------|-----------------------------------------------------|-------------------------------------------------------------------|
