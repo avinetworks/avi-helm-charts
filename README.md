@@ -9,7 +9,7 @@ This repository is used to host helm charts from Avi Networks (A VMware Company)
 
 AKO runs as a POD inside the kubernetes cluster.
 
- ![Alt text](docs/AKO.jpg?raw=true "Title")
+ ![Alt text](docs/AKO.png?raw=true "Title")
  
 #### Pre-requisites
 
