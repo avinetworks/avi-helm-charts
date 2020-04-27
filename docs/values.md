@@ -89,6 +89,11 @@ routes based on the Kubernetes Nodes object as done with other CNIs.
 This field is used to specify the name of the IaaS cloud in Avi controller. For example, if you have the VCenter cloud named as "Demo"
 then specify the `name` of the cloud name with this field. This helps AKO determine the IaaS cloud to create the service engines on.
 
+### configs.subnetIP and configs.subnetPrefix and configs.networkName
+
+AKO supports dual arm deployment where the Virtual IP network can be on a different subnet than the actual Port Groups on which the kubernetes nodes are deployed.
+
+These fields are used to specify the Virtual IP network details on which the user wants to place the Avi virtual services on.
    
 ### configs.vrfRefName
 
