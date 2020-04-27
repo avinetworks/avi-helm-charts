@@ -92,8 +92,8 @@ The following table lists the configurable parameters of the AKO chart and their
 | `configs.cloudName`                            | Name of the VCenter cloud managed in Avi                              | Default-Cloud                                                       |
 | `configs.disableStaticRouteSync`                          | Disable static route sync                                  | false                                                 |
 | `configs.vrfRefName`                          | VRF context name to be used for the kubernetes cluster                                  | global                                                 |
-| `avicredentials.username`                                 | Avi controller username                                  | admin                                                      |
-| `avicredentials.password`                          | Avi controller password                          | admin                                                    |
+| `avicredentials.username`                                 | Avi controller username                                  | empty                                                      |
+| `avicredentials.password`                          | Avi controller password                          | empty                                                    |
 | `image.repository`                         | Specify docker-registry that has the ako image    | avinetworks/ako     |
 
 
