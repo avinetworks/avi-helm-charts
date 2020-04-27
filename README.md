@@ -74,7 +74,7 @@ Simply run:
 ## Parameters
 
 
-The following table lists the configurable parameters of the AKO chart and their default values. Please refer to this link for more details on each parameter.
+The following table lists the configurable parameters of the AKO chart and their default values. Please refer to this link for more details on [each parameter](docs/values.md).
 
 | **Parameter**                                   | **Description**                                         | **Default**                                                           |
 |---------------------------------------------|-----------------------------------------------------|-------------------------------------------------------------------|
