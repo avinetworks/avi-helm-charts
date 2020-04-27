@@ -81,7 +81,7 @@ The following table lists the configurable parameters of the AKO chart and their
 | `configs.controllerVersion`                      | Avi Controller version                       | 18.2.8                                                            |
 | `configs.controllerIP`                         | Specify Avi controller IP    | `nil`      |
 | `configs.shardVSSize`                   | Shard VS size enum values: LARGE, MEDIUM, SMALL     | LARGE      |
-| `configs.fullSyncFrequency`                       | Full sync frequency       | 300                                                            
+| `configs.fullSyncFrequency`                       | Full sync frequency       | 1800                                                            
 | `configs.ingressApi`                      | Support for default ingress API                      | corev1                                                           |
 | `configs.defaultIngController`                         | AKO is the default ingress controller   | true      |               |
 | `configs.subnetIP`                   | Subnet IP of the data network     | LARGE      | |
