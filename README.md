@@ -28,6 +28,15 @@ To Run AKO you need the following pre-requisites:
     
     ![Alt text](docs/data_path_flow.png?raw=true "Title")
     
+    The markers in the drawing are described below:
+    
+    1. Client makes a request to a specified hostname/path.
+    2. The DNS VS returns an IP address corresponding to the hostname. 
+    3. The request is forwarded to the resolved IP address that corresponds to a Virtual IP hosted on an Avi Service Engine.
+       The destination IP in the packet is set as the POD IP address on which the application runs.
+    4. Service Engines use the static route information to reach the POD IP via the next hop address of the host on which the pod is running.
+    5. The pod responds and the request is sent back to the client. 
+      
       *NOTE: If you are using AKO for test puposes you can use the `global` vrf but you cannot manage multiple kubernetes clusters in the same cloud with this setting.*
 
  - ***Step 3.1***: If your POD CIDRs are routable then you can skip step 2. Ensure that you skip static route syncing in this case using the `disableStaticRouteSync` flag in the `values.yaml` of your helm chart.
@@ -56,7 +65,7 @@ Use the `values.yaml` from this repository to edit values related to Avi configu
 
  Step 4: Install AKO
 
-    helm install  ako/ako  --generate-name --devel -f values.yaml --set configs.controllerIP=<avi-controller-ip> --version 0.9.1-5047-beta -n avi-system
+    elm install  ako/ako  --generate-name --devel -f values.yaml  --set configs.controllerIP=<controller_ip> --set avicredentials.username=<avi-ctrl-username> --set avicredentials.password=<avi-ctrl-password> --namespace=avi-system
     
     NAME: ako-1588049417
     LAST DEPLOYED: Tue Apr 28 10:20:21 2020
