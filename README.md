@@ -58,6 +58,23 @@ Use the `values.yaml` from this repository to edit values related to Avi configu
 
     helm install  ako/ako  --generate-name --devel -f values.yaml --set configs.controllerIP=<avi-controller-ip> --version 0.9.1-5047-beta -n avi-system
     
+    NAME: ako-1588049417
+    LAST DEPLOYED: Tue Apr 28 10:20:21 2020
+    NAMESPACE: avi-system
+    STATUS: deployed
+    REVISION: 1
+    NOTES:
+    1. Get the application URL by running these commands:
+      export POD_NAME=$(kubectl get pods --namespace avi-system -l "app.kubernetes.io/name=ako,app.kubernetes.io/instance=ako-1588049417" -o jsonpath="{.items[0].metadata.name}")
+      echo "Visit http://127.0.0.1:8080 to use your application"
+      kubectl --namespace avi-system port-forward $POD_NAME 8080:80
+      
+  Step 5: Check the installation
+  
+      helm list -n avi-system
+    NAME          	NAMESPACE 	REVISION	UPDATED                            	STATUS  	CHART              	APP VERSION
+    ako-1588049417	avi-system	1       	2020-04-28 10:20:21.61093 +0530 IST	deployed	ako-0.9.1-5047-beta	0.9.1-5047-beta
+    
 #### Uninstall using *helm*
 
 Simply run:
@@ -66,6 +83,8 @@ Simply run:
 *Step1:*
 
     helm delete <ako-release-name> -n avi-system
+    
+ Note: the ako-release-name is obtained by doing helm list as shown in the previous step,
  
 *Step 2:* 
 
@@ -84,7 +103,7 @@ The following table lists the configurable parameters of the AKO chart and their
 | `configs.fullSyncFrequency`                       | Full sync frequency       | 1800                                                            
 | `configs.ingressApi`                      | Support for default ingress API                      | corev1                                                           |
 | `configs.defaultIngController`                         | AKO is the default ingress controller   | true      |               |
-| `configs.subnetIP`                   | Subnet IP of the data network     | LARGE      | |
+| `configs.subnetIP`                   | Subnet IP of the data network     | empty      | |
 | `configs.subnetPrefix`                       | Subnet Prefix of the data network       | empty |                   
 | `configs.networkName`                         | Network Name of the data network    | empty      |
 | `configs.l7ShardingScheme`                   | Sharding scheme to use. Choices: hostname, namespace     | hostname      |
