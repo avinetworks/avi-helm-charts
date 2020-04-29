@@ -125,3 +125,6 @@ The following table lists the configurable parameters of the AKO chart and their
 | `image.repository`                         | Specify docker-registry that has the ako image    | avinetworks/ako     |
 
 
+### AKO objects
+
+Please refer to this [page](docs/objects.md) for details on how AKO interprets the kubernetes objects and translates them to Avi objects.
