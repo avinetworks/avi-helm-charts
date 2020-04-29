@@ -136,7 +136,7 @@ If the user wants to custom name their shared VSes, then a shardVSPrefix can be 
     ....
     Demo-7
 
-If the ShardVSPrefix is not used then the formulate to derive the name is:
+###### If the ShardVSPrefix is not used
 
     ShardVSName = cloudName + "--" + vrfName + "-" <shardNum>
  
