@@ -1,0 +1,15 @@
+This document outlines the object translation logic between AKO and the Avi controller.
+
+### Insecure Ingress.
+
+Let's take an example of an insecure hostname specification from a Kubernetes ingress object:
+
+    ```- host: myinsecurehost1.avi.internal
+          http:
+            paths:
+            - backend:
+                serviceName: service1
+                servicePort: 80
+              path: /foo
+              pathType: ImplementationSpecific
+              ```
