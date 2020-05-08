@@ -65,7 +65,7 @@ Use the `values.yaml` from this repository to edit values related to Avi configu
 
  Step 4: Install AKO
 
-    elm install  ako/ako  --generate-name --devel -f values.yaml  --set configs.controllerIP=<controller_ip> --set avicredentials.username=<avi-ctrl-username> --set avicredentials.password=<avi-ctrl-password> --namespace=avi-system
+    helm install  ako/ako  --generate-name --devel -f values.yaml  --set configs.controllerIP=<controller_ip> --set avicredentials.username=<avi-ctrl-username> --set avicredentials.password=<avi-ctrl-password> --namespace=avi-system
     
     NAME: ako-1588049417
     LAST DEPLOYED: Tue Apr 28 10:20:21 2020
@@ -80,7 +80,8 @@ Use the `values.yaml` from this repository to edit values related to Avi configu
       
   Step 5: Check the installation
   
-      helm list -n avi-system
+    helm list -n avi-system
+    
     NAME          	NAMESPACE 	REVISION	UPDATED                            	STATUS  	CHART              	APP VERSION
     ako-1588049417	avi-system	1       	2020-04-28 10:20:21.61093 +0530 IST	deployed	ako-0.9.1-5047-beta	0.9.1-5047-beta
     
