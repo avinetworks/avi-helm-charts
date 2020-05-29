@@ -14,7 +14,7 @@ All notable changes to this project will be documented in this file. The format 
  - Reduction of controller API calls during full sync.
  - Full sync fixes.
  - Enchanced Retry logic.
- - Removal of regular object cache syncs - only periodic refresh of cloud config sync.
+ - Removal of regular object cache syncs - only periodic refresh of cloud config parameters.
  
  
 ### Added:
