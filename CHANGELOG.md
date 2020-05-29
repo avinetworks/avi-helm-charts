@@ -13,6 +13,9 @@ All notable changes to this project will be documented in this file. The format 
  - Caching improvements. Fixes in race conditions.
  - Reduction of controller API calls during full sync.
  - Full sync fixes.
+ - Enchanced Retry logic.
+ - Removal of regular object cache syncs - only periodic refresh of cloud config sync.
+ 
  
 ### Added:
  - Dynamic logging on the fly by editing the ConfigMap.
@@ -20,3 +23,7 @@ All notable changes to this project will be documented in this file. The format 
  - SNI VS sharing on the basis of hostnames. Same hostname will create only 1 VS across namespaces.
  - Option to disable full sync. Change fullSyncFrequency to 0.
  - Unused shared VS deletion on reboot of AKO.
+ 
+ ### Removed:
+ - VRF context is now removed from `values.yaml` and instead is read from the network subnet.
+
