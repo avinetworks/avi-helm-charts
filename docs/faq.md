@@ -20,17 +20,17 @@ rules. However, the user needs to denote each ingress with the TLS secret for a 
 
 Consider the below example:
 
-`Ingress 1 (default namespace) --> SNI hostname --> foo.com path: /foo, Secret: foo
+    Ingress 1 (default namespace) --> SNI hostname --> foo.com path: /foo, Secret: foo
 
-Ingress 1 (foo namespace) --> SNI hostname --> foo.com path: /bar, Secret: foo`
+    Ingress 1 (foo namespace) --> SNI hostname --> foo.com path: /bar, Secret: foo
 
 In the above case, only 1 SNI virtualservice will be created with a sslkeyandcertificate as `foo`.
 
 However if the following happens:
 
-`Ingress 1 (default namespace) --> SNI hostname --> foo.com path: /foo, Secret: foo
+    Ingress 1 (default namespace) --> SNI hostname --> foo.com path: /foo, Secret: foo
 
-Ingress 1 (foo namespace) --> SNI hostname --> foo.com path: /bar, Secret: bar`
+    Ingress 1 (foo namespace) --> SNI hostname --> foo.com path: /bar, Secret: bar
 
 Then the behavior of the SNI virtualservice would be indeterministic since the secrets for the same SNI are different. This is not
 supported.
