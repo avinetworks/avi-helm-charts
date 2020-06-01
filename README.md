@@ -91,7 +91,7 @@ Use the `values.yaml` from this repository to edit values related to Avi configu
 Currently, AKO's 0.9.1-5076-beta-2 is available for download.
 `beta-1` to `beta-2` is a disruptive migration due to some object naming changes around the SNI virtualservices. Hence if you are running a `beta-1` build and would like to move to `beta-2`, pls execute the following:
 
-    - kubectl delete cm avi-k8s-config -n avi-system: This will trigger a delete of the beta-1 objects in the Avi controller.
+    - kubectl delete cm avi-k8s-config -n avi-system (This will trigger a delete of the beta-1 objects in the Avi controller.)
     - helm delete <beta-1-release-name> -n avi-system
     - helm repo update
     - helm install  ako/ako  --generate-name --devel -f values.yaml  --set configs.controllerIP=<controller_ip> --set avicredentials.username=<avi-ctrl-username> --set avicredentials.password=<avi-ctrl-password> --namespace=avi-system
