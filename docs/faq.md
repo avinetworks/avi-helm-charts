@@ -35,3 +35,12 @@ However if the following happens:
 Then the behavior of the SNI virtualservice would be indeterministic since the secrets for the same SNI are different. This is not
 supported.
 
+#### What out of band operations can i do on the objects created by AKO?
+
+AKO runs a refresh cycle that currently just refreshes the cloud object parameters. However, if some out of band operations are performed on objects created by AKO via directly interacting with the Avi APIs, AKO may not always be able to remediate
+an error caused due to this.
+
+AKO has a best effort, retry layer implementation that would try to detect a problem (For example: an SNI VS deleted from the Avi UI), but it is not guranteed to work for all such manual operations.
+
+Upon reboot of AKO - a full reconcilliation loop is run and  most of the out-of-band changes are overwritten with AKO's view of the intended model. This does not happen in every full sync cycle.
+
