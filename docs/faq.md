@@ -34,6 +34,15 @@ However if the following happens:
 
 Then the behavior of the SNI virtualservice would be indeterministic since the secrets for the same SNI are different. This is not supported.
 
+#### What out of band operations can I do on the objects created by AKO?
+
+AKO runs a refresh cycle that currently just refreshes the cloud object parameters. However, if some out of band operations are performed on objects created by AKO via directly interacting with the Avi APIs, AKO may not always be able to remediate
+an error caused due to this.
+
+AKO has a best effort, retry layer implementation that would try to detect a problem (For example: an SNI VS deleted from the Avi UI), but it is not guranteed to work for all such manual operations.
+
+Upon reboot of AKO - a full reconcilliation loop is run and  most of the out-of-band changes are overwritten with AKO's view of the intended model. This does not happen in every full sync cycle.
+
 #### What is the expected behaviour for same host/path combination across different secure/insecure ingresses?
 
 The ingress API allows users to add duplicate hostpaths bound to separate backend services. Something like this:
@@ -50,4 +59,4 @@ Also, ingress allows you to have a mix of secure and insecure hostpath bound to 
 
 AKO doesnot explicitly handle these situations and would go on to try syncing these objects on the Avi controller, but may lead to traffic issues. In these cases a warning log is printed by AKO like so, 
 
-`nodes/validator.go:60	key: Ingress/default/ingress2, msg: Duplicate entries found for hostpath default/ingress2: foo.com/foo in ingresses: ["default/ingress1"]`
+`key: Ingress/default/ingress2, msg: Duplicate entries found for hostpath default/ingress2: foo.com/foo in ingresses: ["default/ingress1"]`
