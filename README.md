@@ -42,6 +42,7 @@ To Run AKO you need the following pre-requisites:
  - ***Step 3.1***: If your POD CIDRs are routable then you can skip step 2. Ensure that you skip static route syncing in this case using the `disableStaticRouteSync` flag in the `values.yaml` of your helm chart.
  - ***Step 4:*** Kubernetes 1.14+.
  - ***Step 5:*** `helm` cli pointing to your kubernetes cluster.
+ NOTE: We only support `helm 3`
 
 #### Install using *helm*
 
