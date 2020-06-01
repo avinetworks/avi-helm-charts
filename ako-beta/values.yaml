@@ -38,6 +38,16 @@ avicredentials:
   username: # Avi controller username 
   password: # Avi controller password
 
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: false
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+
 persistentVolumeClaim: ""
 mountPath: "/log"
 logFile: "avi.log"
