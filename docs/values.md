@@ -94,21 +94,7 @@ then specify the `name` of the cloud name with this field. This helps AKO determ
 AKO supports dual arm deployment where the Virtual IP network can be on a different subnet than the actual Port Groups on which the kubernetes nodes are deployed.
 
 These fields are used to specify the Virtual IP network details on which the user wants to place the Avi virtual services on.
-   
-### configs.vrfRefName
 
-#### What is the use of static routes?
-
-Static routes are created within a VRF context. While deploying AKO the admin or the operator decides a VRF context object for a given
-kubernetes cluster. This VRF context object is created in the Avi controller for the cluster. The VRF contexts are associated with a 
-Port Group in VCenter and the same Port Group (PG) is used by the Service Engines to communicate with the backend servers. 
-Hence the static routes map each POD CIDR with the kubernetes node's IP address. However, for static routes to work, the Service Engines must
-be L2 adjacent to your kubernetes nodes.
-
-#### Use of the flag
-
-AKO needs to know the VRF context to use for the virtual services associated with a kubernetes cluster. This flag is provided to
-the AKO operator to specify the same.
 
 ### configs.disableStaticRouteSync
 
