@@ -61,6 +61,12 @@ If your kubernetes APIs don't support the newly introduced ingress `networking.k
 the deprecated (1.16 onwards) `extensionv1` APIs - then this field can be used to tune AKO accordingly. This feature will be soon
 deprecated in AKO as well as the customer based move towards newer kubernetes version 1.16 and beyond.
 
+### config.defaultDomain
+
+If you have multiple sub-domains configured in your Avi cloud, use this knob to specify the default sub-domain.
+This is used to generate the FQDN for the Service of type loadbalancer. If unspecified, the behavior works on a sorting logic.
+The first sorted sub-domain in chosen, so we recommend using this parameter if you want to be in control of your DNS resolution for service of type LoadBalancer.
+
 ### configs.defaultIngController
 
 This field is related to the ingress class support in AKO specified via `kubernetes.io/ingress.class` annotation specified on an
