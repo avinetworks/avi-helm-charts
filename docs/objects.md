@@ -163,7 +163,7 @@ The SNI child VSes namings vary between different sharding options.
 
 ###### Hostname shard
 
-    vsName = vrfName + "--" + ingName + "--" + namespace + "--" + sniHostName
+    vsName = vrfName + "--" + sniHostName
 
 ###### Namespace shard
 
