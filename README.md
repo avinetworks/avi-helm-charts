@@ -132,8 +132,7 @@ The following table lists the configurable parameters of the AKO chart and their
 | `configs.l7ShardingScheme`                   | Sharding scheme to use. Choices: hostname, namespace     | hostname      |
 | `configs.cniPlugin`                       | Specify the CNI used, only in case of calico      | empty                                                            |
 | `configs.cloudName`                            | Name of the VCenter cloud managed in Avi                              | Default-Cloud                                                       |
-| `configs.disableStaticRouteSync`                          | Disable static route sync                                  | false                                                 |
-| `configs.vrfRefName`                          | VRF context name to be used for the kubernetes cluster                                  | global                                                 |
+| `configs.disableStaticRouteSync`                          | Disable static route sync                                  | false                                                 |                                          |
 | `avicredentials.username`                                 | Avi controller username                                  | empty                                                      |
 | `avicredentials.password`                          | Avi controller password                          | empty                                                    |
 | `image.repository`                         | Specify docker-registry that has the ako image    | avinetworks/ako     |
