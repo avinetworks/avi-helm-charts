@@ -57,6 +57,7 @@ Also, ingress allows you to have a mix of secure and insecure hostpath bound to 
 
     Ingress2 (default namespace) --> foo.com path: /foo, Service: svc2
 
-AKO doesnot explicitly handle these situations and would go on to try syncing these objects on the Avi controller, but may lead to traffic issues. In these cases a warning log is printed by AKO like so, 
+AKO doesnot explicitly handle these conditions and would continue syncing these objects on the Avi controller, but this may lead to traffic issues.
+AKO does a best effort of detecting some of these conditions by printing them in logs. A sample log statement looks like this:
 
 `key: Ingress/default/ingress2, msg: Duplicate entries found for hostpath default/ingress2: foo.com/foo in ingresses: ["default/ingress1"]`
