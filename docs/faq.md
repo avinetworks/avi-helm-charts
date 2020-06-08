@@ -12,6 +12,14 @@ Altering the shard VS number is considered as disruptive. This is because dynami
 the ingress to VS mapping. Hence if you want to alter the shard VS number, first delete the older configmap and trigger a complete
 cleanup of the VSes in the controller. Followed by a edit of the configmap and restart of AKO.
 
+#### What is the use of static routes?
+
+Static routes are created within a VRF context. While deploying AKO the admin or the operator decides a VRF context object for a given
+kubernetes cluster. This VRF context object is created in the Avi controller for the cluster. 
+The static routes map each POD CIDR with the kubernetes node's IP address. However, for static routes to work, the Service Engines must
+be L2 adjacent to your kubernetes nodes.
+
+
 #### What happens if I have the same SNI host across multiple namespaces?
 
 The ingress API does not prohibit the user from creating the same SNI hostname across multiple namespaces. In the hostname sharding
