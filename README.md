@@ -129,6 +129,7 @@ The following table lists the configurable parameters of the AKO chart and their
 | `configs.subnetIP`                   | Subnet IP of the data network     | empty      | |
 | `configs.subnetPrefix`                       | Subnet Prefix of the data network       | empty |                   
 | `configs.networkName`                         | Network Name of the data network    | empty      |
+| `configs.defaultDomain`                         | Specify a default sub-domain for L4 LB services    | empty      |
 | `configs.l7ShardingScheme`                   | Sharding scheme to use. Choices: hostname, namespace     | hostname      |
 | `configs.cniPlugin`                       | Specify the CNI used, only in case of calico      | empty                                                            |
 | `configs.cloudName`                            | Name of the VCenter cloud managed in Avi                              | Default-Cloud                                                       |
