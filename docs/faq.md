@@ -76,3 +76,9 @@ AKO programs a static route for every node IP and the POD CIDR associated with i
 
 Hence AKO will not remove the static routes until the kubernetes node is completely removed from the cluster.
 
+#### Can I point my ingress objects to a service of type Loadbalancer?
+
+The short answer is No. 
+The ingress objects should point to service of type clusterIP. Loadbalancer services either point to an ingress controller POD if one is using an in cluster ingress controller or they can directly point to application PODs that need layer 4 loadbalancing.
+
+If you have such a configuration where the ingress objects are pointing to services of type loadbalancer, AKO's behavior would be indeterministic. 
