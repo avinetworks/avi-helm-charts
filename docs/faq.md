@@ -69,3 +69,10 @@ AKO doesnot explicitly handle these conditions and would continue syncing these 
 AKO does a best effort of detecting some of these conditions by printing them in logs. A sample log statement looks like this:
 
 `key: Ingress/default/ingress2, msg: Duplicate entries found for hostpath default/ingress2: foo.com/foo in ingresses: ["default/ingress1"]`
+
+#### What happens to static routes if the kubernetes nodes are rebooted/shutdown?
+
+AKO programs a static route for every node IP and the POD CIDR associated with it. Even though node state changes to `NotReady` in kubernetes this configuration is stored in the node object and does not change when the node rebooted/shutdown.
+
+Hence AKO will not remove the static routes until the kubernetes node is completely removed from the cluster.
+
