@@ -82,3 +82,7 @@ The short answer is No.
 The ingress objects should point to service of type clusterIP. Loadbalancer services either point to an ingress controller POD if one is using an in cluster ingress controller or they can directly point to application PODs that need layer 4 loadbalancing.
 
 If you have such a configuration where the ingress objects are pointing to services of type loadbalancer, AKO's behavior would be indeterministic. 
+
+#### What happenns when AKO fails to connect to AVI controller while booting up ?
+
+AKO would stop processing kubernetes objects and no update would be made to the AVI Controller. After the connection to AVI Controller is restored, AKO pod has to be rebooted. This can be done by deleting the exiting POD and ako deployment would bring up a new POD, which would start procesing kubernetes objects after verifying connectivity to AVI Controller.  
