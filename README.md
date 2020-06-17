@@ -118,26 +118,31 @@ Simply run:
 
 The following table lists the configurable parameters of the AKO chart and their default values. Please refer to this link for more details on [each parameter](docs/values.md).
 
-| **Parameter**                                   | **Description**                                         | **Default**                                                           |
-|---------------------------------------------|-----------------------------------------------------|-------------------------------------------------------------------|
-| `configs.controllerVersion`                      | Avi Controller version                       | 18.2.8                                                            |
-| `configs.controllerIP`                         | Specify Avi controller IP    | `nil`      |
-| `configs.shardVSSize`                   | Shard VS size enum values: LARGE, MEDIUM, SMALL     | LARGE      |
-| `configs.fullSyncFrequency`                       | Full sync frequency       | 1800                                                            
-| `configs.ingressApi`                      | Support for default ingress API                      | corev1                                                           |
-| `configs.defaultIngController`                         | AKO is the default ingress controller   | true      |               |
-| `configs.subnetIP`                   | Subnet IP of the data network     | empty      | |
-| `configs.subnetPrefix`                       | Subnet Prefix of the data network       | empty |                   
-| `configs.networkName`                         | Network Name of the data network    | empty      |
-| `configs.defaultDomain`                         | Specify a default sub-domain for L4 LB services    | empty      |
-| `configs.l7ShardingScheme`                   | Sharding scheme to use. Choices: hostname, namespace     | hostname      |
-| `configs.cniPlugin`                       | Specify the CNI used, only in case of calico      | empty                                                            |
-| `configs.cloudName`                            | Name of the VCenter cloud managed in Avi                              | Default-Cloud                                                       |
-| `configs.disableStaticRouteSync`                          | Disable static route sync                                  | false                                                 |                                          |
-| `avicredentials.username`                                 | Avi controller username                                  | empty                                                      |
-| `avicredentials.password`                          | Avi controller password                          | empty                                                    |
-| `image.repository`                         | Specify docker-registry that has the ako image    | avinetworks/ako     |
+| **Parameter** | **Description** | **Default** |
+| --- | --- | --- |
+| `configs.controllerVersion` | Avi Controller version | 18.2.8 |
+| `configs.controllerIP` | Specify Avi controller IP | `nil` |
+| `configs.shardVSSize` | Shard VS size enum values: LARGE, MEDIUM, SMALL | LARGE |
+| `configs.fullSyncFrequency` | Full sync frequency | 1800 |
+| `configs.ingressApi` | Support for default ingress API | corev1 |
+| `configs.defaultIngController` | AKO is the default ingress controller | true |
+| `configs.cloudName` | Name of the VCenter cloud managed in Avi | Default-Cloud |
+| `configs.clusterName` | Unique identifier for the running AKO instance. AKO identifies objects it created on Avi Controller using this param. | **required** |
+| `configs.subnetIP` | Subnet IP of the data network | **required** |
+| `configs.subnetPrefix` | Subnet Prefix of the data network | **required** |
+| `configs.networkName` | Network Name of the data network | **required** |
+| `configs.defaultDomain` | Specify a default sub-domain for L4 LB services | First domainname found in cloud's dnsprofile |
+| `configs.l7ShardingScheme` | Sharding scheme enum values: hostname, namespace | hostname |
+| `configs.cniPlugin` | CNI Plugin being used in kubernetes cluster. Specify one of: calico, canal, flannel | **required** for calico setups |
+| `configs.logLevel` | logLevel enum values: INFO, DEBUG, WARN, ERROR. logLevel can be changed dynamically from the configmap | INFO |
+| `configs.disableStaticRouteSync` | Disables static route syncing if set to true | false |
+| `avicredentials.username` | Avi controller username | empty |
+| `avicredentials.password` | Avi controller password | empty |
+| `image.repository` | Specify docker-registry that has the AKO image | avinetworks/ako |
 
+> `networkName`, `subnetIP` and `subnetPrefix` are required fields which are used for allocating VirtualService IP by IPAM Provider module
+
+> Each AKO instance mapped to a given Avi cloud should have a unique clusterName parameter. This would maintain uniqueness of object naming across Kubernetes clusters.
 
 ### AKO objects
 

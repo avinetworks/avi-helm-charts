@@ -102,9 +102,9 @@ AKO uses a combination of elements from each kubernetes objects to create a corr
 
 The formula to derive a VirtualService (vsName) is as follows:
 
-    vsName = vrfName + "--" + namespace + "--" + svcName`
+    vsName = clusterName + "--" + namespace + "-" + svcName`
 
-Here the `vrfName` is the VRF context name used for the cluster.
+`clusterName` is the value specified in values.yaml during install.
 `svcName` refers to the service object's name in kubernetes.
 `namespace` refers to the namespace on which the service object is created.
 
@@ -112,7 +112,7 @@ Here the `vrfName` is the VRF context name used for the cluster.
 
 The following formula is used to derive the L4 pool names:
 
-    poolname = vsName + "--" + listener_port`
+    poolname = vsName + "-" + listener_port`
 
 Here the `listener_port` refers to the service port on which the virtualservice listens on. As it can be intepreted that the number of pools will be directly associated with the number of listener ports configured in the kubernetes service object.
 
@@ -120,33 +120,23 @@ Here the `listener_port` refers to the service port on which the virtualservice 
 
 The poolgroup name formula for L4 virtualservices is as follows:
 
-    poolgroupname = vsName + "--" + listener_port`
+    poolgroupname = vsName + "-" + listener_port`
 
 
 ##### Shared VS names
 
 The shared VS names are derived based on a combination of fields to keep it unique per kubernetes cluster. This is the only object in Avi that does not derive it's name from any of the kubernetes objects.
 
-###### If shardVSPrefix is used
-
-If the user wants to custom name their shared VSes, then a shardVSPrefix can be specified in the values.yaml and AKO will override any internal naming convention with this prefix. For example if the shardVSPrefix is `Demo` and the ShardSize is `LARGE` then AKO will create the shared VSes as:
+    ShardVSName = clusterName + "--Shared-L7-" + <shardNum>
  
-    Demo-0
-    Demo-1
-    ....
-    Demo-7
-
-###### If the ShardVSPrefix is not used
-
-    ShardVSName = cloudName + "--" + vrfName + "-" <shardNum>
- 
-Here `cloudName` is the name of the IaaS VCenter cloud while shardNum is the number of the shared VS generated based on either hostname or namespace based shards.
+`clusterName` is the value specified in values.yaml during install. "Shared-L7" is a constant identifier for Shared VSes
+`shardNum` is the number of the shared VS generated based on either hostname or namespace based shards.
 
 ##### Shared VS pool names
 
 The formula to derive the Shared VS poolgroup is as follows:
 
-    poolgroupname = vrfName + "--" + priorityLabel + "--" + namespace + "--" + ingName
+    poolgroupname = clusterName + "--" + priorityLabel + "-" + namespace + "-" + ingName
 
 Here the `priorityLabel` is a combination of the host/path combination specified in each rule of the kubernetes ingress object. `ingName` refers to the name of the ingress object while `namespace` refers to the namespace on which the ingress object is found in kubernetes.
 
@@ -154,8 +144,9 @@ Here the `priorityLabel` is a combination of the host/path combination specified
 
 The following is the formula to derive the Shared VS poolgroup name:
 
-    poolgroupname = vrfName +"--" + vsName
+    poolgroupname = vsName
 
+Name of the Shared VS Poolgroup is the same as the Shared VS name.
 
 ##### SNI child VS names
 
@@ -163,11 +154,11 @@ The SNI child VSes namings vary between different sharding options.
 
 ###### Hostname shard
 
-    vsName = vrfName + "--" + sniHostName
+    vsName = clusterName + "--" + sniHostName
 
 ###### Namespace shard
 
-    vsName = vrfName + "--" + ingName + "--" + namespace + "--" + secret
+    vsName = clusterName + "--" + ingName + "-" + namespace + "-" + secret
 
 The difference in naming is done because with namespace based sharding only one SNI child is created per ingress/per secret object while in hostname based sharding each SNI VS is unique to the hostname specified in the ingress object.
 
@@ -175,7 +166,7 @@ The difference in naming is done because with namespace based sharding only one 
 
 The formula to derive the SNI virtualservice's pools is as follows:
 
-    poolname = vrfName + "--" + namespace + "--" + host + path + "--" + ingName
+    poolname = clusterName + "--" + namespace + "-" + host + "_" + path + "-" + ingName
 
 Here the `host` and `path` variables denote the secure hosts' hostname and path specified in the ingress object.
 
@@ -183,6 +174,6 @@ Here the `host` and `path` variables denote the secure hosts' hostname and path 
 
 The formula to derive the SNI virtualservice's poolgroup is as follows:
 
-    poolgroupname = vrfName + "--" + namespace + "--" + host + path + "--" + ingName
+    poolgroupname = clusterName + "--" + namespace + "-" + host + "_" + path + "-" + ingName
 
 Some of these naming conventions can be used to debug/derive corresponding Avi object names that could prove as a tool for first level trouble shooting.
