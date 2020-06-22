@@ -6,7 +6,15 @@ This document answers few of the frequenty asked questions w.r.t AKO.
 
 Simply delete the AKO configmap to delete the virtualservices in Avi. Re-create the same configmap to re-create your setup.
 
-#### How do I alter the shard VS number?
+#### How is the Shared VS lifecycle controlled?
+
+
+In hostname based sharding, when an ingress object is created with multiple hostnames, AKO generates a md5 hash using the hostname and the Shard VS number. This uniquely maps a FQDN to a given Shared VS and avoids DNS conflicts. During initial clean bootup, if the Shared VS does not exist in Avi - AKO creates the same and then patches the ingress FQDN to it either in the form of a pool (for insecure routes) or in the form of a SNI child virtualservice (in case of secure routes).
+
+The Shared VSes aren't deleted if all the FQDNs mapped to it are removed from kubernetes. However, if the user wants AKO to delete ununsed shared VSes - a pod restart is required that would evaluate the VS and delete it appropriately. 
+
+
+#### How do I alter the Shard VS number?
 
 Altering the shard VS number is considered as disruptive. This is because dynamic re-adjustment of shard numbers may re-balance
 the ingress to VS mapping. Hence if you want to alter the shard VS number, first delete the older configmap and trigger a complete
