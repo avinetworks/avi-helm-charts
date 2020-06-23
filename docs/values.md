@@ -87,6 +87,13 @@ This flag can be used in 2 scenarios:
  - If your POD CIDRs are routable either through an internal implementation or by default.
  - If you are working with multiple NICs on your kubernetes worker nodes and the default gateway is not from the same subnet as
    your VRF's PG network.
+   
+### configs.logLevel *(editable)*
+
+This flag defines the logLevel for logging and can be set to one of `DEBUG`, `INFO`, `WARN`, `ERROR` (case sensitive).
+The logLevel value specified here gets populated in the ConfigMap and can be edited at any time while AKO is running. AKO picks up the change in the param value and sets the logLevel at runtime, so AKO pod restart is not required.
+
+
 
 ### avicredentials.username and avicredentials.password
 
