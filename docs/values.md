@@ -115,6 +115,15 @@ This flag can be used in 2 scenarios:
  - If you are working with multiple NICs on your kubernetes worker nodes and the default gateway is not from the same subnet as
    your VRF's PG network.
 
+### configs.deleteConfig [editable]
+
+This flag is intended to be used for deletion of objects in AVI Controller. The default value is false. 
+If the value is set to true while while booting up, AKO won't process any kubernetes object and stop regular operations. 
+
+While AKO is running, this value can be edited to "true" in AKO configmap to delete all abjects created by AKO in AVI.
+After that, if the value is set to "false", AKO would resume processing kubernetes objects and recreate all the objects in AVI. 
+
+
 ### avicredentials.username and avicredentials.password
 
 The username/passwword of the Avi controller is specified with this flag. The username/password are base64 encoded by helm and a corresponding secret
