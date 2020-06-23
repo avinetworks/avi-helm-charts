@@ -4,7 +4,7 @@ This document answers few of the frequenty asked questions w.r.t AKO.
 
 #### How do I clean up all my configs?
 
-Simply delete the AKO configmap to delete the virtualservices in Avi. Re-create the same configmap to re-create your setup.
+The key deleteConfig in data section of AKO configmap can be used to cleanup the setup.  Edit AKO configmap and set deleteConfig: "true" to delete ako created objects in Avi. Edit the configmap and set deleteConfig: "false" to re-create your setup.
 
 #### How is the Shared VS lifecycle controlled?
 
