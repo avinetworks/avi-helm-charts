@@ -13,6 +13,32 @@ In hostname based sharding, when an ingress object is created with multiple host
 
 The Shared VSes aren't deleted if all the FQDNs mapped to it are removed from kubernetes. However, if the user wants AKO to delete ununsed shared VSes - a pod restart is required that would evaluate the VS and delete it appropriately. 
 
+#### How are VSes sharded?
+
+If you create an ingress with an insecure host/path combination then AKO creates a corresponding Avi Pool object and patches the pool
+on one of the existing shard virtual services. The shard VS has a datascript associated with it that reads the host/path of the incoming
+request and appropriately selects a pool by matching it with the priority label specified for each pool member (corresponding to a host/path
+combination).
+
+For secure ingresses, a SNI virtual service is created which although is a dedicated virtualservice, does not have any IP addresses
+associated with it. The SNI virtual service is a child to a parent virtual service and is created based on the secret object specified
+in the ingress file against the host/path that is meant to be accessed securely.
+
+#### How do I decide the Shard VS size?
+
+In the current AKO model, the Shard VS size is an enum. It allows 3 pre-fixed set of values viz. `LARGE`, `MEDIUM` and `SMALL`. They
+respectively correspond to 8, 4 and 1 virtual service. The decision of selecting one of these sizes for Shard VS is driven by the
+size of the kubernetes cluster's ingress requirements. Typically, it's advised to always go with the highest possible Shard VS number
+that is - `LARGE` to account for future expansion. 
+
+#### Can I change the Shard VS number?
+
+In order to Shard to virtual services, AKO uses a sharding mechanism that is driven either by the `namespace` on which the ingress object
+is created or the `hostname` of each individual rule within an ingress object. The latter is marked as default because it ensures that a unique
+hostname is always sharded consistently to the same virtual service. 
+
+Since the sharding logics are determined by the number of Shard virtualservices, changing the Shard VS number has the potential hazard
+of messing up an existing cluster's already synced objects. Hence it's recommended that the Shard VS numbers are not changed once fixed.
 
 #### How do I alter the Shard VS number?
 
