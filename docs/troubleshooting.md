@@ -7,11 +7,11 @@
     1. The ingress class is set as something other than "avi". defaultIngController is set to true. 
     2. For TLS ingress, the `Secret` object does not exist. Please ensure that the Secret object is pre-created.
  
-### My VS returns a CONNECTION REFUSED after sometime.
+### My virtualservice returns a CONNECTION REFUSED after sometime.
  
 #### Possible Reasons/Solutions:
  
-    Check if your VS IP is in use somewhere else in your network.
+    Check if your virtualservice IP is in use somewhere else in your network.
 
 ### My out-of-band virtualservice setting just got overwritten.
 
