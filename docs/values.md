@@ -95,10 +95,10 @@ The logLevel value specified here gets populated in the ConfigMap and can be edi
 
 
 
-### configs.deleteConfig [editable]
+### configs.deleteConfig *(editable)*
 
 This flag is intended to be used for deletion of objects in AVI Controller. The default value is false. 
-If the value is set to true while while booting up, AKO won't process any kubernetes object and stop regular operations. 
+If the value is set to true while booting up, AKO won't process any kubernetes object and stop regular operations. 
 
 While AKO is running, this value can be edited to "true" in AKO configmap to delete all abjects created by AKO in AVI.
 After that, if the value is set to "false", AKO would resume processing kubernetes objects and recreate all the objects in AVI. 
