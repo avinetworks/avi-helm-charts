@@ -68,14 +68,12 @@ For every log collection, also collect the following information:
 ### How do I gather the AKO logs?
 Get the script from : https://github.com/avinetworks/devops/tree/master/openshift/ako/log_collector.py
 
-
-The script collects logs for AKO and AMKO. 
+The script collects logs and configmap of AKO. 
 
 _**About the script:**_
-1. Collects log file of AKO and AMKO pod
-2. For AKO pod - Collects configmap  in a yaml file
-3. For AMKO pod - Collects gdp details and gslbconfig details in a yaml file
-4. Zips the folder and returns
+1. Collects log file of AKO pod
+2. Collects configmap  in a yaml file
+3. Zips the folder and returns
 
 _For logs collection, 3 cases are considered:_
 
@@ -147,7 +145,7 @@ _**Output:**_
 At each stage of execution, the commands being executed are logged on the screen.
 The results are stored in a zip file whose name is of the format:
 
-    <podType>-<helmchart name>-<current time>
+    ako-<helmchart name>-<current time>
 
 The output will look something like this when everything is fine (Case 1) :
 
