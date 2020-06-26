@@ -61,9 +61,9 @@
 
 For every log collection, also collect the following information:
 
-    - What kubernetes distribution are you using? For example: RKE, PKS etc.
-    - What is the CNI you are using with versions? For example: Calico v3.15
-    - What is the Avi Controller version you are using? For example: 18.2.8
+    1. What kubernetes distribution are you using? For example: RKE, PKS etc.
+    2. What is the CNI you are using with versions? For example: Calico v3.15
+    3. What is the Avi Controller version you are using? For example: 18.2.8
 
 ### How do I gather the AKO logs?
 
