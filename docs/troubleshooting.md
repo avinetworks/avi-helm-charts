@@ -66,11 +66,13 @@ For every log collection, also collect the following information:
     - What is the Avi Controller version you are using? For example: 18.2.8
 
 ### How do I gather the AKO logs?
-Get the script from : https://github.com/avinetworks/devops/tree/master/openshift/ako/log_collector.py
 
-The script collects logs and configmap of AKO. 
+Get the script from [here](https://github.com/avinetworks/devops/tree/master/openshift/ako/log_collector.py)
 
-_**About the script:**_
+The script is used to collect all relevant information for the AKO pod.
+
+**About the script:**
+
 1. Collects log file of AKO pod
 2. Collects configmap  in a yaml file
 3. Zips the folder and returns
@@ -83,18 +85,18 @@ Case 2 : When the pod is running and the pod does not use PVC - The logs are col
 
 Case 3 : When the pod is not running and the pod uses PVC - A backup pod is created with the same PVC that the pod used. The logs are collected from that PVC using the backup pod.
 
-_**Configuring PVC for the AKO pod:**_
+**Configuring PVC for the AKO pod:**
 
-Persistent volume for storage is recommended for the ako pod. Refer https://kubernetes.io/docs/tasks/configure-pod-container/configure-persistent-volume-storage/ to create a persistent volume(PV) and persistent volume claim(PVC). 
+Persistent volume for storage is recommended for the ako pod. Refer this [link](https://kubernetes.io/docs/tasks/configure-pod-container/configure-persistent-volume-storage/) to create a persistent volume(PV) and persistent volume claim(PVC). 
 
-Below is an example of file to be used to create a host path persistent volume (other type of PV can also be created). 
+Below is an example of hostpath persistent volume. We recommend you use the PV based on the storage class of your kubernetes environment. 
 
     #persistent-volume.yaml
     apiVersion: v1
     kind: PersistentVolume
     metadata:
       name: ako-pv
-      namespace : <namespace-where-ako-is-present>
+      namespace : avi-system
       labels:
         type: local
     spec:
@@ -104,7 +106,7 @@ Below is an example of file to be used to create a host path persistent volume (
       accessModes:
         - ReadWriteOnce
       hostPath:
-        path: <any-host-path-dir>  #make sure that the directory exists
+        path: <any-host-path-dir>  # make sure that the directory exists
         
 A persistent volume claim can be created using the following file
 
@@ -113,7 +115,7 @@ A persistent volume claim can be created using the following file
     kind: PersistentVolumeClaim
     metadata:
       name: ako-pvc
-      namespace : <namespace-where-ako-is-present>
+      namespace : avi-system
     spec:
       storageClassName: manual
       accessModes:
@@ -124,30 +126,30 @@ A persistent volume claim can be created using the following file
           
 Add PVC name into the ako/helm/ako/values.yaml before the creation of the ako pod like 
 
-    persistentVolumeClaim: <PVC-Name> #ako-pvc according to the example
-    mountPath: <Path-to-mount-the-storage>
-    logFile: <log-file-name>
+    persistentVolumeClaim: ako-pvc
+    mountPath: /log
+    logFile: avi.log
 
-_**How to use the script for AKO**_
+**How to use the script for AKO**
 
-_Arguments:_
+Usage:
 
-1. (Mandatory) --akoNamespace (-ako) : The namespace in which the AKO pod is present.
+1. Case 1: With PVC, (Mandatory) --akoNamespace (-ako) : The namespace in which the AKO pod is present.
 
     `python3 log_collections.py -ako avi-system`
 
-2. (Optional) --since (-s) : When the pod doesnot use PVC (Case 2), time duration from present to the past during which the logs are needed.
+2. Case 2: Without PVC (Optional) --since (-s) : time duration from present time for logs.
 
     `python3 log_collections.py -ako avi-system -s 24h`
 
-_**Output:**_
+**Sample Run:**
 
 At each stage of execution, the commands being executed are logged on the screen.
-The results are stored in a zip file whose name is of the format:
+The results are stored in a zip file with the format below:
 
     ako-<helmchart name>-<current time>
 
-The output will look something like this when everything is fine (Case 1) :
+Sample Output with PVC :
 
     2020-06-25 13:20:37,141 - ******************** AKO ********************
     2020-06-25 13:20:37,141 - For AKO : helm list -n avi-system
