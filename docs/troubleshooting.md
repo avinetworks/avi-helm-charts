@@ -79,15 +79,15 @@ The script is used to collect all relevant information for the AKO pod.
 
 _For logs collection, 3 cases are considered:_
 
-Case 1 : When the pod is running and the pod uses PVC for storing the logs - The logs are collected from the PVC that the pod uses.
+Case 1 : A running AKO pod logging into a Persistent Volume Claim, in this case the logs are collected from the PVC that the pod uses.
 
-Case 2 : When the pod is running and the pod does not use PVC - The logs are collected from the pod directly.
+Case 2 : A running AKO pod logging into console, in this case the logs are collected from the pod directly.
 
-Case 3 : When the pod is not running and the pod uses PVC - A backup pod is created with the same PVC that the pod used. The logs are collected from that PVC using the backup pod.
+Case 3 : A dead AKO pod that uses a Persistent Volume Claim, in this case a backup pod is created with the same PVC attached to the AKO pod and the logs are collected from it.
 
 **Configuring PVC for the AKO pod:**
 
-Persistent volume for storage is recommended for the ako pod. Refer this [link](https://kubernetes.io/docs/tasks/configure-pod-container/configure-persistent-volume-storage/) to create a persistent volume(PV) and persistent volume claim(PVC). 
+We recommend using a Persistent Volume Claim for the ako pod. Refer this [link](https://kubernetes.io/docs/tasks/configure-pod-container/configure-persistent-volume-storage/) to create a persistent volume(PV) and a Persistent Volume Claim(PVC). 
 
 Below is an example of hostpath persistent volume. We recommend you use the PV based on the storage class of your kubernetes environment. 
 
