@@ -170,5 +170,5 @@ Sample Output with PVC :
 ### How do I gather the controller tech support?
 
 
-
+It's recommended we collect the controller tech support logs as well. Please follow this [link](https://avinetworks.com/docs/18.2/collecting-tech-support-logs/)  for the controller tech support.
     
