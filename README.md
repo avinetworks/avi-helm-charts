@@ -135,6 +135,7 @@ The following table lists the configurable parameters of the AKO chart and their
 | `configs.l7ShardingScheme` | Sharding scheme enum values: hostname, namespace | hostname |
 | `configs.cniPlugin` | CNI Plugin being used in kubernetes cluster. Specify one of: calico, canal, flannel | **required** for calico setups |
 | `configs.logLevel` | logLevel enum values: INFO, DEBUG, WARN, ERROR. logLevel can be changed dynamically from the configmap | INFO |
+| `configs.deleteConfig` | set to true if user wants to delete AKO created objects from Avi. deleteConfig can be changed dynamically from the configmap | false |
 | `configs.disableStaticRouteSync` | Disables static route syncing if set to true | false |
 | `avicredentials.username` | Avi controller username | empty |
 | `avicredentials.password` | Avi controller password | empty |

@@ -11,7 +11,7 @@ image:
 configs:
   controllerVersion: "18.2.8"
   shardVSSize: "LARGE"
-  shardVSPrefix: ""
+  clusterName: ""
   fullSyncFrequency: "1800" #seconds
   cloudName: "Default-Cloud"
   defaultDomain: ""
@@ -24,6 +24,7 @@ configs:
   l7ShardingScheme: "hostname"
   cniPlugin: "" #enum: calico|canal|flannel
   logLevel: "INFO" #enum: INFO|DEBUG|WARN|ERROR
+  deleteConfig: "false" #set to true if AKO should delete objects from Avi
 
 serviceAccount:
   # Specifies whether a service account should be created
