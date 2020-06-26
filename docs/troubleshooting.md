@@ -1,6 +1,6 @@
 ## Troubleshooting guide for Avi Kubernetes Operator
 
-### AKO POD is not running
+#### AKO POD is not running
 
 #### Possible Reasons/Solutions:
 
@@ -24,7 +24,7 @@
     2020-06-26T10:27:26.337+0530	ERROR	cache/controller_obj_cache.go:1814	Required param networkName not specified, syncing will be disabled.
     2020-06-26T10:27:26.337+0530	WARN	cache/controller_obj_cache.go:1770	Invalid input detected, syncing will be disabled.
 
-### My Ingress object didn't sync in Avi
+#### My Ingress object didn't sync in Avi
 
 #### Possible Reasons/Solutions:
 
@@ -32,20 +32,20 @@
     2. For TLS ingress, the `Secret` object does not exist. Please ensure that the Secret object is pre-created.
     3. Check the connectivity between your AKO POD and the Avi Controller.
 
-### My virtualservice returns a CONNECTION REFUSED after sometime.
+#### My virtualservice returns a CONNECTION REFUSED after sometime.
  
 #### Possible Reasons/Solutions:
  
     Check if your virtualservice IP is in use somewhere else in your network.
 
-### My out-of-band virtualservice setting just got overwritten.
+#### My out-of-band virtualservice setting just got overwritten.
 
 #### Possible Reasons/Solutions:
 
     You don't recommend changing properties of a shared virtualservice out-of-band.  If AKO has an ingress update 
     that related to this shared VS, then AKO would overwrite the configuration.
     
-### Static routes are populated, but my pools are down.
+#### Static routes are populated, but my pools are down.
 
 #### Possible Reasons/Solutions:
 
