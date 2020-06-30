@@ -53,7 +53,7 @@ To Run AKO you need the following pre-requisites:
 
   Step 2: Add this repository to your helm CLI
     
-    helm repo add ako https://avinetworks.github.io/avi-helm-charts/ako-beta
+    helm repo add ako https://avinetworks.github.io/avi-helm-charts/ako
 
 Use the `values.yaml` from this repository to edit values related to Avi configuration. Values and their corresponding index can be found [here](#parameters) 
 
