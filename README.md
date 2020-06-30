@@ -50,7 +50,6 @@ To Run AKO you need the following pre-requisites:
 
     kubectl create ns avi-system
 
-
   Step 2: Add this repository to your helm CLI
     
     helm repo add ako https://avinetworks.github.io/avi-helm-charts/ako
@@ -59,23 +58,24 @@ Use the `values.yaml` from this repository to edit values related to Avi configu
 
   Step 3: Search the available charts for AKO
 
-    helm search repo --devel
+    helm search repo
+
+    NAME                 	CHART VERSION	APP VERSION	DESCRIPTION
+    ako/ako              	0.9.1        	0.9.1      	A helm chart for Avi Kubernetes Operator
     
-    NAME      	CHART VERSION  	APP VERSION    	DESCRIPTION
-    ako/ako   	0.9.1-5047-beta	0.9.1-5047-beta	A Helm chart for Kubernetes
 
  Step 4: Install AKO
 
-    helm install  ako/ako  --generate-name --devel -f values.yaml  --set configs.controllerIP=<controller_ip> --set avicredentials.username=<avi-ctrl-username> --set avicredentials.password=<avi-ctrl-password> --namespace=avi-system
+    helm install  ako/ako  --generate-name --version 0.9.1 -f values.yaml  --set configs.controllerIP=<controller_ip> --set avicredentials.username=<avi-ctrl-username> --set avicredentials.password=<avi-ctrl-password> --namespace=avi-system
     
-    NAME: ako-1588049417
-    LAST DEPLOYED: Tue Apr 28 10:20:21 2020
+    NAME: ako-1593523840
+    LAST DEPLOYED: Tue Jun 30 19:00:44 2020
     NAMESPACE: avi-system
     STATUS: deployed
     REVISION: 1
     NOTES:
     1. Get the application URL by running these commands:
-      export POD_NAME=$(kubectl get pods --namespace avi-system -l "app.kubernetes.io/name=ako,app.kubernetes.io/instance=ako-1588049417" -o jsonpath="{.items[0].metadata.name}")
+      export POD_NAME=$(kubectl get pods --namespace avi-system -l "app.kubernetes.io/name=ako,app.kubernetes.io/instance=ako-1593523840" -o jsonpath="{.items[0].metadata.name}")
       echo "Visit http://127.0.0.1:8080 to use your application"
       kubectl --namespace avi-system port-forward $POD_NAME 8080:80
       
@@ -83,19 +83,10 @@ Use the `values.yaml` from this repository to edit values related to Avi configu
   
     helm list -n avi-system
     
-    NAME          	NAMESPACE 	REVISION	UPDATED                            	STATUS  	CHART              	APP VERSION
-    ako-1588049417	avi-system	1       	2020-04-28 10:20:21.61093 +0530 IST	deployed	ako-0.9.1-5047-beta	0.9.1-5047-beta
+    NAME          	NAMESPACE 	REVISION	UPDATED                             	STATUS  	CHART    	APP VERSION
+    ako-1593523840	avi-system	1       	2020-06-30 19:00:44.134075 +0530 IST	deployed	ako-0.9.1	    0.9.1
 
-#### AKO 0.9.1-Beta-2 is released
 
-Currently, AKO's 0.9.1-5076-beta-2 is available for download. A complete changelog can be viewed [here](CHANGELOG.md)
-
-`beta-1` to `beta-2` is a disruptive migration due to some object naming changes around the SNI virtualservices. Hence if you are running a `beta-1` build and would like to move to `beta-2`, pls execute the following:
-
-    - kubectl delete cm avi-k8s-config -n avi-system (This will trigger a delete of the beta-1 objects in the Avi controller.)
-    - helm delete <beta-1-release-name> -n avi-system
-    - helm repo update
-    - helm install  ako/ako  --generate-name --devel -f values.yaml  --set configs.controllerIP=<controller_ip> --set avicredentials.username=<avi-ctrl-username> --set avicredentials.password=<avi-ctrl-password> --namespace=avi-system
 
 
 #### Uninstall using *helm*
