@@ -91,6 +91,57 @@ specified in the `rules` section of this ingress object.
 Additionally - for these hostnames, AKO creates a redirect policy on the shared VS (parent to the SNI child) for this specific secure hostname.
 This allows the client to automatically redirect the http requests to https if they are accessed on the insecure port (80).
 
+##### Multi-Port Service Support
+
+A kubernetes service can have multiple ports. In order for a `Service` to have multiple ports, kubernetes mandates them to have a `name`.
+Users could choose their ingress paths to route traffic to a specific port of the Service using this `name`. In order to understand the utility,
+consider the following Service:
+
+        apiVersion: v1
+        kind: Service
+        metadata:
+          labels:
+            run: my-svc
+        spec:
+          ports:
+          - name: myport1
+            port: 80
+            protocol: TCP
+            targetPort: 80
+          - name: myport2
+            port: 8080
+            protocol: TCP
+            targetPort: 8090
+          selector:
+            run: my-svc
+          sessionAffinity: None
+          type: ClusterIP
+
+
+In order to use this service across 2 paths, with each routing to a different port, the Ingress spec should look like this:
+
+        spec:
+          rules:
+          - host: myhost.avi.internal
+            http:
+              paths:
+              - backend:
+                  serviceName: service1
+                  servicePort: myport1
+                path: /foo
+                pathType: ImplementationSpecific
+          - host: myhost.avi.internal
+            http:
+              paths:
+              - backend:
+                  serviceName: service1
+                  servicePort: myport2
+                path: /bar
+                pathType: ImplementationSpecific
+
+
+As you may note that the service ports in case of multi-port `Service` inside the ingress file are `strings` that match the port names of
+the `Service`. This is mandatory for this feature to work. 
 
 ### AKO created object naming conventions
 
