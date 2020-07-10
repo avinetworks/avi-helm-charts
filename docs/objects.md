@@ -129,7 +129,6 @@ In order to use this service across 2 paths, with each routing to a different po
                   serviceName: service1
                   servicePort: myport1
                 path: /foo
-                pathType: ImplementationSpecific
           - host: myhost.avi.internal
             http:
               paths:
@@ -137,7 +136,6 @@ In order to use this service across 2 paths, with each routing to a different po
                   serviceName: service1
                   servicePort: myport2
                 path: /bar
-                pathType: ImplementationSpecific
 
 
 As you may note that the service ports in case of multi-port `Service` inside the ingress file are `strings` that match the port names of
