@@ -32,7 +32,7 @@ AKO categorizes the CRDs in the following buckets:
 
 1. __Layer 7__: These CRD objects are used to express layer 7 traffic routing rules. Following are the list of CRDs currently available:
   
-  * [HostRule]
+  * [HostRule](https://github.com/avinetworks/avi-helm-charts/blob/sudswas-multi-port/docs/AKO/crds/hostrule.md)
   * [HTTPRule]
   
 2. __Layer 4__: These CRD objects are used to express layer 4 trafffic routing rules. (Unreleased)
