@@ -22,7 +22,6 @@ A sample HostRule CRD looks like this:
           policySets:
           - "my-secure-policy-ref"
           overwrite: false
-        networkSecurityPolicy: "nspolicy"
         wafPolicy: "my-waf-policy"
         applicationProfile: "my-app-ref"
 
