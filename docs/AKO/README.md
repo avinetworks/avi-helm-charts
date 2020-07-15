@@ -143,3 +143,43 @@ Please refer to this [page](objects.md) for details on how AKO interprets the ku
 ### FAQ
 
 For some frequently asked question refer [here](faq.md) 
+
+## *__Features in Beta Release__*
+> All the features mentioned in the subsequent sections are only part of the beta release and not present in the stable releases.
+
+### Node Port
+
+Service type node port can be used to send traffic to the pods using nodeports. This can be used where the option of static IP in VRF Context is not feasible.
+
+A new parameter serviceType has been introduced. To use this feature, set the value of the parameter to **NodePort**. Additionally disableStaticRouteSync should be set to "true".
+
+| **Parameter** | **Description** | **Default** |
+| --- | --- | --- |
+| `configs.serviceType` | Type of Service to be used as backend for Routes/Ingresses | ClusterIP |
+
+### AKO in Openshift Cluster
+
+AKO can be used in openshift cluster to sync Routes and Services of type Loadbalancer.
+
+#### Pre-requisites for running AKO in Openhsift Cluster
+
+Follow the steps 1 to 2, given in section [Pre-requisites](https://github.com/avinetworks/avi-helm-charts/tree/master/docs/AKO#pre-requisites). Additionaly following points have to be noted for openshift environment.
+1. Make Sure Openshift version is >= 4.4
+2. Openhsift routes and services of type load balancer are suppported in AKO
+3. Ingresses, if created in the openhsift cluster won't be handled by AKO.
+4. serviceType should be **NodePort** in values.yaml. Routes should use services of type Node Port as backends.
+5. We don't support Static Routes in VRF Context for openshift.
+
+Follow the same steps mentioned in [install-using-helm](https://github.com/avinetworks/avi-helm-charts/tree/master/docs/AKO#install-using-helm) to install AKO in an openshift cluster.
+
+#### Features of Openshift Route supported in AKO
+AKO suports the following features of openshift route.
+1. Insecure Routes.
+2. Insecure Routes with alternate backends.
+3. Secure routes with edge termination policy.
+
+#### Features of Openshift Route not supported in AKO
+Any feature of openshift route not mentioend above is not supported, e.g.
+1. Secure Routes with InsecureEdgeterminationPolicy - Redirect or Allow.
+2. Secure Routes of type passthrough
+3. Secure Routes with reencrypt functionality
