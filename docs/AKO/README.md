@@ -1,9 +1,4 @@
-# Helm charts by Avi Networks
-
-This repository is used to host helm charts from Avi Networks (A VMware Company)
-
-## Helm Charts for AKO - Avi Kubernetes Operator
-
+# AKO: Avi Kubernetes Operator
 
 ### Run AKO
 
