@@ -1,0 +1,54 @@
+# Default values for ako.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: avinetworks/ako
+  pullPolicy: IfNotPresent
+
+configs:
+  controllerVersion: "18.2.8"
+  shardVSSize: "LARGE"
+  clusterName: ""
+  fullSyncFrequency: "1800" #seconds
+  cloudName: "Default-Cloud"
+  defaultDomain: ""
+  disableStaticRouteSync: "false"
+  ingressApi: "corev1" #enum: extensionv1 and corev1 - if not set default to corev1
+  defaultIngController: "true"
+  subnetIP: "" # Subnet IP of the data network
+  subnetPrefix: "" # Subnet Prefix of the data network
+  networkName: "" # Network Name of the data network
+  l7ShardingScheme: "hostname"
+  cniPlugin: "" #enum: calico|canal|flannel
+  logLevel: "INFO" #enum: INFO|DEBUG|WARN|ERROR
+  deleteConfig: "false" #set to true if AKO should delete objects from Avi
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name:
+
+avicredentials:
+  username: # Avi controller username 
+  password: # Avi controller password
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: false
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+
+persistentVolumeClaim: ""
+mountPath: "/log"
+logFile: "avi.log"
