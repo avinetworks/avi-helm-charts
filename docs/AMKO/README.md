@@ -23,13 +23,15 @@ To kick-start AMKO, we need:
    kubectl create ns avi-system
    ```
 
-6. Create a kubeconfig file with the permissions to read the service and the ingress/route objects for all the member clusters. Follow this to create a kubeconfig file. Name this file `gslb-members` and generate a secret with the kubeconfig file in `cluster-amko` by following:
+6. Create a kubeconfig file with the permissions to read the service and the ingress/route objects for all the member clusters. Follow [this tutorial](kubeconfig.md) to create a kubeconfig file with multi-cluster access. Name this file `gslb-members` and generate a secret with the kubeconfig file in `cluster-amko` by following:
    ```
-   kubectl --kubeconfig my-config create secret generic gslb-config-secret --from-file gslb-members -n avi-system
+   kubectl create secret generic gslb-config-secret --from-file gslb-members -n avi-system
    ```
    *Note* that the permissions provided in the kubeconfig file for all the clusters must have atleast the permissions to `[get, list, watch]` on services, ingresses and routes.
 
 #### Install using helm
+*Note* that only helm v3 is supported.
+
 1. Create the `avi-system` namespace:
    ```
    kubectl create ns avi-system
