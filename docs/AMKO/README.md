@@ -88,15 +88,38 @@ kubectl delete ns avi-system
 | **Parameter**                                    | **Description**                                                                                                          | **Default**                           |
 | ------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------ | ------------------------------------- |
 | `configs.controllerVersion`                      | GSLB leader controller version                                                                                           | 18.2.9                                |
-| `configs.gslbLeaderHost`                         | GSLB leader site URL                                                                                                     | Nil                                   |
-| `configs.gslbLeaderSecret`                       | GSLB leader credentials secret name in `avi-system` namespace                                                            | `gslb-avi-secret`                     |
-| `configs.gslbLeaderCredentials.username`         | GSLB leader controller username                                                                                          | `admin`                               |
-| `configs.gslbLeaderCredentials.password`         | GSLB leader controller password                                                                                          | `avi123`                              |
+| `configs.gslbLeaderController`                         | GSLB leader site URL                                                                                                     | Nil                                   |
+| `gslbLeaderCredentials.username`         | GSLB leader controller username                                                                                          | `admin`                               |
+| `gslbLeaderCredentials.password`         | GSLB leader controller password                                                                                          | `avi123`                              |
 | `configs.memberClusters.clusterContext`          | K8s member cluster context for GSLB                                                                                      | `cluster1-admin` and `cluster2-admin` |
 | `configs.refreshInterval`                        | The time interval which triggers a AVI cache refresh                                                                     | 120 seconds                           |
-| `configs.clusterMembers.secret`                  | The name of the secret which is created with kubeconfig as the data                                                      | `gslb-config-secret`                  |
-| `configs.clusterMembers.key`                     | The name of the field (key) inside the secret `configs.clusterMembers.secret` data                                       | `gslb-members`                        |
 | `gdpConfig.appSelector.label{.key,.value}`       | Selection criteria for applications, label key and value are provided                                                    | Nil                                   |
 | `gdpConfig.namespaceSelector.label{.key,.value}` | Selection criteria for namespaces, label key and value are provided                                                      | Nil                                   |
 | `gdpConfig.matchClusters`                        | List of clusters (names must match the names in configs.memberClusters) from where the objects will be selected          | Nil                                   |
 | `gdpConfig.trafficSplit`                         | List of weights for clusters (names must match the names in configs.memberClusters), each weight must range from 1 to 20 | Nil                                   |
+| `gdpConfig.logLevel`                         | Log level to be used by AMKO to print the type of logs, supported values are `INFO`, `DEBUG`, `WARN` and `ERROR` | `INFO`                                   |
+
+#### Custom resources
+AMKO uses a couple of custom resources to configure the GSLB services in the GSLB leader site:
+1. [GSLBConfig](crds/gslbconfig.md)
+2. [GlobalDeploymentPolicy](crds/gdp.md)
+
+Follow the above links to take a look at the CRD objects and how to use them.
+
+If AMKO is installed via `helm`, it by default creates one instance of each type in the `avi-system` namespace. To see these objects:
+```
+$ kubectl get gc -n avi-system gc-1
+NAME            AGE
+gc-1            45m
+
+$ kubectl get gdp -n avi-system
+NAME         AGE
+global-gdp   46m
+```
+
+*Note* that, only one instance of each type is supported and AMKO *will* ignore other objects.
+
+#### Editing runtime parameters of AMKO
+The `GDP` object can be edited in the runtime to change the application selection parameters, traffic split and the applicable clusters. AMKO will recognize these changes and will update the GSLBServices accordingly.
+
+Not all fields in `GSLBConfig` can be changed in the runtime. The only allowed field is `logLevel`. This means that if the `logLevel` changes while AMKO is running, the changes will take effect. For any changes to the other fields, the AMKO pod has to be restarted to recognize the changes.
