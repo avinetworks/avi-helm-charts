@@ -113,3 +113,11 @@ object is used to maintain the same. Editing this field requires a restart (dele
 
 If you are using a private container registry and you'd like to override the default dockerhub settings, then this field can be edited
 with the private registry name.
+
+### configs.serviceType
+
+This option specifies whether the AKO functions in ClusterIP mode or NodePort mode. By default it is set to `ClusterIP`. Allowed values are `ClusterIP` and `NodePort`.
+
+### nodeSelectorLabels.key and nodeSelectorLabels.value
+
+It might not be desirable to have all the nodes of a kubernetes cluster to participate in becoming server pool members, hence key/value is used as a label based selection on the nodes in kubernetes to participate in NodePort. If key/value are not specified then all nodes are selected. 

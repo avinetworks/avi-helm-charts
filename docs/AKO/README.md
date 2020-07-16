@@ -156,6 +156,8 @@ A new parameter serviceType has been introduced as config option in AKO's values
 | **Parameter** | **Description** | **Default** |
 | --- | --- | --- |
 | `configs.serviceType` | Type of Service to be used as backend for Routes/Ingresses | ClusterIP |
+| `nodeSelectorLabels.key` | Key used as a label based selection for the nodes in NodePort mode. | empty |
+| `nodeSelectorLabels.value` | Value used as a label based selection for the nodes in NodePort mode. | empty |
 
 Kubernetes populates NodePort by default for service of type LoadBalancer too. If config.serviceType is set to NodePort, AKO would use NodePort as backend for service of type Loadbalancer instead of using Endpoints, which is the default behaviour with config.serviceType set as ClusterIP.
 

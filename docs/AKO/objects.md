@@ -21,7 +21,6 @@ AKO creates a Layer 4 virtualservice object in Avi corresponding to a service of
 
 AKO creates a dedicated virtual service for this object in kubernetes that refers to reserving a virtual IP for it. The layer 4 virtual service uses a pool section logic based on the ports configured on the service of type loadbalancer. In this case, the incoming port is port `80` and hence the virtual service listens on this ports for client requests. AKO selects the pods associated with this service as pool servers associated with the virtualservice.
 
-
 ### Insecure Ingress.
 
 Let's take an example of an insecure hostname specification from a Kubernetes ingress object:
@@ -226,3 +225,30 @@ The formula to derive the SNI virtualservice's poolgroup is as follows:
     poolgroupname = clusterName + "--" + namespace + "-" + host + "_" + path + "-" + ingName
 
 Some of these naming conventions can be used to debug/derive corresponding Avi object names that could prove as a tool for first level trouble shooting.
+
+### NodePort Mode 
+
+#### Insecure and Secure Ingress/Routes in NodePort mode
+
+    apiVersion: v1
+    kind: Service
+    metadata:
+      name: service1
+      namespace: default
+    spec:
+      type: NodePort
+      ports:
+      - port: 80
+        targetPort: 8080
+        nodePort: 31013
+        name: eighty
+      selector:
+        app: avi-server
+
+In `NodePort` mode, Service `service1` should be of type `NodePort`. There is no change in naming of the objects of VS and pool. AKO populates the Pool server object with `node_ip:nodeport`. If there are 3 nodes in the cluster with Internal IP being `10.0.0.100, 10.0.0.101, 10.0.0.102` and assuming that there’s no node label selectors used, AKO populates pool server as: `10.0.0.100:31013, 10.0.0.101:31013, 10.0.0.101:31013`.
+
+If `service1` is of type `ClusterIP` in  NodePort mode. Pool servers will be empty for ingres/route referring to the service.
+
+#### Service of type loadbalancer In NodePort mode
+
+Service of type `LoadBalancer` automatically creates a NodePort. AKO populates the pool server object with `node_ip:nodeport`. 
