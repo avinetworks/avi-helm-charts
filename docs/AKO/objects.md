@@ -182,7 +182,7 @@ The shared VS names are derived based on a combination of fields to keep it uniq
 
 ##### Shared VS pool names
 
-The formula to derive the Shared VS poolgroup is as follows:
+The formula to derive the Shared VS pool is as follows:
 
     poolgroupname = clusterName + "--" + priorityLabel + "-" + namespace + "-" + ingName
 
@@ -226,6 +226,8 @@ The formula to derive the SNI virtualservice's poolgroup is as follows:
 
 Some of these naming conventions can be used to debug/derive corresponding Avi object names that could prove as a tool for first level trouble shooting.
 
+## Features in 1.2.1-beta release
+
 ### NodePort Mode 
 
 #### Insecure and Secure Ingress/Routes in NodePort mode
@@ -252,3 +254,89 @@ If `service1` is of type `ClusterIP` in  NodePort mode. Pool servers will be emp
 #### Service of type loadbalancer In NodePort mode
 
 Service of type `LoadBalancer` automatically creates a NodePort. AKO populates the pool server object with `node_ip:nodeport`. 
+
+### Openshift Route
+In Openshift cluster, AKO can be used to configure routes. Ingress configuration is not supported. Currently the shard mode supported for openshift route is hostname. 
+
+### Insecure Route
+
+    apiVersion: v1
+    kind: Route
+    metadata:
+      name: route1
+    spec:
+      host: routehost1.avi.internal
+      path: /foo
+      to:
+        kind: Service
+        name: avisvc1
+
+For insecure route, AKO creates a Shared VS, Poolgroup and Datascript like insecure ingress. For poolName, route configuration differs from ingress configuration. Service name is appended at the end of poolname, as illustrated bellow.
+
+#### Shared VS pool names for route
+
+The formula to derive the Shared VS pool name for route is as follows:
+
+    poolgroupname = clusterName + "--" + priorityLabel + "-" + namespace + "-" + routeName + "-" + serviceName
+
+
+### Insecure Route with Alternate Backends
+
+A route can also be associated with multiple services denoted by alternateBackends. The requests that are handled by each service is governed by the service weight.
+
+
+
+    apiVersion: v1
+    kind: Route
+    metadata:
+      name: route1
+    spec:
+      host: routehost1.avi.internal
+      path: /foo
+      to:
+        kind: Service
+        name: avisvc1
+        weight: 20
+      alternateBackends:
+      - kind: Service
+        name: avisvc2
+        weight: 10
+
+
+For each backend of a route, a new pool is added. All such pools are added with same priority label - 'hostname/path'. For the above example, two pools would be added with priority - 'routehost1.avi.internal/foo'. Ratio for a pool is same as the weight specified for the service in the route.
+
+
+### Secure Route with Edge Termination
+
+    apiVersion: v1
+    kind: Route
+    metadata:
+      name: secure-route1
+    spec:
+      host: secure1.avi.internal
+      path: /bar
+      to:
+        kind: Service
+        name: avisvc1
+      tls:
+        termination: edge
+        key: |-
+        -----BEGIN RSA PRIVATE KEY-----
+        ...
+        ...
+        -----END RSA PRIVATE KEY-----
+
+        certificate: |-
+        -----BEGIN CERTIFICATE-----
+        ...
+        ...
+        -----END CERTIFICATE-----
+
+Secure route is configured in Avi like secure ingress. An SNI VS is created for each hostname and for each hostpath one poolgroup is created. However, for alternate backends, multiple pools are added in each poolgroup. Also, unlike Secure Ingress, no redirect policy is configured for Secure Route for insecure traffic.
+
+##### SNI pool names for route
+
+The formula to derive the SNI virtualservice's pools for route is as follows:
+
+    poolname = clusterName + "--" + namespace + "-" + host + "_" + path + "-" + routeName + "-" serviceName
+
