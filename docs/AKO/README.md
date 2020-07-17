@@ -144,7 +144,7 @@ Please refer to this [page](objects.md) for details on how AKO interprets the ku
 
 For some frequently asked question refer [here](faq.md) 
 
-## *__Features in Beta Release__*
+## *__Features in 1.2.1-beta Release__*
 > All the features mentioned in the subsequent sections are only part of the beta release and not present in the stable releases.
 
 ### Node Port
@@ -186,3 +186,21 @@ Following feature of openshift routes are not currently supported in AKO. They w
 1. Secure Routes with InsecureEdgeterminationPolicy - Redirect or Allow.
 2. Secure Routes of type passthrough
 3. Secure Routes with reencrypt functionality
+
+#### Installing Beta Release:
+
+
+  Add ako incubator repository using Helm CLI
+    
+    helm repo add ako https://avinetworks.github.io/avi-helm-charts/charts/incubator/ako
+
+
+  Search for available charts
+
+    helm search repo --devel
+
+    NAME                 	CHART VERSION	      APP VERSION	      DESCRIPTION
+    ako-incubator/ako	    1.2.1-beta	        1.2.1-beta	      A Helm chart for Kubernetes
+    
+
+  Install appropriate version of AKO using helm install command
