@@ -122,6 +122,11 @@ Whatever `sslKeyCertificate` is provided for the FQDN, will override all sslkeya
 
 * The operator wants to override any existing secrets for a given host fqdn and define tls termination semantics. 
 
+##### Certificate precedence
+
+If the ingress object specifies a Secret for SNI termination and the HostRule CRD also specifies a sslKeyCertificate for the same `virtualhost` then the
+sslkeycertificate in the HostRule CRD will take precedence over the Secret object associated with the Ingress.
+
 ##### HostRule deletion
 
 If a HostRule is deleted, all the settings for the FQDNs are withdrawn from the Avi controller.
