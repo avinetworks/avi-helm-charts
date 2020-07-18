@@ -1,9 +1,17 @@
 # Helm charts by Avi Networks
 
-This repository is used to host helm charts from Avi Networks (A VMware Company)
+This repository hosts the helm charts from Avi Networks (A VMware Company).
 
-Currently helm charts and documents for the following projects are hosted in this repository:
-
+## Documentation
+Take a look at the following documentation for instructions on installing AKO/AMKO:
 * [AKO - Avi Kubernetes Operator](docs/AKO/README.md)
+* [AMKO - Avi Multicluster Kubernetes Operator](docs/AMKO/README.md)
 
-* AMKO - Avi Multicluster Kubernetes Operator
+## Helm charts for AKO
+Charts for AKO can be found at:
+* [stable](charts/stable/ako)
+* [beta](charts/incubator/ako)
+
+## Helm charts for AMKO
+Charts for AMKO can be found at:
+* [beta](charts/incubator/amko)
