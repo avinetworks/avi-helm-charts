@@ -1,5 +1,5 @@
 ## GlobalDeploymentPolicy CRD for AMKO
-A CRD called GlobalDeploymentPolicy allows users to select kubernetes/openshift objects based on certain rules. This GDP object has to be created on the same system wherever the GSLBConfig object was created and `amko` is running. The selection policy applies to all the clusters which are mentioned in the GDP object. A typical GlobalDeploymentPolicy looks like this:
+A CRD called GlobalDeploymentPolicy allows users to select kubernetes/openshift objects based on certain rules. The selection policy applies to all the clusters which are mentioned in the GDP object. A typical GlobalDeploymentPolicy looks like this:
 
 ```yaml
 apiVersion: "amko.k8s.io/v1alpha1"
@@ -26,8 +26,8 @@ spec:
     - cluster: cluster2
       weight: 2
 ```
-1. `namespace`: an important piece here, as a GDP object created in `avi-system` namespace is recognised and all other GDP objects created in other namespaces are ignored.
-2. `matchRules`: List of selection policy rules. If a user wants to select certain objects in a namespace (mentioned in `namespace`), they have to add those rules here. A typical `matchRule` looks like:
+1. `namespace`: namespace of this object must be `avi-system`.
+2. `matchRules`: This allows users to select objects using either application labels (configured as labels on Ingress/Route objects) or via namespace labels (configured as labels on the namespace objects). `matchRules` are defined as:
 ```yaml
 matchRules:
     appSelector:                       // application selection criteria
@@ -74,13 +74,8 @@ matchRules:
 
 3. `matchClusters`: List of clusters on which the above `matchRules` will be applied on. The member object of this list are cluster contexts of the individual k8s/openshift clusters.
 
-4. `trafficSplit` is required if we want to route a certain percentage of traffic to certain objects in a certain cluster. These are weights and the range for them is 1 to 20.
+4. `trafficSplit` is required if we want to route a percentage of traffic to objects in a given cluster. Weights for these clusters range from 1 to 20.
 
 ### Notes
-* A GDP object must be created in the `avi-system` namespace. GDP objects in all ther namespaces will *not* be considered. For now, AMKO supports only one GDP object in the entire cluster. Any other additonal GDP objects will be ignored.
-* A GDP object is created as part of `helm install`. User can then edit this GDP object to modify their selection of objects.
-* Deletion of a GDP rule will trigger all the objects to be again checked against the remaining set of rules.
-* Deletion of a cluster member from the `matchClusters` will trigger deletion of objects selected from that cluster in AVI.
-
-### Editability
-All fields in the GDP spec are editable. This means that, any GDP change made in runtime *will* be reflected by AMKO.
+* Only one `GDP` object is allowed.
+* If using `helm install`, a `GDP` object is created by picking up values from `values.yaml` file. User can then edit this GDP object to modify their selection of objects.

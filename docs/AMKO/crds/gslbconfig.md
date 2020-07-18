@@ -5,7 +5,7 @@ A CRD has been provided to add the GSLB configuration. The name of the object is
 apiVersion: "avilb.k8s.io/v1alpha1"
 kind: "GSLBConfig"
 metadata:
-  name: "gslb-policy-1"
+  name: "amko-gc"
   namespace: "avi-system"
 spec:
   gslbLeader:
@@ -24,7 +24,7 @@ spec:
 1. `apiVersion`: The api version for this object has to be `avilb.k8s.io/v1alpha1`.
 2. `kind`: the object kind is `GSLBConfig`.
 3. `name`: Can be anything, but it has to be specified in the GDP object.
-4. `namespace`: By default, this object is supposed to be created in `avi-system`.
+4. `namespace`: By default, this object must be created in `avi-system`.
 5. `gslbLeader.credentials`: A secret object has to be created for (`helm install` does that automatically) the GSLB Leader cluster. The username and password have to be provided as part of this secret object. Refer to `username` and `password` in [parameters](#parameters).
 6. `gslbLeader.controllerVersion`: The version of the GSLB leader cluster.
 7. `gslbLeader.controllerIP`: The GSLB leader IP address or the hostname along with the port number, if any.
@@ -35,10 +35,5 @@ spec:
 12. `logLevel`: Define the log level that the amko pod prints. The allowed levels are: `[INFO, DEBUG, WARN, ERROR]`.
 
 ### Notes
-* Only one GSLBConfig object is allowed.
-* If using `helm install`, the GSLB config object will be created for you, just provide the right parameters in `values.yml`.
-
-### Editability
-The only field that's editable today is the `logLevel` field. What this means is, a user can just change the logLevel in the runtime and the changes will take effect.
-
-All other fields are non-editable. Once `GSLBConfig` object is defined and is accepted, it can't be changed (as of now). If changed, the changes will not take any effect. For the changes to take effect, the user has to restart the AMKO pod.
+* Only one `GSLBConfig` object is allowed.
+* If using `helm install`, a `GSLBConfig` object is created by picking up values from the `values.yaml` file.

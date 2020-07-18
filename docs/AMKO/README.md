@@ -2,21 +2,39 @@
 
 ### Run AMKO
 
-AMKO is a kubernetes operator which orchestrates application deployments across multiple kubernetes/openshift clusters.
+AMKO is a kubernetes operator used for multi-cluster application load balancing for Kubernetes workloads.
+
  ![Alt text](images/amko_ss.png?raw=true "amko architecture")
 
 AMKO is aware of the following object types:
-* Kubernetes Ingresses
-* Openshift Routes
-* Service type Load Balancer
+- Kubernetes
+  * Ingress
+  * Service type load balancer
 
-Based on a couple of CRDs `GSLBConfig` and `GlobalDeploymentPolicy`, AMKO manages the GSLB service configuration on a AVI leader site.
- 
+- Openshift
+  * Routes
+  * Service type load balancer
+
+#### Dependencies
+For Kubernetes clusters:
+| **Components** | **Version** |
+| -------------- | ----------- |
+| Kubernetes     | 1.16+       |
+| AKO            | 0.9.1+      |
+| AVI Controller | 18.2.9-4p1  |
+
+For openshift clusters:
+| **Components** | **Version** |
+| -------------- | ----------- |
+| Openshift      | 4.4+        |
+| AKO            | 1.2.1-beta  |
+| AVI Controller | 18.2.9-4p1  |
+
 #### Pre-requisites
 To kick-start AMKO, we need:
 1. Atleast one kubernetes/openshift cluster.
-2. Atleast one AVI controller which manages the kubernetes/openshift cluster(s) designated as the GSLB leader site. Additional controllers managing openshift/kubernetes clusters can be added as follower sites.
-3. AMKO assumes that it has connectivity to all the member clusters' kubernetes API servers. Without this, AMKO won't be able to watch over the ingress/route/services in the member kubernetes clusters.
+2. Atleast one AVI controller.
+3. AMKO assumes that it has connectivity to all the member clusters' kubernetes API servers. Without this, AMKO won't be able to watch over the kubernetes and openshift resources in the member clusters.
 4. Choose one of the kubernetes/openshift clusters where AMKO should be deployed. All the configs for `amko` will be added to this cluster. Let's call this cluster `cluster-amko` for further references.
 5. Create a namespace `avi-system` in `cluster-amko`:
    ```
@@ -27,7 +45,14 @@ To kick-start AMKO, we need:
    ```
    kubectl create secret generic gslb-config-secret --from-file gslb-members -n avi-system
    ```
-   *Note* that the permissions provided in the kubeconfig file for all the clusters must have atleast the permissions to `[get, list, watch]` on services, ingresses and routes.
+
+*Note* that the permissions provided in the kubeconfig file for all the clusters must have atleast the permissions to `[get, list, watch]` on:
+   * Kubernetes ingress and service type load balancers.
+   * Openshift routes and service type load balancers.
+AMKO also needs permissisons to `[get, list, watch, update]` on:
+   * GSLBConfig object
+   * GlobalDeploymentPolicy object
+The extra `update` permission is to update the `GSLBConfig` and `GlobalDeploymentPolicy` objects' status fields to reflect the current state of the object, whether its accepted or rejected.
 
 #### Install using helm
 *Note* that only helm v3 is supported.
@@ -50,7 +75,7 @@ To kick-start AMKO, we need:
    ```
 5. Install AMKO:
    ```
-   helm install  ako/ako  --generate-name --version 0.9.1 -f values.yaml  --set configs.controllerIP=<controller_ip> --namespace=avi-system
+   helm install  amko/amko  --generate-name --version 0.9.1 -f values.yaml  --set configs.controllerIP=<controller_ip> --namespace=avi-system
 
    NAME: amko-1593523840
    LAST DEPLOYED: Tue Jun 30 19:00:44 2020
@@ -120,6 +145,6 @@ global-gdp   46m
 *Note* that, only one instance of each type is supported and AMKO *will* ignore other objects.
 
 #### Editing runtime parameters of AMKO
-The `GDP` object can be edited in the runtime to change the application selection parameters, traffic split and the applicable clusters. AMKO will recognize these changes and will update the GSLBServices accordingly.
+The `GDP` object can be edited at runtime to change the application selection parameters, traffic split and the applicable clusters. AMKO will recognize these changes and will update the GSLBServices accordingly.
 
-Not all fields in `GSLBConfig` can be changed in the runtime. The only allowed field is `logLevel`. This means that if the `logLevel` changes while AMKO is running, the changes will take effect. For any changes to the other fields, the AMKO pod has to be restarted to recognize the changes.
+Changing only `logLevel` is permissible at runtime via an edit of the `GSLBConfig`. For all other changes to the `GSLBConfig`, the AMKO pod has to be restarted.
