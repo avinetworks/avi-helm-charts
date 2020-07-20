@@ -170,7 +170,36 @@ Follow the steps 1 to 2, given in section [Pre-requisites](https://github.com/av
 3. Ingresses, if created in the openshift cluster won't be handled by AKO.
 4. serviceType should be **NodePort** in values.yaml. Routes should use services of type NodePort as backends.
 
-Follow the same steps mentioned in [install-using-helm](https://github.com/avinetworks/avi-helm-charts/tree/master/docs/AKO#install-using-helm) to install AKO in an openshift cluster.
+#### Installing Beta Release:
+
+
+Step 1: Create the avi-system namespace
+
+    kubectl create ns avi-system
+
+Step 2: Add ako incubator repository
+    
+    helm repo add ako https://avinetworks.github.io/avi-helm-charts/charts/incubator/ako
+
+
+Step 3: Search for available charts
+
+    helm search repo --devel
+
+    NAME                 	CHART VERSION	        APP VERSION	        DESCRIPTION
+    ako-incubator/ako	    1.2.1-5140-beta	        1.2.1-5140-beta	    A Helm chart for Kubernetes
+
+
+Step 4: Install AKO
+
+    helm install  ako-incubator/ako  --generate-name --version 1.2.1-5140-beta -f values.yaml --set configs.serviceType=NodePort --set configs.networkName=<network-name> --set configs.clusterName=<cluster-name>  --set configs.controllerIP=<avi-controller-ip> --set avicredentials.username=<avi-ctrl-username> --set avicredentials.password=<avi-ctrl-password> --namespace=avi-system
+
+Step 5: Check the installation
+
+    helm ls -n avi-system
+
+    NAME          	NAMESPACE 	REVISION	UPDATED                                	STATUS  	CHART              	APP VERSION
+    ako-1595250583	avi-system	1       	2020-07-20 13:09:45.958991153 +0000 UTC	deployed	ako-1.2.1-5140-beta	1.2.1-5140-beta
 
 #### Features of Openshift Route supported in AKO
 AKO supports the following features of openshift route. These features are currently in **beta** phase.
@@ -184,20 +213,3 @@ Following feature of openshift routes are not currently supported in AKO. They w
 2. Secure Routes of type passthrough
 3. Secure Routes with reencrypt functionality
 
-#### Installing Beta Release:
-
-
-  Add ako incubator repository using Helm CLI
-    
-    helm repo add ako https://avinetworks.github.io/avi-helm-charts/charts/incubator/ako
-
-
-  Search for available charts
-
-    helm search repo --devel
-
-    NAME                 	CHART VERSION	        APP VERSION	        DESCRIPTION
-    ako-incubator/ako	    1.2.1-5140-beta	        1.2.1-5140-beta	    A Helm chart for Kubernetes
-    
-
-  Install appropriate version of AKO using helm install command
