@@ -196,8 +196,8 @@ Following feature of openshift routes are not currently supported in AKO. They w
 
     helm search repo --devel
 
-    NAME                 	CHART VERSION	      APP VERSION	      DESCRIPTION
-    ako-incubator/ako	    1.2.1-beta	        1.2.1-beta	      A Helm chart for Kubernetes
+    NAME                 	CHART VERSION	        APP VERSION	        DESCRIPTION
+    ako-incubator/ako	    1.2.1-5140-beta	        1.2.1-5140-beta	    A Helm chart for Kubernetes
     
 
   Install appropriate version of AKO using helm install command
