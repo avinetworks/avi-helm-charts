@@ -25,6 +25,7 @@ configs:
   cniPlugin: "" #enum: calico|canal|flannel
   logLevel: "INFO" #enum: INFO|DEBUG|WARN|ERROR
   deleteConfig: "false" #set to true if AKO should delete objects from Avi
+  serviceType: "NodePort" #enum NodePort|ClusterIP
 
 serviceAccount:
   # Specifies whether a service account should be created
