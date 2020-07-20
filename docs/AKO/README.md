@@ -182,7 +182,7 @@ Step 1: Create the avi-system namespace
 
 Step 2: Add ako incubator repository
     
-    helm repo add ako https://avinetworks.github.io/avi-helm-charts/charts/incubator/ako
+    helm repo add ako-incubator https://avinetworks.github.io/avi-helm-charts/charts/incubator/ako
 
 
 Step 3: Search for available charts
