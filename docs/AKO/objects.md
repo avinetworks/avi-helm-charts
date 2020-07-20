@@ -255,6 +255,23 @@ If `service1` is of type `ClusterIP` in  NodePort mode. Pool servers will be emp
 
 Service of type `LoadBalancer` automatically creates a NodePort. AKO populates the pool server object with `node_ip:nodeport`. 
 
+    apiVersion: v1
+    kind: Service
+    metadata:
+      name: avisvc-lb
+      namespace: red
+    spec:
+      type: LoadBalancer
+      ports:
+      - port: 80
+        targetPort: 8080
+        nodePort: 31013
+        name: eighty
+      selector:
+        app: avi-server
+
+In the above example, AKO creates a dedicated virtual service for this object in kubernetes that refers to reserving a virtual IP for it. If there are 3 nodes in the cluster with Internal IP being `10.0.0.100, 10.0.0.101, 10.0.0.102` and assuming that there’s no node label selectors used, AKO populates pool server as: `10.0.0.100:31013, 10.0.0.101:31013, 10.0.0.101:31013`.
+
 ### Openshift Route
 In Openshift cluster, AKO can be used to configure routes. Ingress configuration is not supported. Currently the shard mode supported for openshift route is hostname. 
 

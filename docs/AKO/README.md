@@ -144,7 +144,9 @@ For some frequently asked question refer [here](faq.md)
 
 ### Node Port
 
-Service of type node port can be used to send traffic to the pods using nodeports. This can be used where the option of static IP in VRF Context is not feasible.
+Service of type `NodePort` can be used to send traffic to the pods using nodeports. This can be used where the option of static IP in VRF Context is not feasible. 
+
+This feature supports Ingress/Route attached to Service of type `NodePort`. Service of type LoadBalancer is also supported, since kubernetes populates `NodePort` by default. AKO will function either in `NodePort` mode or in `ClusterIP` mode. 
 
 A new parameter serviceType has been introduced as config option in AKO's values.yaml. To use this feature, set the value of the parameter to **NodePort**.
 
@@ -154,7 +156,7 @@ A new parameter serviceType has been introduced as config option in AKO's values
 | `nodeSelectorLabels.key` | Key used as a label based selection for the nodes in NodePort mode. | empty |
 | `nodeSelectorLabels.value` | Value used as a label based selection for the nodes in NodePort mode. | empty |
 
-Kubernetes populates NodePort by default for service of type LoadBalancer too. If config.serviceType is set to NodePort, AKO would use NodePort as backend for service of type Loadbalancer instead of using Endpoints, which is the default behaviour with config.serviceType set as ClusterIP.
+Kubernetes populates NodePort by default for service of type LoadBalancer. If config.serviceType is set to NodePort, AKO would use NodePort as backend for service of type Loadbalancer instead of using Endpoints, which is the default behaviour with config.serviceType set as ClusterIP.
 
 ### AKO in Openshift Cluster
 
