@@ -6,13 +6,13 @@ properties like: algorithm, hash, tls re-encrypt use cases.
 
 A sample HTTPRule object looks like this:
 
-    apiVersion: ako.k8s.io/v1alpha1
+    apiVersion: ako.vmware.com/v1alpha1
     kind: HTTPRule
     metadata:
        name: my-http-rules
        namespace: purple-l7
     spec:
-      hostrule: default/secure-waf-policy
+      fqdn: foo.avi.internal
       paths:
       - target: /foo
         loadBalancerPolicy:
@@ -22,14 +22,12 @@ A sample HTTPRule object looks like this:
           type: reencrypt # Mandatory [re-encrypt]
           sslProfile: "System-Default"
 
-__NOTE__ : The HTTPRule only applies to paths in the Ingress/Route objects which are specified in the same namespace as the CRD.
+__NOTE__ : The HTTPRule only applies to paths in the Ingress/Route objects which are specified in the same namespace as the HTTPRule CRD.
 
 ### Specific usage of the HTTPRule CRD
 
 The HTTPRule CRD does not have any Avi specific semantics. Hence the developers are free to express their preferences using this CRD
-without any knowledge of the Avi objects. Each HTTPRule CRD must be bound to a HostRule CRD to subscribe to rules for a specific FQDN.
-
-A HTTPRule CRD would be `Rejected` if the corresponding HostRule CRD does not exist. 
+without any knowledge of the Avi objects. Each HTTPRule CRD must be bound to a FQDN (both secure or insecure) to subscribe to rules for a specific hostpath combinations.
 
 #### Express loadbalancer alogrithm
 
@@ -76,7 +74,7 @@ backend application server. The following option is provided for `reencrypt`:
         tls: ## This is a re-encrypt to pool
           type: reencrypt # Mandatory [re-encrypt]
           
-If the `sslProfile` is not selected, the AKO selects the default configured SSL profile in Avi to exchange the tls parameters like TLS versions,
+If the `sslProfile` is not defined, AKO defaults to sslProfile `System-Standard` to exchange the tls parameters like TLS versions,
 ciphers etc.
 
 As a further enhancement, the HTTPRule CRD would also allow specification of a Destination CA, that could be used as a pki profile to validate
@@ -86,8 +84,6 @@ the server certificates.
 
 The status messages are used to give instanteneous feedback to the users about the whether a HTTPRule CRD was `Accepted` or `Rejected`.
 
-Since the HTTPRule CRD always refers to a HostRule CRD, it's mandatory to ensure the HostRule CRD is also in `Accepted` condition for the HTTPRule
-CRD to apply.
 
 ##### Accepted HTTPRule
 
