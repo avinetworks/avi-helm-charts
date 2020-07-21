@@ -68,14 +68,14 @@ The extra `update` permission is to update the `GSLBConfig` and `GlobalDeploymen
    Use the `values.yaml` from this repository to provide values related to Avi configuration. Check [here](#parameters) for the required values.
 4. Search the available charts for AMKO:
    ```
-   helm search repo
+   helm search repo --devel
 
     NAME                 	CHART VERSION	         APP VERSION	       DESCRIPTION
     amko/amko              1.2.1-5032-beta        	1.2.1-5032-beta    A helm chart for Avi Multicluster Kubernetes Operator
    ```
 5. Install AMKO:
    ```
-   helm install  amko/amko  --generate-name --version 1.2.1-5032-beta -f values.yaml  --set configs.controllerIP=<controller_ip> --namespace=avi-system
+   helm install  amko/amko  --generate-name --version 1.2.1-5032-beta -f values.yaml  --set configs.gsllbLeaderController=<leader_controller_ip> --namespace=avi-system
 
    NAME: amko-1593523840
    LAST DEPLOYED: Tue Jun 30 19:00:44 2020
