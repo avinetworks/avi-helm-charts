@@ -70,12 +70,12 @@ The extra `update` permission is to update the `GSLBConfig` and `GlobalDeploymen
    ```
    helm search repo
 
-    NAME                 	CHART VERSION	APP VERSION	DESCRIPTION
-    amko/amko               0.9.1        	0.9.1      	A helm chart for Avi Multicluster Kubernetes Operator
+    NAME                 	CHART VERSION	         APP VERSION	       DESCRIPTION
+    amko/amko              1.2.1-5032-beta        	1.2.1-5032-beta    A helm chart for Avi Multicluster Kubernetes Operator
    ```
 5. Install AMKO:
    ```
-   helm install  amko/amko  --generate-name --version 0.9.1 -f values.yaml  --set configs.controllerIP=<controller_ip> --namespace=avi-system
+   helm install  amko/amko  --generate-name --version 1.2.1-5032-beta -f values.yaml  --set configs.controllerIP=<controller_ip> --namespace=avi-system
 
    NAME: amko-1593523840
    LAST DEPLOYED: Tue Jun 30 19:00:44 2020
@@ -92,8 +92,8 @@ The extra `update` permission is to update the `GSLBConfig` and `GlobalDeploymen
    ```
    helm list -n avi-system
 
-   NAME          	NAMESPACE 	REVISION	UPDATED                             	STATUS  	CHART    	APP VERSION
-   amko-1593523840	avi-system	1       	2020-06-30 19:00:44.134075 +0530 IST	deployed	amko-0.9.1	    0.9.1
+   NAME          	NAMESPACE 	REVISION	UPDATED                             	STATUS  	CHART    	                APP VERSION
+   amko-1593523840	avi-system	1       	2020-06-30 19:00:44.134075 +0530 IST	deployed	amko-1.2.1-5032-beta	    1.2.1-5032-beta
    ```
 
 #### Uninstall using helm
@@ -115,9 +115,9 @@ kubectl delete ns avi-system
 | `configs.controllerVersion`                      | GSLB leader controller version                                                                                           | 18.2.9                                |
 | `configs.gslbLeaderController`                         | GSLB leader site URL                                                                                                     | Nil                                   |
 | `gslbLeaderCredentials.username`         | GSLB leader controller username                                                                                          | `admin`                               |
-| `gslbLeaderCredentials.password`         | GSLB leader controller password                                                                                          | `avi123`                              |
+| `gslbLeaderCredentials.password`         | GSLB leader controller password                                                                                          |                               |
 | `configs.memberClusters.clusterContext`          | K8s member cluster context for GSLB                                                                                      | `cluster1-admin` and `cluster2-admin` |
-| `configs.refreshInterval`                        | The time interval which triggers a AVI cache refresh                                                                     | 120 seconds                           |
+| `configs.refreshInterval`                        | The time interval which triggers a AVI cache refresh                                                                     | 1800 seconds                           |
 | `gdpConfig.appSelector.label{.key,.value}`       | Selection criteria for applications, label key and value are provided                                                    | Nil                                   |
 | `gdpConfig.namespaceSelector.label{.key,.value}` | Selection criteria for namespaces, label key and value are provided                                                      | Nil                                   |
 | `gdpConfig.matchClusters`                        | List of clusters (names must match the names in configs.memberClusters) from where the objects will be selected          | Nil                                   |
