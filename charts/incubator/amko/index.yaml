@@ -1,0 +1,14 @@
+apiVersion: v1
+entries:
+  amko:
+  - apiVersion: v2
+    appVersion: 1.2.1-5032-beta
+    created: "2020-07-21T17:09:20.907212+05:30"
+    description: A helm chart for Avi Multicluster Kubernetes Operator
+    digest: 540ff1fdf49232897210259f059f66ecc97aae868dca299614263c2b7bee0b89
+    name: amko
+    type: application
+    urls:
+    - https://avinetworks.github.io/avi-helm-charts/charts/incubator/amko/amko-1.2.1-5032-beta.tgz
+    version: 1.2.1-5032-beta
+generated: "2020-07-21T17:09:20.903438+05:30"
