@@ -94,21 +94,21 @@ Following are some of the sample status messages:
 ##### Accepted HostRule object
 
     $ kubectl get hr
-    NAME                 HOST                     STATUS     AGE
-    secure-waf-policy    myhost273.avi.internal   Accepted   3d3h
+    NAME                 HOST                  STATUS     AGE
+    secure-waf-policy    foo.avi.internal      Accepted   3d3h
 
 A HostRule is accepted only when all the reference objects specified inside it exist in the Avi Controller.
 
 ##### A Rejected HostRule object
 
     $ kubectl get hr
-    NAME                     HOST                     STATUS     AGE
-    secure-waf-policy-alt    myhost273.avi.internal   Rejected   2d23h
+    NAME                     HOST                  STATUS     AGE
+    secure-waf-policy-alt    foo.avi.internal      Rejected   2d23h
     
 The detailed rejection reason can be obtained from the status:
 
     status:
-    error: duplicate fqdn myhost273.avi.internal found in default/secure-waf-policy
+    error: duplicate fqdn foo.avi.internal found in default/secure-waf-policy-alt
     status: Rejected
     
 #### Conditions and Caveats
@@ -139,4 +139,4 @@ for new changes to take effect.
 
 ##### Duplicate FQDN rules
 
-Two HostRule CRDs cannot be used for the same FQDN information across namespaces. 
+Two HostRule CRDs cannot be used for the same FQDN information across namespaces. If AKO finds a duplicate FQDN in more than one HostRules, AKO honors the first HostRule that gets created and rejects the others. In case of AKO reboots, the CRD that gets honored might not be the same as the one honored earlier.
