@@ -5,7 +5,7 @@ properties. The virtual host FQDN is matched from either Kubernetes Ingress or O
 
 A sample HostRule CRD looks like this:
 
-    apiVersion: ako.k8s.io/v1alpha1
+    apiVersion: ako.vmware.com/v1alpha1
     kind: HostRule
     metadata:
        name: my-host-rule
