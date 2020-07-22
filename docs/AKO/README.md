@@ -108,7 +108,7 @@ If you are upgrading from an older AKO release then simply run the helm upgrade 
     helm list -n avi-system
     
     NAME          	NAMESPACE 	REVISION	UPDATED                             	STATUS  	CHART    	APP VERSION
-    ako-1593523840	avi-system	1       	2020-06-30 19:00:44.134075 +0530 IST	deployed	ako-1.1.1	    1.1.1
+    ako-1593523840	avi-system	1       	2020-06-30 19:00:44.134075 +0530 IST	deployed	ako-0.9.1	    0.9.1
 
 *Step2*
 
