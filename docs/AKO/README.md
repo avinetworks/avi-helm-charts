@@ -98,6 +98,22 @@ Simply run:
 *Step 2:* 
 
     kubectl delete ns avi-system
+    
+#### Upgrade AKO using *helm*
+
+If you are upgrading from an older AKO release then simply run the helm upgrade command. For example (assuming you are upgrading to 1.1.1):
+
+*Step1*
+
+    helm list -n avi-system
+    
+    NAME          	NAMESPACE 	REVISION	UPDATED                             	STATUS  	CHART    	APP VERSION
+    ako-1593523840	avi-system	1       	2020-06-30 19:00:44.134075 +0530 IST	deployed	ako-1.1.1	    1.1.1
+
+*Step2*
+
+    helm upgrade ako-1593523840 ako/ako -f values.yaml --version 1.1.1 --set configs.controllerIP=<IP> --set avicredentials.password=<username> --set avicredentials.username=<username> --namespace=avi-system
+    
 
 ## Parameters
 
