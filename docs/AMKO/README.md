@@ -70,21 +70,22 @@ The extra `update` permission is to update the `GSLBConfig` and `GlobalDeploymen
    ```
    helm search repo --devel
 
-    NAME                 	CHART VERSION	         APP VERSION	       DESCRIPTION
-    amko/amko              1.2.1-5032-beta        	1.2.1-5032-beta    A helm chart for Avi Multicluster Kubernetes Operator
+   NAME     	CHART VERSION    	APP VERSION      	DESCRIPTION
+   amko/amko	1.2.1-5039-beta-2	1.2.1-5039-beta-2	A helm chart for Avi Multicluster Kubernetes Operator
    ```
 5. Install AMKO:
    ```
-   helm install  amko/amko  --generate-name --version 1.2.1-5032-beta -f values.yaml  --set configs.gsllbLeaderController=<leader_controller_ip> --namespace=avi-system
+   helm install  amko/amko  --generate-name --version 1.2.1-5039-beta-2 -f values.yaml  --set configs.gsllbLeaderController=<leader_controller_ip> --namespace=avi-system
 
-   NAME: amko-1593523840
-   LAST DEPLOYED: Tue Jun 30 19:00:44 2020
+   NAME: amko-1598451370
+   LAST DEPLOYED: Wed Aug 26 14:16:21 2020
    NAMESPACE: avi-system
    STATUS: deployed
    REVISION: 1
+   TEST SUITE: None
    NOTES:
    1. Get the application URL by running these commands:
-     export POD_NAME=$(kubectl get pods --namespace avi-system -l "app.kubernetes.io/name=amko,app.kubernetes.io/instance=amko-1593523840" -o jsonpath="{.items[0].metadata.name}")
+     export POD_NAME=$(kubectl get pods --namespace avi-system -l "app.kubernetes.io/name=amko,app.kubernetes.io/   instance=amko-1598451370" -o jsonpath="{.items[0].metadata.name}")
      echo "Visit http://127.0.0.1:8080 to use your application"
      kubectl --namespace avi-system port-forward $POD_NAME 8080:80
    ```
@@ -92,8 +93,8 @@ The extra `update` permission is to update the `GSLBConfig` and `GlobalDeploymen
    ```
    helm list -n avi-system
 
-   NAME          	NAMESPACE 	REVISION	UPDATED                             	STATUS  	CHART    	                APP VERSION
-   amko-1593523840	avi-system	1       	2020-06-30 19:00:44.134075 +0530 IST	deployed	amko-1.2.1-5032-beta	    1.2.1-5032-beta
+   NAME           	NAMESPACE 	REVISION	UPDATED                                	STATUS  	CHART                 	APP VERSION
+   amko-1598451370	avi-system	1       	2020-08-26 14:16:21.889538175 +0000 UTC	deployed	amko-1.2.1-5039-beta-2	1.2.1-5039-beta-2
    ```
 
 #### Uninstall using helm
