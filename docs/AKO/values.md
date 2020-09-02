@@ -58,10 +58,11 @@ ingress object based on the namespace on which it is created.
 
 ### configs.cniPlugin
 
-Use this flag only if you are using calico as a CNI and you are looking to a sync your static route configurations automatically.
-Once enabled, this flag is used to read the `blockaffinity` CRD in calico to determine the POD CIDR to Node IP mappings. If you are
-on an older version of calico where `blockaffinity` is not present, then leave this field as blank. AKO will then determine the static
-routes based on the Kubernetes Nodes object as done with other CNIs.
+Use this flag only if you are using `calico`/`openshift` as a CNI and you are looking to a sync your static route configurations automatically.
+Once enabled, for `calico` this flag is used to read the `blockaffinity` CRD to determine the POD CIDR to Node IP mappings. If you are
+on an older version of calico where `blockaffinity` is not present, then leave this field as blank. For `openshift` hostsubnet CRD is used to to determine the POD CIDR to Node IP mappings. 
+
+AKO will then determine the static routes based on the Kubernetes Nodes object as done with other CNIs. 
 
 ### configs.cloudName
 
@@ -74,12 +75,28 @@ The `clusterName` field primarily identifies your running AKO instance. AKO inte
 
 Each AKO instance mapped to a given Avi cloud should have a unique `clusterName` parameter. This would maintain uniqueness of object naming across Kubernetes clusters.
 
+### configs.serviceEngineGroupName
+
+The `serviceEngineGroupName` field is used to specify the name of the IaaS cloud's Service Engine Group in Avi controller. This is only applicable for vCenter IaaS cloud in `ClusterIP` mode where POD CIDRs are not routable
+
+Each AKO instance mapped to a unique `serviceEngineGroupName` parameter. This will be used to push the routes of the cluster to reach the POD CIDR's on the Service Engines.
+
+### configs.nodeNetworkList
+
+The `nodeNetworkList` lists the Networks and Node CIDR's where the k8s Nodes are created. This is only used in the ClusterIP deployment of AKO and in vCenter cloud and only when disableStaticRouteSync is set to false.
+
+If two Kubernetes clusters have overlapping POD CIDRs, the service engine needs to identify the right gateway for each of the overlapping CIDR groups. This is achieved by specifying the right placement network for the pools that helps the Service Engine place the pools appropriately. 
+
 ### configs.subnetIP and configs.subnetPrefix and configs.networkName
 
 AKO supports dual arm deployment where the Virtual IP network can be on a different subnet than the actual Port Groups on which the kubernetes nodes are deployed.
 
 These fields are used to specify the Virtual IP network details on which the user wants to place the Avi virtual services on.
 
+#### AWS and Azure Cloud in NodePort mode of AKO
+If the IaaS cloud is Azure then subnet name is specified in `networkName`. Azure IaaS cloud is supported only in `NodePort` mode of AKO. `subnetIP` and `subnetPrefix` are not required for Azure Cloud.
+If the IaaS cloud is AWS then subnet uuid is specified in `networkName`. AWS IaaS cloud is supported only in `NodePort` mode of AKO. 
+The `subnetIP` and `subnetPrefix` are not required for AWS and Azure Cloud.
 
 ### configs.disableStaticRouteSync
 
