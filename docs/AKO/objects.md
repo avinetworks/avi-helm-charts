@@ -357,3 +357,55 @@ The formula to derive the SNI virtualservice's pools for route is as follows:
 
     poolname = clusterName + "--" + namespace + "-" + host + "_" + path + "-" + routeName + "-" serviceName
 
+##### Multi-Port Service Support in Openshift
+
+A service in openshift can have multiple ports. In order for a `Service` to have multiple ports, openshift mandates them to have a `name`. To use such a service, the user `must` specify the targetPort within port in route spec. The value of targetPort can be interger value of the target port or name of the port. If the backend service has only one port, then `port` field in route can be skipped, but it can not be skipped if the service has multiple ports. For example, consider the following Service:
+
+        apiVersion: v1
+        kind: Service
+        metadata:
+          labels:
+            run: avisvc
+        spec:
+          ports:
+          - name: myport1
+            port: 80
+            protocol: TCP
+            targetPort: 80
+          - name: myport2
+            port: 8080
+            protocol: TCP
+            targetPort: 8080
+          selector:
+            app: my-app
+          type: ClusterIP
+
+
+In order to use this service in a route, the route spec can look like one of the following:
+
+        apiVersion: v1
+        kind: Route
+        metadata:
+          name: route1
+        spec:
+          host: routehost1.avi.internal
+          path: /foo
+          port:
+            targetPort: 8080
+          to:
+            kind: Service
+            name: avisvc1
+
+
+        apiVersion: v1
+        kind: Route
+        metadata:
+          name: route1
+        spec:
+          host: routehost1.avi.internal
+          path: /foo
+          port:
+            targetPort: myport2
+          to:
+            kind: Service
+            name: avisvc1
