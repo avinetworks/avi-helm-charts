@@ -9,15 +9,14 @@ AKO runs as a POD inside the kubernetes cluster.
 #### Pre-requisites
 
 To Run AKO you need the following pre-requisites:
- - ***Step 1***: Configure an Avi Controller with a vCenter [cloud](https://avinetworks.com/docs/18.2/installing-avi-vantage-for-vmware-vcenter/). 
+ - ***Step 1***: Configure an Avi Controller with a vCenter [cloud](https://avinetworks.com/docs/18.2/installing-avi-vantage-for-vmware-vcenter/). The Avi Controller should be versioned 18.2.10 or later. 
 
  - ***Step 2***: 
      - Make sure a PG network is part of the NS IPAM configured in the vCenter 
 
  - ***Step 3***: If your POD CIDRs are not routable:
-    - Create a VRF context object in Avi for the kubernetes controller.
-    - Get the name the PG network which the kubernetes nodes are part of. 
-    - Configure the PG network in step 2 with the vrf mentioned in the previous step using the Avi CLI.
+    - Create a Service Engine Group dedicated for kubernetes cluster.
+    - Routes to a given Kubernetes cluster is tagged with the `clusterName` which is specified by the user in `values.yaml`.
     
     Data path flow is as described below:
     
@@ -32,8 +31,6 @@ To Run AKO you need the following pre-requisites:
     4. Service Engines use the static route information to reach the POD IP via the next hop address of the host on which the pod is running.
     5. The pod responds and the request is sent back to the client. 
       
-      *NOTE: If you are using AKO for test puposes you can use the `global` vrf but you cannot manage multiple kubernetes clusters in the same cloud with this setting.*
-
  - ***Step 3.1***: If your POD CIDRs are routable then you can skip step 2. Ensure that you skip static route syncing in this case using the `disableStaticRouteSync` flag in the `values.yaml` of your helm chart.
  - ***Step 4:*** Kubernetes 1.14+.
  - ***Step 5:*** `helm` cli pointing to your kubernetes cluster.
@@ -129,6 +126,8 @@ The following table lists the configurable parameters of the AKO chart and their
 | `configs.ingressApi` | Support for default ingress API | corev1 |
 | `configs.defaultIngController` | AKO is the default ingress controller | true |
 | `configs.cloudName` | Name of the VCenter cloud managed in Avi | Default-Cloud |
+| `configs.serviceEngineGroupName` | Name of the Service Engine Group | Default-Group |
+| `configs.nodeNetworkList` | List of Networks and corresponding CIDR mappings for the K8s nodes. | `Empty List` |
 | `configs.clusterName` | Unique identifier for the running AKO instance. AKO identifies objects it created on Avi Controller using this param. | **required** |
 | `configs.subnetIP` | Subnet IP of the data network | **required** |
 | `configs.subnetPrefix` | Subnet Prefix of the data network | **required** |
@@ -160,7 +159,7 @@ For some frequently asked question refer [here](faq.md)
 
 ### Node Port
 
-Service of type `NodePort` can be used to send traffic to the pods using nodeports. This can be used where the option of static IP in VRF Context is not feasible. 
+Service of type `NodePort` can be used to send traffic to the pods using nodeports.
 
 This feature supports Ingress/Route attached to Service of type `NodePort`. Service of type LoadBalancer is also supported, since kubernetes populates `NodePort` by default. AKO will function either in `NodePort` mode or in `ClusterIP` mode. 
 

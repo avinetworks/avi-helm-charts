@@ -48,8 +48,8 @@ cleanup of the VSes in the controller. Followed by a edit of the configmap and r
 
 #### What is the use of static routes?
 
-Static routes are created within a VRF context. While deploying AKO the admin or the operator decides a VRF context object for a given
-kubernetes cluster. This VRF context object is created in the Avi controller for the cluster. 
+Static routes are created with cluster name as label. While deploying AKO the admin or the operator decides a Service Engine Group for a given
+kubernetes cluster. The same labels are tagged on the routes of this AKO cluster. These routes are pushed to the Service Engine's created on the Service Engine Group.
 The static routes map each POD CIDR with the kubernetes node's IP address. However, for static routes to work, the Service Engines must
 be L2 adjacent to your kubernetes nodes.
 
