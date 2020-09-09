@@ -119,4 +119,17 @@ If you have such a configuration where the ingress objects are pointing to servi
 
 #### What happens when AKO fails to connect to the AVI controller while booting up ?
 
-AKO would stop processing Kubernetes objects and no update would be made to the AVI Controller. After the connection to AVI Controller is restored, AKO pod has to be rebooted. This can be done by deleting the exiting POD and ako deployment would bring up a new POD, which would start processing Kubernetes objects after verifying connectivity to AVI Controller.  
+AKO would stop processing kubernetes objects and no update would be made to the AVI Controller. After the connection to AVI Controller is restored, AKO pod has to be rebooted. This can be done by deleting the exiting POD and ako deployment would bring up a new POD, which would start processing kubernetes objects after verifying connectivity to AVI Controller.  
+
+#### What happens if we create ingress objects in openshift environment ?
+
+AKO does not process ingress objects in openshift environment. If any route corresponding to the ingress object is found, AKO would process that route.
+
+
+#### What are the virtual services for passthrough routes ?
+
+A set of shared Virtual Services are created for passthrough routes only in openshift environment to listen on port 443 to handle secure traffic using L4 datascript. These virtual services have names of the format 'cluster-name'-`Shared-Passthrough`-'shard-number'. Number of shards can be configured using the flag `passthroughShardSize` while installation using helm. 
+
+#### What happens if insecureEdgeTerminationPolicy is set to `redirect` for a passthrough route?
+
+ For passthrough routes, the supported values for insecureEdgeTerminationPolicy are None and Redirect. To handle insecure traffic for passthrough routes a set of shared Virtual Services are created with names of the format 'cluster-name'-`Shared-Passthrough`-'shard-number'-`insecure`. These Virtual Services listen on port 80. If for any passthrough route, the insecureEdgeTerminationPolicy is found to be 'Redirect', then an HTTP Policy is configured in the insecure passthrough shared VS to send appropriate response to an incoming insecure traffic. 
