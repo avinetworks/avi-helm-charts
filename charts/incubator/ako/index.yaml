@@ -2,8 +2,18 @@ apiVersion: v1
 entries:
   ako:
   - apiVersion: v2
+    appVersion: 1.2.1-9042-beta-2
+    created: "2020-09-09T12:07:37.056722+05:30"
+    description: A helm chart for Avi Kubernetes Operator
+    digest: e7612f89565a9b2bd4b43933a07f83e5b323524aa362c117d2d7afdd0fe6bf10
+    name: ako
+    type: application
+    urls:
+    - https://avinetworks.github.io/avi-helm-charts/charts/incubator/ako/ako-1.2.1-9042-beta-2.tgz
+    version: 1.2.1-9042-beta-2
+  - apiVersion: v2
     appVersion: 1.2.1-5140-beta
-    created: "2020-07-20T17:00:40.58659+05:30"
+    created: "2020-09-09T12:07:37.056017+05:30"
     description: A helm chart for Avi Kubernetes Operator
     digest: 8243f6497f66e59db3e5bfd6eead72b7d3d1eec3de5e28fe370c6949e969ed08
     name: ako
@@ -13,7 +23,7 @@ entries:
     version: 1.2.1-5140-beta
   - apiVersion: v2
     appVersion: 0.9.1-5076-beta-2
-    created: "2020-07-20T17:00:40.585331+05:30"
+    created: "2020-09-09T12:07:37.054695+05:30"
     description: A Helm chart for Kubernetes
     digest: cf95aee4044483bb38e3882067642eebc8081d504a9c82a6544e70d2ee563c17
     name: ako
@@ -23,7 +33,7 @@ entries:
     version: 0.9.1-5076-beta-2
   - apiVersion: v2
     appVersion: 0.9.1-5047-beta
-    created: "2020-07-20T17:00:40.583728+05:30"
+    created: "2020-09-09T12:07:37.053922+05:30"
     description: A Helm chart for Kubernetes
     digest: f0fcb86acd9caf0c9648f577d8457fa001c47f922d920ca7b92cf47fa726a00f
     name: ako
@@ -31,4 +41,4 @@ entries:
     urls:
     - https://avinetworks.github.io/avi-helm-charts/charts/incubator/ako/ako-0.9.1-5047-beta.tgz
     version: 0.9.1-5047-beta
-generated: "2020-07-20T17:00:40.573363+05:30"
+generated: "2020-09-09T12:07:37.049799+05:30"
