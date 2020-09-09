@@ -2,7 +2,7 @@
 
 ### Run AKO
 
-AKO runs as a POD inside the kubernetes cluster.
+AKO runs as a POD inside the Kubernetes cluster.
 
  ![Alt text](Ako_k8s.png?raw=true "Title")
  
@@ -15,8 +15,8 @@ To Run AKO you need the following pre-requisites:
      - Make sure a PG network is part of the NS IPAM configured in the vCenter 
 
  - ***Step 3***: If your POD CIDRs are not routable:
-    - Create a Service Engine Group dedicated for kubernetes cluster.
-    - Routes to a given Kubernetes cluster is tagged with the `clusterName` which is specified by the user in `values.yaml`.
+    - Create a Service Engine Group dedicated to a Kubernetes cluster.
+    - Routes to a given Kubernetes cluster are tagged with the `clusterName` which is specified by the user in `values.yaml`.
     
     Data path flow is as described below:
     
@@ -24,11 +24,11 @@ To Run AKO you need the following pre-requisites:
     
     The markers in the drawing are described below:
     
-    1. Client makes a request to a specified hostname/path.
+    1. The client requests a specified hostname/path.
     2. The DNS VS returns an IP address corresponding to the hostname. 
     3. The request is forwarded to the resolved IP address that corresponds to a Virtual IP hosted on an Avi Service Engine.
        The destination IP in the packet is set as the POD IP address on which the application runs.
-    4. Service Engines use the static route information to reach the POD IP via the next hop address of the host on which the pod is running.
+    4. Service Engines use the static route information to reach the POD IP via the next-hop address of the host on which the pod is running.
     5. The pod responds and the request is sent back to the client. 
       
  - ***Step 3.1***: If your POD CIDRs are routable then you can skip step 2. Ensure that you skip static route syncing in this case using the `disableStaticRouteSync` flag in the `values.yaml` of your helm chart.
@@ -144,11 +144,11 @@ The following table lists the configurable parameters of the AKO chart and their
 
 > `networkName`, `subnetIP` and `subnetPrefix` are required fields which are used for allocating VirtualService IP by IPAM Provider module
 
-> Each AKO instance mapped to a given Avi cloud should have a unique clusterName parameter. This would maintain uniqueness of object naming across Kubernetes clusters.
+> Each AKO instance mapped to a given Avi cloud should have a unique clusterName parameter. This would maintain the uniqueness of object naming across Kubernetes clusters.
 
 ### AKO objects
 
-Please refer to this [page](objects.md) for details on how AKO interprets the kubernetes objects and translates them to Avi objects.
+Please refer to this [page](objects.md) for details on how AKO interprets the Kubernetes objects and translates them to Avi objects.
 
 ### FAQ
 
@@ -163,9 +163,9 @@ AKO can be used in openshift cluster to configure Routes and Services of type Lo
 
 #### Pre-requisites for running AKO in Openhsift Cluster
 
-Follow the steps 1 to 2, given in section [Pre-requisites](https://github.com/avinetworks/avi-helm-charts/tree/master/docs/AKO#pre-requisites). Additionaly following points have to be noted for openshift environment.
+Follow the steps 1 to 2, given in section [Pre-requisites](https://github.com/avinetworks/avi-helm-charts/tree/master/docs/AKO#pre-requisites). Additionally, the following points have to be noted for openshift environment.
 1. Make Sure Openshift version is >= 4.4
-2. Openshift routes and services of type load balancer are suppported in AKO
+2. Openshift routes and services of type load balancer are supported in AKO
 3. Ingresses, if created in the openshift cluster won't be handled by AKO.
 4. cniPlugin should be set to **openshift**
 
@@ -176,7 +176,7 @@ AKO supports the following Layer 7 functions of the OpenShift Route object:
 3. Secure routes with edge termination policy.
 4. Secure Routes with InsecureEdgeterminationPolicy - Redirect or Allow.
 5. Secure Routes of type passthrough
-6. Secure Routes with reencrypt functionality
+6. Secure Routes with re-encrypt functionality
 
 ### AWS and Azure IaaS Cloud in NodePort mode of AKO
 Supports AWS and Azure IaaS cloud with Avi DNS.

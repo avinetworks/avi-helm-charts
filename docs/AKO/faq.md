@@ -1,6 +1,6 @@
 ## FAQ
 
-This document answers few of the frequenty asked questions w.r.t AKO.
+This document answers some of the frequently asked questions w.r.t AKO.
 
 #### How do I clean up all my configs?
 
@@ -9,9 +9,9 @@ The key deleteConfig in data section of AKO configmap can be used to cleanup the
 #### How is the Shared VS lifecycle controlled?
 
 
-In hostname based sharding, when an ingress object is created with multiple hostnames, AKO generates a md5 hash using the hostname and the Shard VS number. This uniquely maps a FQDN to a given Shared VS and avoids DNS conflicts. During initial clean bootup, if the Shared VS does not exist in Avi - AKO creates the same and then patches the ingress FQDN to it either in the form of a pool (for insecure routes) or in the form of a SNI child virtualservice (in case of secure routes).
+In hostname based sharding, when an ingress object is created with multiple hostnames, AKO generates a md5 hash using the hostname and the Shard VS number. This uniquely maps a FQDN to a given Shared VS and avoids DNS conflicts. During initial clean bootup, if the Shared VS does not exist in Avi - AKO creates the same and then patches the ingress FQDN to it either in the form of a pool (for insecure routes) or in the form of an SNI child virtualservice (in case of secure routes).
 
-The Shared VSes aren't deleted if all the FQDNs mapped to it are removed from kubernetes. However, if the user wants AKO to delete ununsed shared VSes - a pod restart is required that would evaluate the VS and delete it appropriately. 
+The Shared VSes aren't deleted if all the FQDNs mapped to it are removed from kubernetes. However, if the user wants AKO to delete unused shared VSes - a pod restart is required that would evaluate the VS and delete it appropriately. 
 
 #### How are VSes sharded?
 
@@ -26,9 +26,9 @@ in the ingress file against the host/path that is meant to be accessed securely.
 
 #### How do I decide the Shard VS size?
 
-In the current AKO model, the Shard VS size is an enum. It allows 3 pre-fixed set of values viz. `LARGE`, `MEDIUM` and `SMALL`. They
+In the current AKO model, the Shard VS size is an enum. It allows 3 pre-fixed sets of values viz. `LARGE`, `MEDIUM` and `SMALL`. They
 respectively correspond to 8, 4 and 1 virtual service. The decision of selecting one of these sizes for Shard VS is driven by the
-size of the kubernetes cluster's ingress requirements. Typically, it's advised to always go with the highest possible Shard VS number
+size of the Kubernetes cluster's ingress requirements. Typically, it's advised to always go with the highest possible Shard VS number
 that is - `LARGE` to account for future expansion. 
 
 #### Can I change the Shard VS number?
@@ -83,9 +83,9 @@ an error caused due to this.
 
 AKO has a best effort, retry layer implementation that would try to detect a problem (For example: an SNI VS deleted from the Avi UI), but it is not guranteed to work for all such manual operations.
 
-Upon reboot of AKO - a full reconcilliation loop is run and  most of the out-of-band changes are overwritten with AKO's view of the intended model. This does not happen in every full sync cycle.
+Upon reboot of AKO - a full reconciliation loop is run and  most of the out-of-band changes are overwritten with AKO's view of the intended model. This does not happen in every full sync cycle.
 
-#### What is the expected behaviour for same host/path combination across different secure/insecure ingresses?
+#### What is the expected behavior for the same host/path combination across different secure/insecure ingresses?
 
 The ingress API allows users to add duplicate hostpaths bound to separate backend services. Something like this:
 
@@ -93,7 +93,7 @@ The ingress API allows users to add duplicate hostpaths bound to separate backen
 
     Ingress2 (default namespace) --> foo.com path: /foo, Service: svc2
 
-Also, ingress allows you to have a mix of secure and insecure hostpath bound to same backend services like so:
+Also, ingress allows you to have a mix of secure and insecure hostpath bound to the same backend services like so:
 
     Ingress1 (default namespace) --> SNI hostname --> foo.com path: /foo, Secret: secret1
 
@@ -104,7 +104,7 @@ AKO does a best effort of detecting some of these conditions by printing them in
 
 `key: Ingress/default/ingress2, msg: Duplicate entries found for hostpath default/ingress2: foo.com/foo in ingresses: ["default/ingress1"]`
 
-#### What happens to static routes if the kubernetes nodes are rebooted/shutdown?
+#### What happens to static routes if the Kubernetes nodes are rebooted/shutdown?
 
 AKO programs a static route for every node IP and the POD CIDR associated with it. Even though node state changes to `NotReady` in kubernetes this configuration is stored in the node object and does not change when the node rebooted/shutdown.
 
@@ -113,10 +113,10 @@ Hence AKO will not remove the static routes until the kubernetes node is complet
 #### Can I point my ingress objects to a service of type Loadbalancer?
 
 The short answer is No. 
-The ingress objects should point to service of type clusterIP. Loadbalancer services either point to an ingress controller POD if one is using an in cluster ingress controller or they can directly point to application PODs that need layer 4 loadbalancing.
+The ingress objects should point to the service of type clusterIP. Loadbalancer services either point to an ingress controller POD if one is using an in cluster ingress controller or they can directly point to application PODs that need layer 4 loadbalancing.
 
 If you have such a configuration where the ingress objects are pointing to services of type loadbalancer, AKO's behavior would be indeterministic. 
 
-#### What happenns when AKO fails to connect to AVI controller while booting up ?
+#### What happens when AKO fails to connect to the AVI controller while booting up ?
 
-AKO would stop processing kubernetes objects and no update would be made to the AVI Controller. After the connection to AVI Controller is restored, AKO pod has to be rebooted. This can be done by deleting the exiting POD and ako deployment would bring up a new POD, which would start procesing kubernetes objects after verifying connectivity to AVI Controller.  
+AKO would stop processing Kubernetes objects and no update would be made to the AVI Controller. After the connection to AVI Controller is restored, AKO pod has to be rebooted. This can be done by deleting the exiting POD and ako deployment would bring up a new POD, which would start processing Kubernetes objects after verifying connectivity to AVI Controller.  
