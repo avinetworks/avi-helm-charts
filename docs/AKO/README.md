@@ -154,24 +154,8 @@ Please refer to this [page](objects.md) for details on how AKO interprets the ku
 
 For some frequently asked question refer [here](faq.md) 
 
-## *__Features in 1.2.1-beta Release__*
-> All the features mentioned in the subsequent sections are only part of the beta release and not present in the stable releases.
 
-### Node Port
-
-Service of type `NodePort` can be used to send traffic to the pods using nodeports.
-
-This feature supports Ingress/Route attached to Service of type `NodePort`. Service of type LoadBalancer is also supported, since kubernetes populates `NodePort` by default. AKO will function either in `NodePort` mode or in `ClusterIP` mode. 
-
-A new parameter serviceType has been introduced as config option in AKO's values.yaml. To use this feature, set the value of the parameter to **NodePort**.
-
-| **Parameter** | **Description** | **Default** |
-| --- | --- | --- |
-| `configs.serviceType` | Type of Service to be used as backend for Routes/Ingresses | ClusterIP |
-| `nodeSelectorLabels.key` | Key used as a label based selection for the nodes in NodePort mode. | empty |
-| `nodeSelectorLabels.value` | Value used as a label based selection for the nodes in NodePort mode. | empty |
-
-Kubernetes populates NodePort by default for service of type LoadBalancer. If config.serviceType is set to NodePort, AKO would use NodePort as backend for service of type Loadbalancer instead of using Endpoints, which is the default behaviour with config.serviceType set as ClusterIP.
+## *__Features in 1.2.1-9042-beta-2 Release__*
 
 ### AKO in Openshift Cluster
 
@@ -183,10 +167,22 @@ Follow the steps 1 to 2, given in section [Pre-requisites](https://github.com/av
 1. Make Sure Openshift version is >= 4.4
 2. Openshift routes and services of type load balancer are suppported in AKO
 3. Ingresses, if created in the openshift cluster won't be handled by AKO.
-4. serviceType should be **NodePort** in values.yaml. Routes should use services of type NodePort as backends.
+4. cniPlugin should be set to **openshift**
+
+#### Features of Openshift Route supported in AKO
+AKO supports the following Layer 7 functions of the OpenShift Route object:
+1. Insecure Routes.
+2. Insecure Routes with alternate backends.
+3. Secure routes with edge termination policy.
+4. Secure Routes with InsecureEdgeterminationPolicy - Redirect or Allow.
+5. Secure Routes of type passthrough
+6. Secure Routes with reencrypt functionality
+
+### AWS and Azure IaaS Cloud in NodePort mode of AKO
+Supports AWS and Azure IaaS cloud with Avi DNS.
 
 #### Installing Beta Release:
-
+A beta release uses the incubator repository instead of stable. To install a beta release of AKO follow these steps:
 
 Step 1: Create the avi-system namespace
 
@@ -201,30 +197,18 @@ Step 3: Search for available charts
 
     helm search repo --devel
 
-    NAME                 	CHART VERSION	        APP VERSION	        DESCRIPTION
-    ako-incubator/ako	    1.2.1-5140-beta	        1.2.1-5140-beta	    A Helm chart for Kubernetes
+    NAME             	CHART VERSION    	APP VERSION      	DESCRIPTION
+    ako-incubator/ako	1.2.1-9042-beta-2	1.2.1-9042-beta-2	A helm chart for Avi Kubernetes Operator
 
 
 Step 4: Install AKO
 
-    helm install  ako-incubator/ako  --generate-name --version 1.2.1-5140-beta -f values.yaml --set configs.serviceType=NodePort --set configs.networkName=<network-name> --set configs.clusterName=<cluster-name>  --set configs.controllerIP=<avi-controller-ip> --set avicredentials.username=<avi-ctrl-username> --set avicredentials.password=<avi-ctrl-password> --namespace=avi-system
+    helm install  ako-incubator/ako  --generate-name --version 1.2.1-9042-beta-2 -f values.yaml  --set configs.controllerIP=<avi-controller-ip> --set avicredentials.username=<avi-ctrl-username> --set avicredentials.password=<avi-ctrl-password> --namespace=avi-system
 
 Step 5: Check the installation
 
     helm ls -n avi-system
 
-    NAME          	NAMESPACE 	REVISION	UPDATED                                	STATUS  	CHART              	APP VERSION
-    ako-1595250583	avi-system	1       	2020-07-20 13:09:45.958991153 +0000 UTC	deployed	ako-1.2.1-5140-beta	1.2.1-5140-beta
-
-#### Features of Openshift Route supported in AKO
-AKO supports the following features of openshift route. These features are currently in **beta** phase.
-1. Insecure Routes.
-2. Insecure Routes with alternate backends.
-3. Secure routes with edge termination policy.
-
-#### Features of Openshift Route to be supported in upcoming releases of AKO
-Following feature of openshift routes are not currently supported in AKO. They will be supported in upcoming releases.
-1. Secure Routes with InsecureEdgeterminationPolicy - Redirect or Allow.
-2. Secure Routes of type passthrough
-3. Secure Routes with reencrypt functionality
+    NAME           	NAMESPACE 	REVISION	UPDATED                                	STATUS  	CHART                	APP VERSION
+    ako-1599666759 	avi-system	1       	2020-09-09 15:52:42.41565938 +0000 UTC 	deployed	ako-1.2.1-9042-beta-2	1.2.1-9042-beta-2
 

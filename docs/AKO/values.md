@@ -94,7 +94,7 @@ AKO supports dual arm deployment where the Virtual IP network can be on a differ
 These fields are used to specify the Virtual IP network details on which the user wants to place the Avi virtual services on.
 
 #### AWS and Azure Cloud in NodePort mode of AKO
-If the IaaS cloud is Azure then subnet name is specified in `networkName`. Azure IaaS cloud is supported only in `NodePort` mode of AKO. `subnetIP` and `subnetPrefix` are not required for Azure Cloud.
+If the IaaS cloud is Azure then subnet name is specified in `networkName`. Azure IaaS cloud is supported only in `NodePort` mode of AKO.
 If the IaaS cloud is AWS then subnet uuid is specified in `networkName`. AWS IaaS cloud is supported only in `NodePort` mode of AKO. 
 The `subnetIP` and `subnetPrefix` are not required for AWS and Azure Cloud.
 
