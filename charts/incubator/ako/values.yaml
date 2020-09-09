@@ -36,16 +36,16 @@ configs:
   #     cidrs:
   #       - 10.0.0.1/24
   #       - 11.0.0.1/24
-​
-​
+
+
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
-​
+
 nodePortSelector: # Only applicable if serviceType is NodePort
   key: ""
   value: ""
-​
+
 serviceAccount:
   # Specifies whether a service account should be created
   create: true
@@ -62,8 +62,8 @@ avicredentials:
 service:
   type: ClusterIP
   port: 80
-​
-​
+
+
 persistentVolumeClaim: ""
 mountPath: "/log"
 logFile: "avi.log"
