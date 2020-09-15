@@ -53,12 +53,12 @@ Use the `values.yaml` from this repository to edit values related to Avi configu
     helm search repo
 
     NAME                 	CHART VERSION	APP VERSION	DESCRIPTION
-    ako/ako              	1.1.1        	1.1.1      	A helm chart for Avi Kubernetes Operator
+    ako/ako              	1.2.1        	1.2.1      	A helm chart for Avi Kubernetes Operator
     
 
  Step 4: Install AKO
 
-    helm install  ako/ako  --generate-name --version 1.1.1 -f values.yaml  --set configs.controllerIP=<controller_ip> --set avicredentials.username=<avi-ctrl-username> --set avicredentials.password=<avi-ctrl-password> --namespace=avi-system
+    helm install  ako/ako  --generate-name --version 1.2.1 -f values.yaml  --set ControllerSettings.controllerIP=<controller_ip> --set avicredentials.username=<avi-ctrl-username> --set avicredentials.password=<avi-ctrl-password> --namespace=avi-system
     
     NAME: ako-1593523840
     LAST DEPLOYED: Tue Jun 30 19:00:44 2020
@@ -76,7 +76,7 @@ Use the `values.yaml` from this repository to edit values related to Avi configu
     helm list -n avi-system
     
     NAME          	NAMESPACE 	REVISION	UPDATED                             	STATUS  	CHART    	APP VERSION
-    ako-1593523840	avi-system	1       	2020-06-30 19:00:44.134075 +0530 IST	deployed	ako-1.1.1	    1.1.1
+    ako-1593523840	avi-system	1       	2020-06-30 19:00:44.134075 +0530 IST	deployed	ako-1.2.1	    1.2.1
 
 
 
@@ -112,6 +112,8 @@ If you are upgrading from an older AKO release then simply run the helm upgrade 
     helm upgrade ako-1593523840 ako/ako -f values.yaml --version 1.1.1 --set configs.controllerIP=<IP> --set avicredentials.password=<username> --set avicredentials.username=<username> --namespace=avi-system
     
 
+Note: Seamless upgrade to version 1.2.1 is not supported. Before upgrading to 1.2.1, uninstall ako, delete all objects from AVI and install ako 1.2.1 using helm.
+
 ## Parameters
 
 
@@ -119,30 +121,28 @@ The following table lists the configurable parameters of the AKO chart and their
 
 | **Parameter** | **Description** | **Default** |
 | --- | --- | --- |
-| `configs.controllerVersion` | Avi Controller version | 18.2.8 |
-| `configs.controllerIP` | Specify Avi controller IP | `nil` |
-| `configs.shardVSSize` | Shard VS size enum values: LARGE, MEDIUM, SMALL | LARGE |
-| `configs.fullSyncFrequency` | Full sync frequency | 1800 |
-| `configs.ingressApi` | Support for default ingress API | corev1 |
-| `configs.defaultIngController` | AKO is the default ingress controller | true |
-| `configs.cloudName` | Name of the VCenter cloud managed in Avi | Default-Cloud |
-| `configs.serviceEngineGroupName` | Name of the Service Engine Group | Default-Group |
-| `configs.nodeNetworkList` | List of Networks and corresponding CIDR mappings for the K8s nodes. | `Empty List` |
-| `configs.clusterName` | Unique identifier for the running AKO instance. AKO identifies objects it created on Avi Controller using this param. | **required** |
-| `configs.subnetIP` | Subnet IP of the data network | **required** |
-| `configs.subnetPrefix` | Subnet Prefix of the data network | **required** |
-| `configs.networkName` | Network Name of the data network | **required** |
-| `configs.defaultDomain` | Specify a default sub-domain for L4 LB services | First domainname found in cloud's dnsprofile |
-| `configs.l7ShardingScheme` | Sharding scheme enum values: hostname, namespace | hostname |
-| `configs.cniPlugin` | CNI Plugin being used in kubernetes cluster. Specify one of: calico, canal, flannel | **required** for calico setups |
-| `configs.logLevel` | logLevel enum values: INFO, DEBUG, WARN, ERROR. logLevel can be changed dynamically from the configmap | INFO |
-| `configs.deleteConfig` | set to true if user wants to delete AKO created objects from Avi. deleteConfig can be changed dynamically from the configmap | false |
-| `configs.disableStaticRouteSync` | Disables static route syncing if set to true | false |
+| `AKOSettings.cniPlugin` | CNI Plugin being used in kubernetes cluster. Specify one of: calico, canal, flannel | **required** for calico setups |
+| `AKOSettings.logLevel` | logLevel enum values: INFO, DEBUG, WARN, ERROR. logLevel can be changed dynamically from the configmap | INFO |
+| `AKOSettings.deleteConfig` | set to true if user wants to delete AKO created objects from Avi. deleteConfig can be changed dynamically from the configmap | false |
+| `AKOSettings.disableStaticRouteSync` | Disables static route syncing if set to true | false |
+| `AKOSettings.clusterName` | Unique identifier for the running AKO instance. AKO identifies objects it created on Avi Controller using this param. | **required** |
+| `AKOSettings.fullSyncFrequency` | Full sync frequency | 1800 |
+| `ControllerSettings.controllerVersion` | Avi Controller version | 18.2.8 |
+| `ControllerSettings.controllerIP` | Specify Avi controller IP | `nil` |
+| `ControllerSettings.cloudName` | Name of the VCenter cloud managed in Avi | Default-Cloud |
+| `ControllerSettings.serviceEngineGroupName` | Name of the Service Engine Group | Default-Group |
+| `L7Settings.shardVSSize` | Shard VS size enum values: LARGE, MEDIUM, SMALL | LARGE |
+| `L7Settings.defaultIngController` | AKO is the default ingress controller | true |
+| `L7Settings.l7ShardingScheme` | Sharding scheme enum values: hostname, namespace | hostname |
+| `L4Settings.defaultDomain` | Specify a default sub-domain for L4 LB services | First domainname found in cloud's dnsprofile |
+| `NetworkSettings.nodeNetworkList` | List of Networks and corresponding CIDR mappings for the K8s nodes. | `Empty List` |
+| `NetworkSettings.subnetIP` | Subnet IP of the data network | **required** |
+| `NetworkSettings.subnetPrefix` | Subnet Prefix of the data network | **required** |
+| `NetworkSettings.networkName` | Network Name of the data network | **required** |
 | `avicredentials.username` | Avi controller username | empty |
 | `avicredentials.password` | Avi controller password | empty |
 | `image.repository` | Specify docker-registry that has the AKO image | avinetworks/ako |
 
-> `networkName`, `subnetIP` and `subnetPrefix` are required fields which are used for allocating VirtualService IP by IPAM Provider module
 
 > Each AKO instance mapped to a given Avi cloud should have a unique clusterName parameter. This would maintain the uniqueness of object naming across Kubernetes clusters.
 
@@ -203,7 +203,7 @@ Step 3: Search for available charts
 
 Step 4: Install AKO
 
-    helm install  ako-incubator/ako  --generate-name --version 1.2.1-9042-beta-2 -f values.yaml  --set configs.controllerIP=<avi-controller-ip> --set avicredentials.username=<avi-ctrl-username> --set avicredentials.password=<avi-ctrl-password> --namespace=avi-system
+    helm install  ako-incubator/ako  --generate-name --version 1.2.1-9042-beta-2 -f values.yaml  --set ControllerSettings.controllerIP=<avi-controller-ip> --set avicredentials.username=<avi-ctrl-username> --set avicredentials.password=<avi-ctrl-password> --namespace=avi-system
 
 Step 5: Check the installation
 

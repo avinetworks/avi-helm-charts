@@ -226,8 +226,6 @@ The formula to derive the SNI virtualservice's poolgroup is as follows:
 
 Some of these naming conventions can be used to debug/derive corresponding Avi object names that could prove as a tool for first level trouble shooting.
 
-## Features in 1.2.1-beta release
-
 ### NodePort Mode 
 
 #### Insecure and Secure Ingress/Routes in NodePort mode
