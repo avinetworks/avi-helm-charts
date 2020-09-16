@@ -4,23 +4,23 @@ This document answers some of the frequently asked questions w.r.t AKO.
 
 #### How do I clean up all my configs?
 
-The key deleteConfig in data section of AKO configmap can be used to cleanup the setup.  Edit AKO configmap and set deleteConfig: "true" to delete ako created objects in Avi. Edit the configmap and set deleteConfig: "false" to re-create your setup.
+The key deleteConfig in the data section of AKO configmap can be used to clean up the setup.  Edit AKO configmap and set deleteConfig: "true" to delete ako created objects in Avi. Edit the configmap and set deleteConfig: "false" to re-create your setup.
 
 #### How is the Shared VS lifecycle controlled?
 
 
-In hostname based sharding, when an ingress object is created with multiple hostnames, AKO generates a md5 hash using the hostname and the Shard VS number. This uniquely maps a FQDN to a given Shared VS and avoids DNS conflicts. During initial clean bootup, if the Shared VS does not exist in Avi - AKO creates the same and then patches the ingress FQDN to it either in the form of a pool (for insecure routes) or in the form of an SNI child virtualservice (in case of secure routes).
+In hostname based sharding, when an ingress object is created with multiple hostnames, AKO generates an md5 hash using the hostname and the Shard VS number. This uniquely maps an FQDN to a given Shared VS and avoids DNS conflicts. During initial clean bootup, if the Shared VS does not exist in Avi - AKO creates the same and then patches the ingress FQDN to it either in the form of a pool (for insecure routes) or in the form of an SNI child virtual service (in case of secure routes).
 
-The Shared VSes aren't deleted if all the FQDNs mapped to it are removed from kubernetes. However, if the user wants AKO to delete unused shared VSes - a pod restart is required that would evaluate the VS and delete it appropriately. 
+The Shared VSes aren't deleted if all the FQDNs mapped to it are removed from Kubernetes. However, if the user wants AKO to delete unused shared VSes - a pod restart is required that would evaluate the VS and delete it appropriately. 
 
 #### How are VSes sharded?
 
-If you create an ingress with an insecure host/path combination then AKO creates a corresponding Avi Pool object and patches the pool
+If you create ingress with an insecure host/path combination then AKO creates a corresponding Avi Pool object and patches the pool
 on one of the existing shard virtual services. The shard VS has a datascript associated with it that reads the host/path of the incoming
 request and appropriately selects a pool by matching it with the priority label specified for each pool member (corresponding to a host/path
 combination).
 
-For secure ingresses, a SNI virtual service is created which although is a dedicated virtualservice, does not have any IP addresses
+For secure ingresses, an SNI virtual service is created which although is a dedicated virtual service, does not have any IP addresses
 associated with it. The SNI virtual service is a child to a parent virtual service and is created based on the secret object specified
 in the ingress file against the host/path that is meant to be accessed securely.
 
@@ -33,32 +33,32 @@ that is - `LARGE` to account for future expansion.
 
 #### Can I change the Shard VS number?
 
-In order to Shard to virtual services, AKO uses a sharding mechanism that is driven either by the `namespace` on which the ingress object
-is created or the `hostname` of each individual rule within an ingress object. The latter is marked as default because it ensures that a unique
+To Shard to virtual services, AKO uses a sharding mechanism that is driven either by the `namespace` on which the ingress object
+is created or the `hostname` of each rule within an ingress object. The latter is marked as default because it ensures that a unique
 hostname is always sharded consistently to the same virtual service. 
 
-Since the sharding logics are determined by the number of Shard virtualservices, changing the Shard VS number has the potential hazard
+Since the sharding logics are determined by the number of Shard virtual services, changing the Shard VS number has the potential hazard
 of messing up an existing cluster's already synced objects. Hence it's recommended that the Shard VS numbers are not changed once fixed.
 
 #### How do I alter the Shard VS number?
 
 Altering the shard VS number is considered as disruptive. This is because dynamic re-adjustment of shard numbers may re-balance
 the ingress to VS mapping. Hence if you want to alter the shard VS number, first delete the older configmap and trigger a complete
-cleanup of the VSes in the controller. Followed by a edit of the configmap and restart of AKO.
+cleanup of the VSes in the controller. Followed by an edit of the configmap and restart of AKO.
 
 #### What is the use of static routes?
 
-Static routes are created with cluster name as label. While deploying AKO the admin or the operator decides a Service Engine Group for a given
-kubernetes cluster. The same labels are tagged on the routes of this AKO cluster. These routes are pushed to the Service Engine's created on the Service Engine Group.
-The static routes map each POD CIDR with the kubernetes node's IP address. However, for static routes to work, the Service Engines must
-be L2 adjacent to your kubernetes nodes.
+Static routes are created with cluster name as the label. While deploying AKO the admin or the operator decides a Service Engine Group for a given
+Kubernetes cluster. The same labels are tagged on the routes of this AKO cluster. These routes are pushed to the Service Engine's created on the Service Engine Group.
+The static routes map each POD CIDR with the Kubernetes node's IP address. However, for static routes to work, the Service Engines must
+be L2 adjacent to your Kubernetes nodes.
 
 
 #### What happens if I have the same SNI host across multiple namespaces?
 
 The ingress API does not prohibit the user from creating the same SNI hostname across multiple namespaces. In the hostname sharding
-mode, AKO will create 1 SNI virtualservice and gather all paths associated with it across namespaces to create corresponding switching
-rules. However, the user needs to denote each ingress with the TLS secret for a given hostname to qualify the host for the SNI virtualservice.
+mode, AKO will create 1 SNI virtual service and gather all paths associated with it across namespaces to create corresponding switching
+rules. However, the user needs to denote each ingress with the TLS secret for a given hostname to qualify the host for the SNI virtual service.
 
 Consider the below example:
 
@@ -66,7 +66,7 @@ Consider the below example:
 
     Ingress 1 (foo namespace) --> SNI hostname --> foo.com path: /bar, Secret: foo
 
-In the above case, only 1 SNI virtualservice will be created with a sslkeyandcertificate as `foo`.
+In the above case, only 1 SNI virtual service will be created with a sslkeyandcertificate as `foo`.
 
 However if the following happens:
 
@@ -74,18 +74,18 @@ However if the following happens:
 
     Ingress 1 (foo namespace) --> SNI hostname --> foo.com path: /bar, Secret: bar
 
-Then the behavior of the SNI virtualservice would be indeterministic since the secrets for the same SNI are different. This is not supported.
+Then the behaviour of the SNI virtual service would be indeterministic since the secrets for the same SNI are different. This is not supported.
 
 #### What out of band operations can I do on the objects created by AKO?
 
 AKO runs a refresh cycle that currently just refreshes the cloud object parameters. However, if some out of band operations are performed on objects created by AKO via directly interacting with the Avi APIs, AKO may not always be able to remediate
 an error caused due to this.
 
-AKO has a best effort, retry layer implementation that would try to detect a problem (For example: an SNI VS deleted from the Avi UI), but it is not guranteed to work for all such manual operations.
+AKO has the best effort, retry layer implementation that would try to detect a problem (For example an SNI VS deleted from the Avi UI), but it is not guaranteed to work for all such manual operations.
 
-Upon reboot of AKO - a full reconciliation loop is run and  most of the out-of-band changes are overwritten with AKO's view of the intended model. This does not happen in every full sync cycle.
+Upon reboot of AKO - a full reconciliation loop is run and most of the out-of-band changes are overwritten with AKO's view of the intended model. This does not happen in every full sync cycle.
 
-#### What is the expected behavior for the same host/path combination across different secure/insecure ingresses?
+#### What is the expected behaviour for the same host/path combination across different secure/insecure ingresses?
 
 The ingress API allows users to add duplicate hostpaths bound to separate backend services. Something like this:
 
@@ -99,25 +99,25 @@ Also, ingress allows you to have a mix of secure and insecure hostpath bound to 
 
     Ingress2 (default namespace) --> foo.com path: /foo, Service: svc2
 
-AKO doesnot explicitly handle these conditions and would continue syncing these objects on the Avi controller, but this may lead to traffic issues.
-AKO does a best effort of detecting some of these conditions by printing them in logs. A sample log statement looks like this:
+AKO does not explicitly handle these conditions and would continue syncing these objects on the Avi controller, but this may lead to traffic issues.
+AKO does the best effort of detecting some of these conditions by printing them in logs. A sample log statement looks like this:
 
 `key: Ingress/default/ingress2, msg: Duplicate entries found for hostpath default/ingress2: foo.com/foo in ingresses: ["default/ingress1"]`
 
 #### What happens to static routes if the Kubernetes nodes are rebooted/shutdown?
 
-AKO programs a static route for every node IP and the POD CIDR associated with it. Even though node state changes to `NotReady` in kubernetes this configuration is stored in the node object and does not change when the node rebooted/shutdown.
+AKO programs a static route for every node IP and the POD CIDR associated with it. Even though node state changes to `NotReady` in Kubernetes this configuration is stored in the node object and does not change when the node rebooted/shutdown.
 
-Hence AKO will not remove the static routes until the kubernetes node is completely removed from the cluster.
+Hence AKO will not remove the static routes until the Kubernetes node is completely removed from the cluster.
 
 #### Can I point my ingress objects to a service of type Loadbalancer?
 
 The short answer is No. 
-The ingress objects should point to the service of type clusterIP. Loadbalancer services either point to an ingress controller POD if one is using an in cluster ingress controller or they can directly point to application PODs that need layer 4 loadbalancing.
+The ingress objects should point to the service of type clusterIP. Loadbalancer services either point to an ingress controller POD if one is using an in cluster ingress controller or they can directly point to application PODs that need layer 4 load-balancing.
 
-If you have such a configuration where the ingress objects are pointing to services of type loadbalancer, AKO's behavior would be indeterministic. 
+If you have such a configuration where the ingress objects are pointing to services of the type load balancer, AKO's behaviour would be indeterministic. 
 
-#### What happens when AKO fails to connect to the AVI controller while booting up ?
+#### What happens when AKO fails to connect to the AVI controller while booting up?
 
 AKO would stop processing kubernetes objects and no update would be made to the AVI Controller. After the connection to AVI Controller is restored, AKO pod has to be rebooted. This can be done by deleting the exiting POD and ako deployment would bring up a new POD, which would start processing kubernetes objects after verifying connectivity to AVI Controller.  
 
@@ -133,3 +133,11 @@ A set of shared Virtual Services are created for passthrough routes only in open
 #### What happens if insecureEdgeTerminationPolicy is set to `redirect` for a passthrough route?
 
  For passthrough routes, the supported values for insecureEdgeTerminationPolicy are None and Redirect. To handle insecure traffic for passthrough routes a set of shared Virtual Services are created with names of the format 'cluster-name'-`Shared-Passthrough`-'shard-number'-`insecure`. These Virtual Services listen on port 80. If for any passthrough route, the insecureEdgeTerminationPolicy is found to be 'Redirect', then an HTTP Policy is configured in the insecure passthrough shared VS to send appropriate response to an incoming insecure traffic. 
+
+#### How to debug 'Invalid input detected' errors?
+AKO goes for a reboot and retries some of the invalid input errors. Below are some of the cases to look out for in the logs.
+- If an invalid cloud name is given in `values.yaml` or if ipam_provider_ref is not set in the vCenter and No Access clouds.
+- If the same Service Engine Group is used for multiple clusters for vCenter and No Access clouds in Cluster IP mode. This happens as AKO expects unique SE group per cluster if routes are configured by AKO for POD reachability. Look for the `Labels does not match with cluster name` message in the logs which points to two clusters using the same Service Engine Group.
+
+#### How to fix when some of the pool servers in NodePort mode of AKO are down?
+The default behaviour for AKO s to populate all the Node IP as pool server. If master node is not schedulable then, it will be marked down. `nodePortSelector` can be used to specify the `labels` for the node. In that case, all the node with that label will be picked for the pool server. If the master node is not schedulable then, the fix is to remove the `nodePortSelector` label for the master node.
