@@ -14,6 +14,16 @@
 
     Ensure that you have your docker registry configured properly or the image is configured locally.
 
+#### AKO pod is restarting automatically and going to a state of crashloopbackoff after some time.
+
+##### Possible Reasons/Solutions:
+From AKO logs check if any input is invalid:
+
+    Invalid input detected, AKO will be rebooted to retry
+
+Check connectivity between AKO Pod and Avi controller. 
+
+
 #### AKO is not responding to my ingress object creations.
 
 #### Possible Reasons/Solutions:
@@ -171,4 +181,40 @@ Sample Output with PVC :
 
 
 It's recommended we collect the controller tech support logs as well. Please follow this [link](https://avinetworks.com/docs/18.2/collecting-tech-support-logs/)  for the controller tech support.
+
+
+## Troubleshooting for AKO CRDs
+
+### Policy defined in the crd policy was not applied to the corresponding ingress/route objects.
+
+1. Make sure that the policy object being referred by the CRD is present in avi.
+2. Ensure that connectivity between ako pod and avi controller is intact. For example if the avi controller is rebooting, connectivity may go down and we may face this problem.
+
+## Troubleshooting for openshift route
+
+### Route objects did not sync to avi.
+
+There can be different reasons behind this. Some common issues can be categorized as follows:
+
+#### 1. The problem is for all routes
+Some configuration parameter is missing. Check for logs like
+
+    Invalid input detected, syncing will be disabled
+
+Make the necessary changes in the configuration by checking the logs and restart AKO.
+
+#### 2. Some routes are not getting handled in ako
+
+Check if subdomain of the route is valid as per avi controller configuration
+
+    Didn't find match for hostname :foo.abc.com Available sub-domains:avi.internal
+
+#### 3. The problem is faced for One / very few routes 
+
+Check for status of route. If you see a message `MultipleBackendsWithSameServiceError`, then same service has been added multiple times in the backends. This is a wrong configuration and the route configuration has to be changed.
+
+#### 4. The route which is not getting synced, is a secure route with edge/reencrypt termination
+
+Check if both key and cert are specified in the route spec. If any one of these keys are missing, AKO would not sync the route.
+
     

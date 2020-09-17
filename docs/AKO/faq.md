@@ -141,3 +141,9 @@ AKO goes for a reboot and retries some of the invalid input errors. Below are so
 
 #### How to fix when some of the pool servers in NodePort mode of AKO are down?
 The default behaviour for AKO s to populate all the Node IP as pool server. If master node is not schedulable then, it will be marked down. `nodePortSelector` can be used to specify the `labels` for the node. In that case, all the node with that label will be picked for the pool server. If the master node is not schedulable then, the fix is to remove the `nodePortSelector` label for the master node.
+
+#### Can we create a secure route with edge/reencrypt termination without key or certificate ?
+For secure routes having termination type edge/reencrypt, key and certificate must be specified in the spec of the route. AKO would not handle routes of these types without key and certificate.
+
+#### What happens if a route is created with multiple backends having same service name ?
+AKO would reject those routes, as each backend should be unique ith it's own weight. Multiple backends having same service would make weight calculation indeterministic.
