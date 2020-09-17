@@ -86,21 +86,22 @@ Simply run:
     
 #### Upgrade AKO using *helm*
 
-If you are upgrading from an older AKO release then simply run the helm upgrade command. For example (assuming you are upgrading to 1.1.1):
-
-Note: Seamless upgrade to version 1.2.1 is not supported. Before upgrading to 1.2.1, uninstall ako, delete all objects from AVI and install ako 1.2.1 using helm.
+If you are upgrading from an older AKO release then simply run the helm upgrade command. For example:
 
 *Step1*
 
     helm list -n avi-system
     
     NAME          	NAMESPACE 	REVISION	UPDATED                             	STATUS  	CHART    	APP VERSION
-    ako-1593523840	avi-system	1       	2020-06-30 19:00:44.134075 +0530 IST	deployed	ako-0.9.1	    0.9.1
+    ako-1593523840	avi-system	1       	2020-09-16 13:44:31.609195757 +0000 UTC	deployed	ako-1.1.1	1.1.1-9032
 
 *Step2*
 
-    helm upgrade ako-1593523840 ako/ako -f values.yaml --version 1.1.1 --set configs.controllerIP=<IP> --set avicredentials.password=<username> --set avicredentials.username=<username> --namespace=avi-system
+    helm upgrade ako-1593523840 ako/ako -f values.yaml --version 1.2.1 --set ControllerSettings.controllerIP=<IP> --set avicredentials.password=<username> --set avicredentials.username=<username> --namespace=avi-system
     
+Note: 
+- Seamless upgrade to version 1.2.1 is not supported. Before upgrading to 1.2.1, uninstall ako, delete all objects from AVI and install ako 1.2.1 using helm.
+- Do not delete the configmap avi-k8s-config manually, unless you are doing a complete helm uninstall. AKO pod has to be rebooted if you delete and recreate the avi-k8s-config configmap.
 
 ## Parameters
 
@@ -109,7 +110,7 @@ The following table lists the configurable parameters of the AKO chart and their
 
 | **Parameter** | **Description** | **Default** |
 | --- | --- | --- |
-| `ControllerSettings.controllerVersion` | Avi Controller version | 18.2.8 |
+| `ControllerSettings.controllerVersion` | Avi Controller version | 18.2.10 |
 | `ControllerSettings.controllerIP` | Specify Avi controller IP | `nil` |
 | `ControllerSettings.cloudName` | Name of the VCenter cloud managed in Avi | Default-Cloud |
 | `L7Settings.shardVSSize` | Shard VS size enum values: LARGE, MEDIUM, SMALL | LARGE |

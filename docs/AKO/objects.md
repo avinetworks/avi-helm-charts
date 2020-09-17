@@ -271,4 +271,4 @@ Service of type `LoadBalancer` automatically creates a NodePort. AKO populates t
 
 In the above example, AKO creates a dedicated virtual service for this object in kubernetes that refers to reserving a virtual IP for it. If there are 3 nodes in the cluster with Internal IP being `10.0.0.100, 10.0.0.101, 10.0.0.102` and assuming that there’s no node label selectors used, AKO populates pool server as: `10.0.0.100:31013, 10.0.0.101:31013, 10.0.0.101:31013`.
 
-For the Openshift objects: [Openshift](https://github.com/avinetworks/avi-helm-charts/tree/master/docs/AKO/objects.md)
+For the Openshift objects: [Openshift](https://github.com/avinetworks/avi-helm-charts/tree/master/docs/AKO/openshift/objects.md)
