@@ -20,7 +20,7 @@ For insecure route, AKO creates a Shared VS, Poolgroup and Datascript like insec
 
 The formula to derive the Shared VS pool name for route is as follows:
 
-    poolgroupname = clusterName + "--" + priorityLabel + "-" + namespace + "-" + routeName + "-" + serviceName
+    poolname = clusterName + "--" + hostname + "-" + namespace + "-" + routeName + "-" + serviceName
 
 
 ### Insecure Route with Alternate Backends
@@ -81,7 +81,7 @@ Secure route is configured in Avi like secure ingress. An SNI VS is created for 
 
 The formula to derive the SNI virtualservice's pools for route is as follows:
 
-    poolname = clusterName + "--" + namespace + "-" + host + "_" + path + "-" + routeName + "-" serviceName
+    poolname = clusterName + "--" + namespace + "-" + hostname + "_" + path + "-" + routeName + "-" serviceName
 
 
 ### Secure Route with termination reencrypt
