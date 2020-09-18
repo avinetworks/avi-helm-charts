@@ -113,7 +113,7 @@ The formula to derive the SNI virtualservice's pools for route is as follows:
 In case case of reencrypt, an SNI VS is created for each hostname and for each host/path combination corresponds to a PoolGroup in Avi. Ssl is enabled in each pool for such Virtualservices with SSL profile set to System-Standard. In additon, if destinationCACertificate is specified, a PKI profile with the destinationCACertificate is created for each pool. 
 
 
-### Secure Route insecureEdgeTerinationPolicy Redirect:
+### Secure Route insecureEdgeTerminationPolicy Redirect:
 
     apiVersion: v1
       kind: Route
@@ -126,7 +126,7 @@ In case case of reencrypt, an SNI VS is created for each hostname and for each h
         name: service-name 
       tls:
         termination: edge
-        insecureEdgeTerinationPolicy: redirect      
+        insecureEdgeTerminationPolicy: redirect      
         key: |-
           -----BEGIN PRIVATE KEY-----
           [...]
@@ -140,7 +140,7 @@ In case case of reencrypt, an SNI VS is created for each hostname and for each h
 In additon to the secure sni VS, for this type of route, AKO creates a redirect policy on the shared parent of the SNI child for this specific secure hostname.
 This allows the client to automatically redirect the http requests to https if they are accessed on the insecure port (80).
 
-### Secure Route insecureEdgeTerinationPolicy Allow:
+### Secure Route insecureEdgeTerminationPolicy Allow:
 
     apiVersion: v1
       kind: Route
@@ -153,7 +153,7 @@ This allows the client to automatically redirect the http requests to https if t
         name: service-name 
       tls:
         termination: edge
-        insecureEdgeTerinationPolicy: Allow      
+        insecureEdgeTerminationPolicy: Allow      
         key: |-
           -----BEGIN PRIVATE KEY-----
           [...]
@@ -164,7 +164,7 @@ This allows the client to automatically redirect the http requests to https if t
           -----END CERTIFICATE-----
 
 
-If insecureEdgeTerinationPolicy is Allow, then AKO creates an SNI VS for the hostname; also a pool is created for the same hostname which is added as member is Poolgroup of the parent Shared VS. This enables the host to be accessed via both http(80) and https(443) port. 
+If insecureEdgeTerminationPolicy is Allow, then AKO creates an SNI VS for the hostname; also a pool is created for the same hostname which is added as member is Poolgroup of the parent Shared VS. This enables the host to be accessed via both http(80) and https(443) port. 
 
 ### Passthrough Route:
 
@@ -181,7 +181,7 @@ With passthrough routes, secure traffic is sent to the backend pods without TLS 
         name: service-name 
       tls:
         termination: edge
-        insecureEdgeTerinationPolicy: Allow   
+        insecureEdgeTerminationPolicy: Allow   
 
 For each passthrough host, one unique Poolgroup is created with name clustername-fqdn and the Poolgroup is attached to the datascript of the VS derived by the sharding logic. In this case, a Poolgroup with name clustername-pass1.avi.internal is created.
 
