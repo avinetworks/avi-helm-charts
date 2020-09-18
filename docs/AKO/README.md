@@ -148,7 +148,7 @@ For some frequently asked question refer [here](faq.md)
 
 AKO can be used in openshift cluster to configure Routes and Services of type Loadbalancer.
 
-#### Pre-requisites for running AKO in Openhsift Cluster
+#### Pre-requisites for running AKO in Openshift Cluster
 
 Follow the steps 1 to 2, given in section [Pre-requisites](https://github.com/avinetworks/avi-helm-charts/tree/master/docs/AKO#pre-requisites). Additionally, the following points have to be noted for openshift environment.
 1. Make Sure Openshift version is >= 4.4
@@ -162,7 +162,7 @@ AKO supports the following Layer 7 functions of the OpenShift Route object:
 1. Insecure Routes.
 2. Insecure Routes with alternate backends.
 3. Secure routes with edge termination policy.
-4. Secure Routes with InsecureEdgeterminationPolicy - Redirect or Allow.
+4. Secure Routes with InsecureEdgeTerminationPolicy - Redirect or Allow.
 5. Secure Routes of type passthrough
 6. Secure Routes with re-encrypt functionality
 
