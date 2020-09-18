@@ -2,8 +2,18 @@ apiVersion: v1
 entries:
   ako:
   - apiVersion: v2
+    appVersion: 1.2.1
+    created: "2020-09-18T16:40:39.60123+05:30"
+    description: A helm chart for Avi Kubernetes Operator
+    digest: 4f12108d5514b2355d32a2aef5124a1cb400cc299e4733e8407ee79673dbcffb
+    name: ako
+    type: application
+    urls:
+    - https://avinetworks.github.io/avi-helm-charts/charts/stable/ako/ako-1.2.1.tgz
+    version: 1.2.1
+  - apiVersion: v2
     appVersion: 1.1.1
-    created: "2020-07-22T12:10:35.896503+05:30"
+    created: "2020-09-18T16:40:39.600245+05:30"
     description: A helm chart for Avi Kubernetes Operator
     digest: ffeaac645a5b9f3fb04627f0f8a7bdc6af76869126e8d0333ab74eab7f90796e
     name: ako
@@ -13,7 +23,7 @@ entries:
     version: 1.1.1
   - apiVersion: v2
     appVersion: 0.9.1
-    created: "2020-07-22T12:10:35.8941+05:30"
+    created: "2020-09-18T16:40:39.598175+05:30"
     description: A helm chart for Avi Kubernetes Operator
     digest: b24b1d7b4a8fafe09a34d51dbcb13db1be4c38785a85bfb3f363150c826ff3e5
     name: ako
@@ -21,4 +31,4 @@ entries:
     urls:
     - https://avinetworks.github.io/avi-helm-charts/charts/stable/ako/ako-0.9.1.tgz
     version: 0.9.1
-generated: "2020-07-22T12:10:35.884357+05:30"
+generated: "2020-09-18T16:40:39.58886+05:30"
