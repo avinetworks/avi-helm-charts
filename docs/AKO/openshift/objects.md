@@ -27,8 +27,6 @@ The formula to derive the Shared VS pool name for route is as follows:
 
 A route can also be associated with multiple services denoted by alternateBackends. The requests that are handled by each service is governed by the service weight.
 
-
-
     apiVersion: v1
     kind: Route
     metadata:

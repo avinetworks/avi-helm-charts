@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## AKO-0.1.1-Beta-2
+## AKO-0.9.1
 
 ### Changed:
  - SNI naming.  Requires full deletion of the SNI VS names in beta-1.
@@ -28,3 +28,29 @@ All notable changes to this project will be documented in this file. The format 
  ### Removed:
  - VRF context is now removed from `values.yaml` and instead is read from the network subnet.
 
+
+## AKO-1.1.1
+
+### Added:
+ - HostRule/HTTPRule support for Kubernetes
+
+
+## AKO-1.2.1
+
+### Changed:
+ - Liveness probe enhancements.
+ - Stability fixes around pod restarts.
+ - Retry layer improvements.
+ - Cleanup fixes.
+ - SDK bug fixes.
+ - Logging improvements.
+
+### Added:
+ - Full OpenShift 4.x support for NodePort and ClusterIP
+ - Per Cluster SE group support. Label based routing support.
+ - NodePort Support for Kubernetes.
+ - HostRule/HTTPRule support for Openshift.
+ - Minimal public cloud support.
+
+ ### Removed:
+ - VRF context support deprecated.

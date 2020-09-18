@@ -3,8 +3,6 @@
 ### Run AKO
 
 AKO runs as a POD inside the Kubernetes cluster.
-
- ![Alt text](Ako_k8s.png?raw=true "Title")
  
 #### Pre-requisites
 
