@@ -103,8 +103,8 @@ In order diagnose this problem please check the GSLBConfig object's status metho
       
 This is also reflected in the AMKO logs:
 
-2020-09-24T11:42:40.302Z	ERROR	cache/avi_ctrl.go:44	AVI Controller Initialization failed, Encountered an error on POST request to URL https://10.79.111.29/login: HTTP code: 401; error from Avi: map[error:Invalid credentials]
-2020-09-24T11:42:40.302Z	ERROR	cache/controller_obj_cache.go:638	no avi clients initialized, returning
+    2020-09-24T11:42:40.302Z	ERROR	cache/avi_ctrl.go:44	AVI Controller Initialization failed, Encountered an error on POST request to URL https://10.10.10.10/login: HTTP code: 401; error from Avi: map[error:Invalid credentials]
+    2020-09-24T11:42:40.302Z	ERROR	cache/controller_obj_cache.go:638	no avi clients initialized, returning
 
 #### GSLB leader flipped
 
