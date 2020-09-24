@@ -1,4 +1,4 @@
-## Troubleshooting guide for Avi Kubernetes Operator
+## Troubleshooting guide for Avi Multi Kubernetes Operator
 
 #### AMKO POD is not running
 
@@ -20,6 +20,7 @@
 
 Verify the namespaceSelector or appSelector filters on the GlobalDeploymentPolicy is able to select a
 valid ingress object(s).
+
 
 ## Log Collection
 
