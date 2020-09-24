@@ -14,12 +14,121 @@
 
     Ensure that you have your docker registry configured properly or the image is configured locally.
 
-#### AMKO Pod is up, but no GSLB object created
+#### AMKO Pod is up, but no GSLB service object created
 
 ##### Possible Reasons/Solutions:
 
 Verify the namespaceSelector or appSelector filters on the GlobalDeploymentPolicy is able to select a
 valid ingress object(s).
+
+#### Invalid cluster context provided
+
+If you provide an invalid cluster context in the GDP object, the status message of the GDP object will reflect
+the reason for error as shown below:
+
+    spec:
+      matchClusters:
+      - oshift1
+      - k8s
+      matchRules:
+        appSelector:
+          label:
+            app: gslb
+        namespaceSelector: {}
+    status:
+      errorStatus: cluster context oshift1 not present in GSLBConfig
+      
+ Also ensure that the cluster context is always the right non-empty value in the GSLBConfig object.
+
+#### Traffic split valid values
+
+The traffic split values in the GDP object should be between 1 to 20 (1 and 20 included). Any other value
+will result into an error on the GDP status object:
+
+     spec:
+        matchClusters:
+        - oshift
+        - k8s
+        matchRules:
+          appSelector:
+            label:
+              app: gslb
+          namespaceSelector: {}
+        trafficSplit:
+        - cluster: oshift
+          weight: 10
+        - cluster: k8s
+          weight: 50
+      status:
+        errorStatus: traffic weight 50 must be between 1 and 20
+
+#### Removed an ingress, but still GSLB service is up
+
+Please check if the FQDN is present in any other ingress object which is still active.
+AMKO uses a set of custom HTTP health monitors to determine the health of a GSLB service.
+The custom health monitors are created per host per path. Hence all host/path combinations for a given
+FQDN should be removed in order for the corresponding GSLB service to fail health monitor.
+
+#### Specified namespaceSelector and appSelector both but yet the GSLB services are not created
+
+The namespaceSelector and the appSelector are 'AND'ed while searching for a given application FQDN. Hence
+the ingress's app selector label must belong to an ingress object is also selected by the namespaceSelector.
+
+Either remove the namespaceSelector or ensure that the namespaceSelector belongs to the namespace of the ingress object.
+
+#### Edited the GSLBConfig object but the changes didn't take effect
+
+Only log level is editable, rest all changes on the GSLBConfig object requires an AMKO pod restart.
+
+#### Selected applications properly but still GS objects are not created
+
+Check if the DNS sub-domain of the applications are configured in the Avi controller for the DNS VS.
+
+#### Application selectors are properly able to select ingresses but still no GS object created
+
+In order diagnose this problem please check the GSLBConfig object's status method:
+
+    spec:
+      gslbLeader:
+        controllerIP: 10.79.111.29
+        controllerVersion: 20.1.1
+        credentials: gslb-avi-secret
+      logLevel: DEBUG
+      memberClusters:
+      - clusterContext: oshift
+      - clusterContext: k8s
+      refreshInterval: 300
+    status:
+      state: 'error: issue in connecting to the controller API, no avi clients initialized'
+      
+This is also reflected in the AMKO logs:
+
+2020-09-24T11:42:40.302Z	ERROR	cache/avi_ctrl.go:44	AVI Controller Initialization failed, Encountered an error on POST request to URL https://10.79.111.29/login: HTTP code: 401; error from Avi: map[error:Invalid credentials]
+2020-09-24T11:42:40.302Z	ERROR	cache/controller_obj_cache.go:638	no avi clients initialized, returning
+
+#### GSLB leader flipped
+
+If the GSLB leader becomes follower and the configuration is not updated on AMKO via the GSLBConfig, the GS objects
+won't get created. This can be verified by looking at the GSLBConfig object's status message:
+
+
+    spec:
+      gslbLeader:
+        controllerIP: 10.10.10.10
+        controllerVersion: 20.1.1
+        credentials: gslb-avi-secret
+      logLevel: DEBUG
+      memberClusters:
+      - clusterContext: oshift
+      - clusterContext: k8s
+      refreshInterval: 300
+    status:
+      state: 'error: controller not a leader'
+
+#### The AMKO pod is continously restarting
+
+If the AMKO pod is unable to obtain a connection to the Avi controller during bootup, the liveness probe of the AMKO
+Pod will fail and the pod will get rebooted. Please ensure connectivity between AMKO and the Avi controller.
 
 
 ## Log Collection
