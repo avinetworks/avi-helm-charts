@@ -7,8 +7,8 @@
 ##### Check the reason why the POD didn't come up by doing the following:
 
     kubectl get pods -n avi-system
-    NAME                 READY   STATUS             RESTARTS   AGE
-    amko-f776577b-5zpxh   0/1     ImagePullBackOff   0          15s
+    NAME                 READY   STATUS            RESTARTS   AGE
+    amko-f776577b-5zpxh   0/1   ImagePullBackOff   0          15s
 
 ##### Solution:
 
@@ -90,7 +90,7 @@ In order diagnose this problem please check the GSLBConfig object's status metho
 
     spec:
       gslbLeader:
-        controllerIP: 10.79.111.29
+        controllerIP: 10.10.10.10
         controllerVersion: 20.1.1
         credentials: gslb-avi-secret
       logLevel: DEBUG
@@ -137,7 +137,7 @@ For every log collection, also collect the following information:
 
     1. What kubernetes distribution are you using? For example: RKE, PKS etc.
     2. What is the CNI you are using with versions? For example: Calico v3.15
-    3. What is the Avi Controller version you are using? For example: 18.2.8
+    3. What is the Avi Controller version you are using? For example: 20.1.1
 
 ### How do I gather the AMKO logs?
 
