@@ -21,14 +21,14 @@ For Kubernetes clusters:
 | -------------- | ----------- |
 | Kubernetes     | 1.16+       |
 | AKO            | 0.9.1+      |
-| AVI Controller | 18.2.9-4p1  |
+| AVI Controller | 20.1.1      |
 
 For openshift clusters:
 | **Components** | **Version** |
 | -------------- | ----------- |
 | Openshift      | 4.4+        |
-| AKO            | 1.2.1-beta  |
-| AVI Controller | 18.2.9-4p1  |
+| AKO            | 1.2.1+      |
+| AVI Controller | 20.1.1      |
 
 #### Pre-requisites
 To kick-start AMKO, we need:
@@ -38,12 +38,12 @@ To kick-start AMKO, we need:
 4. Choose one of the kubernetes/openshift clusters where AMKO should be deployed. All the configs for `amko` will be added to this cluster. Let's call this cluster `cluster-amko` for further references.
 5. Create a namespace `avi-system` in `cluster-amko`:
    ```
-   kubectl create ns avi-system
+   $ kubectl create ns avi-system
    ```
 
 6. Create a kubeconfig file with the permissions to read the service and the ingress/route objects for all the member clusters. Follow [this tutorial](kubeconfig.md) to create a kubeconfig file with multi-cluster access. Name this file `gslb-members` and generate a secret with the kubeconfig file in `cluster-amko` by following:
    ```
-   kubectl create secret generic gslb-config-secret --from-file gslb-members -n avi-system
+   $ kubectl create secret generic gslb-config-secret --from-file gslb-members -n avi-system
    ```
 
 *Note* that the permissions provided in the kubeconfig file for all the clusters must have atleast the permissions to `[get, list, watch]` on:
@@ -59,43 +59,36 @@ The extra `update` permission is to update the `GSLBConfig` and `GlobalDeploymen
 
 1. Create the `avi-system` namespace:
    ```
-   kubectl create ns avi-system
+   $ kubectl create ns avi-system
    ```
 2. Add this repository to your helm client:
    ```
-   helm repo add amko https://avinetworks.github.io/avi-helm-charts/charts/incubator/amko
+   $ helm repo add amko https://avinetworks.github.io/avi-helm-charts/charts/stable/amko
    ```
    Use the `values.yaml` from this repository to provide values related to Avi configuration. Check [here](#parameters) for the required values.
 4. Search the available charts for AMKO:
    ```
-   helm search repo --devel
+   $ helm search repo
 
    NAME     	CHART VERSION    	APP VERSION      	DESCRIPTION
-   amko/amko	1.2.1-5039-beta-2	1.2.1-5039-beta-2	A helm chart for Avi Multicluster Kubernetes Operator
+   amko/amko	1.2.1	            1.2.1	            A helm chart for Avi Multicluster Kubernetes Operator
    ```
 5. Install AMKO:
    ```
-   helm install  amko/amko  --generate-name --version 1.2.1-5039-beta-2 -f values.yaml  --set configs.gsllbLeaderController=<leader_controller_ip> --namespace=avi-system
-
-   NAME: amko-1598451370
-   LAST DEPLOYED: Wed Aug 26 14:16:21 2020
-   NAMESPACE: avi-system
-   STATUS: deployed
-   REVISION: 1
-   TEST SUITE: None
-   NOTES:
-   1. Get the application URL by running these commands:
-     export POD_NAME=$(kubectl get pods --namespace avi-system -l "app.kubernetes.io/name=amko,app.kubernetes.io/   instance=amko-1598451370" -o jsonpath="{.items[0].metadata.name}")
-     echo "Visit http://127.0.0.1:8080 to use your application"
-     kubectl --namespace avi-system port-forward $POD_NAME 8080:80
+   $ helm install  amko/amko  --generate-name --version 1.2.1 -f values.yaml  --set configs.gsllbLeaderController=<leader_controller_ip> --namespace=avi-system
    ```
 6. Check the installation:
    ```
-   helm list -n avi-system
+   $ helm list -n avi-system
 
    NAME           	NAMESPACE 	REVISION	UPDATED                                	STATUS  	CHART                 	APP VERSION
-   amko-1598451370	avi-system	1       	2020-08-26 14:16:21.889538175 +0000 UTC	deployed	amko-1.2.1-5039-beta-2	1.2.1-5039-beta-2
+   amko-1598451370	avi-system	1       	2020-08-26 14:16:21.889538175 +0000 UTC	deployed	amko-1.2.1	            1.2.1
    ```
+
+#### Troubleshooting and Log collection
+If you face any issues during installing/configuring/using AMKO, see if your problem is listed in the troubleshooting [page](docs/troubleshooting.md).
+
+Follow [this](docs/troubleshooting.md#how-do-i-gather-the-amko-logs) to gather logs for tech-support in case of an unrecoverable failure.
 
 #### Uninstall using helm
 ```
@@ -113,7 +106,7 @@ kubectl delete ns avi-system
 #### parameters
 | **Parameter**                                    | **Description**                                                                                                          | **Default**                           |
 | ------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------ | ------------------------------------- |
-| `configs.controllerVersion`                      | GSLB leader controller version                                                                                           | 18.2.9                                |
+| `configs.controllerVersion`                      | GSLB leader controller version                                                                                           | 20.1.1                                |
 | `configs.gslbLeaderController`                         | GSLB leader site URL                                                                                                     | Nil                                   |
 | `gslbLeaderCredentials.username`         | GSLB leader controller username                                                                                          | `admin`                               |
 | `gslbLeaderCredentials.password`         | GSLB leader controller password                                                                                          |                               |
