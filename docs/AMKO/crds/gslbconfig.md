@@ -10,8 +10,8 @@ metadata:
 spec:
   gslbLeader:
     credentials: gslb-avi-secret
-    controllerVersion: 18.2.7
-    controllerIP: 10.79.171.1
+    controllerVersion: 20.1.1
+    controllerIP: 10.10.10.10
   memberClusters:
     - clusterContext: cluster1-admin
     - clusterContext: cluster2-admin
