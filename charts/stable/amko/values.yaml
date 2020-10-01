@@ -1,0 +1,76 @@
+# Default values for amko.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: avinetworks/amko
+  pullPolicy: IfNotPresent
+
+configs:
+  gslbLeaderController: ""
+  controllerVersion: "20.1.1"
+  memberClusters:
+    - clusterContext: "cluster1-admin"
+    - clusterContext: "cluster2-admin"
+  refreshInterval: 1800
+  logLevel: "INFO"
+
+gslbLeaderCredentials:
+  username: # Avi controller username
+  password: # Avi controller password
+
+globalDeploymentPolicy:
+  # appSelector takes the form of:
+  # appSelector:
+  #   label:
+  #     app: gslb   <example label key-value for an ingress/service type LB>
+  # Uncomment below and add the required ingress/route/service label
+  # appSelector:
+
+  # namespaceSelector takes the form of:
+  # namespaceSelector:
+  #   label:
+  #     ns: gslb   <example label key-value for namespace>
+  # Uncomment below and add the reuqired namespace label
+  # namespaceSelector:
+
+  # list of all clusters that the GDP object will be applied to, can take any/all values
+  # from .configs.memberClusters
+  matchClusters:
+    - "cluster1-admin"
+    - "cluster2-admin"
+
+  # list of all clusters and their traffic weights, if unspecified, default weights will be
+  # given (optional). Uncomment below to add the required trafficSplit.
+  # trafficSplit:
+  #   - cluster: "cluster1-admin"
+  #     weight: 8
+  #   - cluster: "cluster2-admin"
+  #     weight: 2
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name:
+
+resources:
+  limits:
+    cpu: 250m
+    memory: 300Mi
+  requests:
+    cpu: 100m
+    memory: 200Mi
+
+service:
+  type: ClusterIP
+  port: 80
+
+persistentVolumeClaim: ""
+mountPath: "/log"
+logFile: "amko.log"
