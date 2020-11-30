@@ -95,7 +95,7 @@ The first sorted sub-domain in chosen, so we recommend using this parameter if y
 ### ControllerSettings.controllerVersion
 
 This field is used to specify the Avi controller version. While AKO is backward compatible with most of the 18.2.x Avi controllers,
-the tested and preferred controller version is `18.2.8` 
+the tested and preferred controller version is `18.2.10` 
 
 ### ControllerSettings.controllerIP
 
