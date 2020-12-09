@@ -45,6 +45,9 @@ on an older version of calico where `blockaffinity` is not present, then leave t
 
 AKO will then determine the static routes based on the Kubernetes Nodes object as done with other CNIs. 
 
+### AKOSetttings.namespaceSelector.labelKey and AKOSetttings.namespaceSelector.labelValue
+
+AKO allows ingresses/routes from specific namespace/s to be synced to Avi controller. This key-value pair represent a label that is used by AKO to filter out namespace/s. If one of key/values specified empty, then ingresses/routes from all namespaces will be synched to Avi controller.
 
 ### NetworkSettings.nodeNetworkList
 
