@@ -176,7 +176,7 @@ Valid labelling of a namespace will sync ingresses/routes from that namespace wi
 
 Ingresses/Routes from namespaces, with no labels or invalid labels, will not be synched with Avi Controller.
 
-If user changes a label of a namespace from valid to invalid, then it will result in deleting pool, associated with ingresses/routes, from Avi controller. For example, let say label of 'red' namespace is changed from "app: migrate" (valid) to "app: migrate1" (invalid), then pool associated with, ingresses/routes of a namespace 'red', will be deleted from Avi Controller.
+If user changes a label of a namespace from valid to invalid, then it will result in pool deletion for an insecure ingress/route and a SNI VS deletion for a secure ingress/route from Avi controller. For example, let say label of 'red' namespace is changed from "app: migrate" (valid) to "app: migrate1" (invalid), then pools associated with, insecure ingresses/routes and SNI VSes associated with secure ingresses/routes of a namespace 'red', will be deleted from Avi Controller.
 
 If user changes label of a namespace from invalid to valid, then it will result in adding ingresses/routes of that namespace with Avi controller.
 
