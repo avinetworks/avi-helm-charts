@@ -140,6 +140,46 @@ In order to use this service across 2 paths, with each routing to a different po
 As you may note that the service ports in case of multi-port `Service` inside the ingress file are `strings` that match the port names of
 the `Service`. This is mandatory for this feature to work. 
 
+
+### Namespace Sync in AKO
+
+Namespace Sync feature allows the user to sync Ingresses/Routes from specific namespace/s to Avi controller.
+
+New parameters has been introduced as config options in AKO's values.yaml. To use this feature, set the value of these parametes to a non-empty string.
+
+| **Parameter** | **Description** | **Default** |
+| --- | --- | --- |
+| `AKOSettings.namespaceSelector.labelKey` | Key used as a label based selection for the namespaces. | empty |
+| `AKOSettings.namespaceSelector.labelValue` | Value used as a label based selection for the namespaces. | empty |
+
+Empty value to any one of the mentioned parameters will result in disabling namespace sync functionality and will result in syncing up ingresses/routes from all namespace with Avi controller. Any changes in values of these parameters will require AKO reboot.
+
+Once user boots up AKO with this setting, user has to label a namespace with same key:value pair mentioned in values of labelKey and labelValues. For example, if user has specified values as labelKey:"app" and labelValue: "migrate" in values.yaml, then user has to label namespace with "app: migrate".
+
+        apiVersion: v1
+        kind: Namespace
+        metadata:
+          creationTimestamp: "2020-12-04T13:20:42Z"
+          labels:
+            app: migrate
+          name: red
+          resourceVersion: "14055620"
+          selfLink: /api/v1/namespaces/red
+          uid: a424bf13-2f4a-4005-a84d-f2fb65acfda0
+        spec:
+          finalizers:
+          - kubernetes
+        status:
+          phase: Active
+
+Valid labelling of a namespace will sync ingresses/routes from that namespace with Avi controller.
+
+Ingresses/Routes from namespaces, with no labels or invalid labels, will not be synched with Avi Controller.
+
+If user changes a label of a namespace from valid to invalid, then it will result in deleting pool, associated with ingresses/routes, from Avi controller. For example, let say label of 'red' namespace is changed from "app: migrate" (valid) to "app: migrate1" (invalid), then pool associated with, ingresses/routes of a namespace 'red', will be deleted from Avi Controller.
+
+If user changes label of a namespace from invalid to valid, then it will result in adding ingresses/routes of that namespace with Avi controller.
+
 ### AKO created object naming conventions
 
 In the current AKO model, all kubernetes cluster objects are created on the `admin` tenant in Avi. This is true even for multiple kubernetes clusters managed through a single IaaS cloud in Avi (for example - vcenter cloud). This poses a challenge where each VS/Pool/PoolGroup is expected to be unique to ensure no conflicts between similar object types.
