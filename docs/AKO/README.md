@@ -164,6 +164,13 @@ AKO supports the following Layer 7 functions of the OpenShift Route object:
 5. Secure Routes of type passthrough
 6. Secure Routes with re-encrypt functionality
 
+### Default Secret for TLS Routes
+
+AKO supports TLS routes without key/cert specified in the Route spec. To use this feature, a secret with name `router-certs-default` has to be created in the same namespace where AKO pod is running (avi-system). The secret must have tls.crt and tls.key fields in its data section. For any TLS route with a missing key or cert in the spec, AKO would use this default secret to fetch key and cert values.
+
+For TLS routes with termination type reencrypt, the value of destinationCA has to be specified in the route spec itself.
+
+
 ### Node Port
 
 Service of type `NodePort` can be used to send traffic to the pods using nodeports.

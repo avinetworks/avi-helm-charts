@@ -213,8 +213,10 @@ Check if subdomain of the route is valid as per avi controller configuration
 
 Check for status of route. If you see a message `MultipleBackendsWithSameServiceError`, then same service has been added multiple times in the backends. This is a wrong configuration and the route configuration has to be changed.
 
-#### 4. The route which is not getting synced, is a secure route with edge/reencrypt termination
+#### 4. The route which is not getting synced, is a secure route.
 
-Check if both key and cert are specified in the route spec. If any one of these keys are missing, AKO would not sync the route.
+Check the following conditions:
+ - Both key and cert are specified in the route spec. 
+ - The default secret (router-certs-default) is present in Avi-System Namespace.
 
-    
+ If both of these conditions are false, AKO can't process a secure route correctly. Either the default secret has to be created in avi-system Namesapce, or key and cert have to be specified in the route spec.
