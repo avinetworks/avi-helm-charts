@@ -58,6 +58,14 @@ AKO supports dual arm deployment where the Virtual IP network can be on a differ
 
 These fields are used to specify the Virtual IP network details on which the user wants to place the Avi virtual services on.
 
+### NetworkSettings.enableRHI
+
+This feature allows the Avi Service Engines to publish the VIP to SE interface mapping to the upstream BGP peers. Using BGP, a virtual service enabled for RHI can be placed on up to 64 SEs within the SE group. Each SE uses RHI to advertise a /32 host route to the virtual service’s VIP address, and is able to accept the traffic. The upstream router uses ECMP to select a path to one of the SEs. Based on this update, the BGP peer connected to the Avi SE updates its route table to use the Avi SE as the next hop for reaching the VIP. The peer BGP router also advertises itself to its upstream BGP peers as a next hop for reaching the VIP.The BGP peer IP addresses, as well as the local Autonomous System (AS) number and a few other settings, are specified in a BGP profile on the Avi Controller.  
+
+This feature is available as a global setting is AKO which means if it's set to `true` then it would apply for all virtualservices created by AKO.
+
+Since RHI is an Layer 4 construct, the settings applies to all the host FQDNs patched as pools/SNI virtualservices to the parent shared virtualservice.
+
 ### L7Settings.shardVSSize
 
 AKO uses a sharding logic for Layer 7 ingress objects. A sharded VS involves hosting multiple insecure or secure ingresses hosted by
