@@ -217,6 +217,6 @@ Check for status of route. If you see a message `MultipleBackendsWithSameService
 
 Check the following conditions:
  - Both key and cert are specified in the route spec. 
- - The default secret (router-certs-default) is present in Avi-System Namespace.
+ - The default secret (router-certs-default) is present in avi-system Namespace.
 
  If both of these conditions are false, AKO can't process a secure route correctly. Either the default secret has to be created in avi-system Namesapce, or key and cert have to be specified in the route spec.
