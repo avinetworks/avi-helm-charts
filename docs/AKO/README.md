@@ -117,7 +117,7 @@ The following table lists the configurable parameters of the AKO chart and their
 | --------- | ----------- | ------- |
 | `ControllerSettings.controllerVersion` | Avi Controller version | 18.2.10 |
 | `ControllerSettings.controllerIP` | Specify Avi controller IP | `nil` |
-| `ControllerSettings.cloudName` | Name of the VCenter cloud managed in Avi | Default-Cloud |
+| `ControllerSettings.cloudName` | Name of the cloud managed in Avi | Default-Cloud |
 | `ControllerSettings.tenantsPerCluster` | Set to true if user want to map each kubernetes cluster uniquely to a tenant in Avi | false |
 | `ControllerSettings.tenantName` | Name of the tenant where all the AKO objects will be created in AVI. | admin |
 | `L7Settings.shardVSSize` | Shard VS size enum values: LARGE, MEDIUM, SMALL | LARGE |
@@ -143,6 +143,20 @@ The following table lists the configurable parameters of the AKO chart and their
 > `networkName`, `subnetIP` and `subnetPrefix` are required fields which are used for allocating VirtualService IP by IPAM Provider module
 
 > Each AKO instance mapped to a given Avi cloud should have a unique clusterName parameter. This would maintain the uniqueness of object naming across Kubernetes clusters.
+
+## AKO Operator
+If you want to install and manage the AKO Controller from one place, you should use the AKO Operator. The AKO Operator deploys and manages an instance of the AKO Controller.
+
+### Install and Manage AKO using the AKO operator
+Please follow [this](AKO_Operator.md) to:
+1. Install the AKO operator
+2. Deploy and manage the AKO controller using the AKO operator
+
+### Caveats with existing AKO installations
+AKO operator is not supported to work with the standalone deployments of AKO, via helm or otherwise (non-operator based installations). The reason for this is, the AKO Operator  completely manages the AKO controller and it's related artifacts. If users want to switch from a non-operator based deployment of AKO to AKO operator, follow these steps:
+1. Uninstall the existing AKO installation.
+2. Install the AKO operator (follow [this](AKO_Operator.md#Install-using-helm) for helm based installation).
+3. Deploy and manage the AKO controller via the operator (follow [this](AKO_Operator.md#AKOConfig-Custom-Resource)).
 
 ### AKO objects
 
