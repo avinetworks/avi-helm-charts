@@ -1,23 +1,25 @@
 This document outlines the object translation logic between AKO and the Avi controller. It's assumed that the reader is minimally versed with both
-Kubernetes object semantics and the Avi Object semantics. 
+Kubernetes object semantics and the Avi Object semantics.
 
 ### Service of type loadbalancer
 
 AKO creates a Layer 4 virtualservice object in Avi corresponding to a service of type loadbalancer in Kubernetes. Let's take an example of such a service object in Kubernetes:
 
-    apiVersion: v1
-    kind: Service
-    metadata:
-      name: avisvc-lb
-      namespace: red
-    spec:
-      type: LoadBalancer
-      ports:
-      - port: 80
-        targetPort: 8080
-        name: eighty
-      selector:
-        app: avi-server
+```
+apiVersion: v1
+kind: Service
+metadata:
+  name: avisvc-lb
+  namespace: red
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 8080
+    name: eighty
+  selector:
+    app: avi-server
+```
 
 AKO creates a dedicated virtual service for this object in kubernetes that refers to reserving a virtual IP for it. The layer 4 virtual service uses a pool section logic based on the ports configured on the service of type loadbalancer. In this case, the incoming port is port `80` and hence the virtual service listens on this ports for client requests. AKO selects the pods associated with this service as pool servers associated with the virtualservice.
 
@@ -25,20 +27,22 @@ AKO creates a dedicated virtual service for this object in kubernetes that refer
 
 Let's take an example of an insecure hostname specification from a Kubernetes ingress object:
 
-    apiVersion: networking.k8s.io/v1beta1
-    kind: Ingress
-    metadata:
-      name: my-ingress
-    spec:
-      rules:
-        - host: myinsecurehost.avi.internal
-          http:
-            paths:
-            - path: /foo
-              backend:
-                serviceName: service1
-                servicePort: 80
-              
+```
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: my-ingress
+spec:
+  rules:
+    - host: myinsecurehost.avi.internal
+      http:
+        paths:
+        - path: /foo
+          backend:
+            serviceName: service1
+            servicePort: 80
+```
+
 For insecure host/path combinations, AKO uses a Sharded VS logic where based on either the `namespace` of this ingress or the `hostname`
 value (`myhost.avi.internal`), a pool object is created on a Shared VS. A shared VS typically denotes a virtualservice in Avi that
 is shared across multiple ingresses. A priority label is associated on the poolgroup against it's member pool (that is created as a part of
@@ -54,23 +58,25 @@ be interpreted as - If the host header equals `myhost.avi.internal` and path `ST
 
 Let's take an example of a secure ingress object:
 
-    apiVersion: networking.k8s.io/v1beta1
-    kind: Ingress
-    metadata:
-      name: my-ingress
-    spec:
-      tls:
-      - hosts:
-        - myhost.avi.internal
-        secretName: testsecret-tls
-      rules:
-        - host: myhost.avi.internal
-          http:
-            paths:
-            - path: /foo
-              backend:
-                serviceName: service1
-                servicePort: 80
+```
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: my-ingress
+spec:
+  tls:
+  - hosts:
+    - myhost.avi.internal
+    secretName: testsecret-tls
+  rules:
+    - host: myhost.avi.internal
+      http:
+        paths:
+        - path: /foo
+          backend:
+            serviceName: service1
+            servicePort: 80
+```
 
 ##### SNI VS per secure hostname
 
@@ -96,50 +102,51 @@ A kubernetes service can have multiple ports. In order for a `Service` to have m
 Users could choose their ingress paths to route traffic to a specific port of the Service using this `name`. In order to understand the utility,
 consider the following Service:
 
-        apiVersion: v1
-        kind: Service
-        metadata:
-          labels:
-            run: my-svc
-        spec:
-          ports:
-          - name: myport1
-            port: 80
-            protocol: TCP
-            targetPort: 80
-          - name: myport2
-            port: 8080
-            protocol: TCP
-            targetPort: 8090
-          selector:
-            run: my-svc
-          sessionAffinity: None
-          type: ClusterIP
-
+```
+    apiVersion: v1
+    kind: Service
+    metadata:
+      labels:
+        run: my-svc
+    spec:
+      ports:
+      - name: myport1
+        port: 80
+        protocol: TCP
+        targetPort: 80
+      - name: myport2
+        port: 8080
+        protocol: TCP
+        targetPort: 8090
+      selector:
+        run: my-svc
+      sessionAffinity: None
+      type: ClusterIP
+```
 
 In order to use this service across 2 paths, with each routing to a different port, the Ingress spec should look like this:
 
-        spec:
-          rules:
-          - host: myhost.avi.internal
-            http:
-              paths:
-              - backend:
-                  serviceName: service1
-                  servicePort: myport1
-                path: /foo
-          - host: myhost.avi.internal
-            http:
-              paths:
-              - backend:
-                  serviceName: service1
-                  servicePort: myport2
-                path: /bar
-
+```
+    spec:
+      rules:
+      - host: myhost.avi.internal
+        http:
+          paths:
+          - backend:
+              serviceName: service1
+              servicePort: myport1
+            path: /foo
+      - host: myhost.avi.internal
+        http:
+          paths:
+          - backend:
+              serviceName: service1
+              servicePort: myport2
+            path: /bar
+```
 
 As you may note that the service ports in case of multi-port `Service` inside the ingress file are `strings` that match the port names of
-the `Service`. This is mandatory for this feature to work. 
-
+the `Service`. This is mandatory for this feature to work.
 
 ### Namespace Sync in AKO
 
@@ -148,7 +155,7 @@ Namespace Sync feature allows the user to sync Ingresses/Routes from specific na
 New parameters has been introduced as config options in AKO's values.yaml. To use this feature, set the value of these parametes to a non-empty string.
 
 | **Parameter** | **Description** | **Default** |
-| --- | --- | --- |
+| --------- | ----------- | ------- |
 | `AKOSettings.namespaceSelector.labelKey` | Key used as a label based selection for the namespaces. | empty |
 | `AKOSettings.namespaceSelector.labelValue` | Value used as a label based selection for the namespaces. | empty |
 
@@ -156,21 +163,23 @@ Empty value to any one of the mentioned parameters will result in disabling name
 
 Once user boots up AKO with this setting, user has to label a namespace with same key:value pair mentioned in values of labelKey and labelValues. For example, if user has specified values as labelKey:"app" and labelValue: "migrate" in values.yaml, then user has to label namespace with "app: migrate".
 
-        apiVersion: v1
-        kind: Namespace
-        metadata:
-          creationTimestamp: "2020-12-04T13:20:42Z"
-          labels:
-            app: migrate
-          name: red
-          resourceVersion: "14055620"
-          selfLink: /api/v1/namespaces/red
-          uid: a424bf13-2f4a-4005-a84d-f2fb65acfda0
-        spec:
-          finalizers:
-          - kubernetes
-        status:
-          phase: Active
+```
+    apiVersion: v1
+    kind: Namespace
+    metadata:
+      creationTimestamp: "2020-12-04T13:20:42Z"
+      labels:
+        app: migrate
+      name: red
+      resourceVersion: "14055620"
+      selfLink: /api/v1/namespaces/red
+      uid: a424bf13-2f4a-4005-a84d-f2fb65acfda0
+    spec:
+      finalizers:
+      - kubernetes
+    status:
+      phase: Active
+```
 
 Valid labelling of a namespace will sync ingresses/routes from that namespace with Avi controller.
 
@@ -190,7 +199,9 @@ AKO uses a combination of elements from each kubernetes objects to create a corr
 
 The formula to derive a VirtualService (vsName) is as follows:
 
-    vsName = clusterName + "--" + namespace + "-" + svcName`
+```
+vsName = clusterName + "--" + namespace + "-" + svcName`
+```
 
 `clusterName` is the value specified in values.yaml during install.
 `svcName` refers to the service object's name in kubernetes.
@@ -200,7 +211,9 @@ The formula to derive a VirtualService (vsName) is as follows:
 
 The following formula is used to derive the L4 pool names:
 
-    poolname = vsName + "-" + listener_port`
+```
+poolname = vsName + "-" + listener_port`
+```
 
 Here the `listener_port` refers to the service port on which the virtualservice listens on. As it can be intepreted that the number of pools will be directly associated with the number of listener ports configured in the kubernetes service object.
 
@@ -208,15 +221,18 @@ Here the `listener_port` refers to the service port on which the virtualservice 
 
 The poolgroup name formula for L4 virtualservices is as follows:
 
-    poolgroupname = vsName + "-" + listener_port`
-
+```
+poolgroupname = vsName + "-" + listener_port`
+```
 
 ##### Shared VS names
 
 The shared VS names are derived based on a combination of fields to keep it unique per kubernetes cluster. This is the only object in Avi that does not derive it's name from any of the kubernetes objects.
 
-    ShardVSName = clusterName + "--Shared-L7-" + <shardNum>
- 
+```
+ShardVSName = clusterName + "--Shared-L7-" + <shardNum>
+```
+
 `clusterName` is the value specified in values.yaml during install. "Shared-L7" is a constant identifier for Shared VSes
 `shardNum` is the number of the shared VS generated based on either hostname or namespace based shards.
 
@@ -224,7 +240,9 @@ The shared VS names are derived based on a combination of fields to keep it uniq
 
 The formula to derive the Shared VS pool is as follows:
 
-    poolgroupname = clusterName + "--" + priorityLabel + "-" + namespace + "-" + ingName
+```
+poolgroupname = clusterName + "--" + priorityLabel + "-" + namespace + "-" + ingName
+```
 
 Here the `priorityLabel` is a combination of the host/path combination specified in each rule of the kubernetes ingress object. `ingName` refers to the name of the ingress object while `namespace` refers to the namespace on which the ingress object is found in kubernetes.
 
@@ -232,7 +250,9 @@ Here the `priorityLabel` is a combination of the host/path combination specified
 
 The following is the formula to derive the Shared VS poolgroup name:
 
-    poolgroupname = vsName
+```
+poolgroupname = vsName
+```
 
 Name of the Shared VS Poolgroup is the same as the Shared VS name.
 
@@ -242,11 +262,15 @@ The SNI child VSes namings vary between different sharding options.
 
 ###### Hostname shard
 
-    vsName = clusterName + "--" + sniHostName
+```
+vsName = clusterName + "--" + sniHostName
+```
 
 ###### Namespace shard
 
-    vsName = clusterName + "--" + ingName + "-" + namespace + "-" + secret
+```
+vsName = clusterName + "--" + ingName + "-" + namespace + "-" + secret
+```
 
 The difference in naming is done because with namespace based sharding only one SNI child is created per ingress/per secret object while in hostname based sharding each SNI VS is unique to the hostname specified in the ingress object.
 
@@ -254,7 +278,9 @@ The difference in naming is done because with namespace based sharding only one 
 
 The formula to derive the SNI virtualservice's pools is as follows:
 
-    poolname = clusterName + "--" + namespace + "-" + host + "_" + path + "-" + ingName
+```
+poolname = clusterName + "--" + namespace + "-" + host + "_" + path + "-" + ingName
+```
 
 Here the `host` and `path` variables denote the secure hosts' hostname and path specified in the ingress object.
 
@@ -262,52 +288,57 @@ Here the `host` and `path` variables denote the secure hosts' hostname and path 
 
 The formula to derive the SNI virtualservice's poolgroup is as follows:
 
-    poolgroupname = clusterName + "--" + namespace + "-" + host + "_" + path + "-" + ingName
+```
+poolgroupname = clusterName + "--" + namespace + "-" + host + "_" + path + "-" + ingName
+```
 
 Some of these naming conventions can be used to debug/derive corresponding Avi object names that could prove as a tool for first level trouble shooting.
 
-
-### NodePort Mode 
+### NodePort Mode
 
 #### Insecure and Secure Ingress/Routes in NodePort mode
 
-    apiVersion: v1
-    kind: Service
-    metadata:
-      name: service1
-      namespace: default
-    spec:
-      type: NodePort
-      ports:
-      - port: 80
-        targetPort: 8080
-        nodePort: 31013
-        name: eighty
-      selector:
-        app: avi-server
+```
+apiVersion: v1
+kind: Service
+metadata:
+  name: service1
+  namespace: default
+spec:
+  type: NodePort
+  ports:
+  - port: 80
+    targetPort: 8080
+    nodePort: 31013
+    name: eighty
+  selector:
+    app: avi-server
+```
 
 In `NodePort` mode, Service `service1` should be of type `NodePort`. There is no change in naming of the objects of VS and pool. AKO populates the Pool server object with `node_ip:nodeport`. If there are 3 nodes in the cluster with Internal IP being `10.0.0.100, 10.0.0.101, 10.0.0.102` and assuming that there’s no node label selectors used, AKO populates pool server as: `10.0.0.100:31013, 10.0.0.101:31013, 10.0.0.101:31013`.
 
-If `service1` is of type `ClusterIP` in  NodePort mode. Pool servers will be empty for ingres/route referring to the service.
+If `service1` is of type `ClusterIP` in NodePort mode. Pool servers will be empty for ingres/route referring to the service.
 
 #### Service of type loadbalancer In NodePort mode
 
-Service of type `LoadBalancer` automatically creates a NodePort. AKO populates the pool server object with `node_ip:nodeport`. 
+Service of type `LoadBalancer` automatically creates a NodePort. AKO populates the pool server object with `node_ip:nodeport`.
 
-    apiVersion: v1
-    kind: Service
-    metadata:
-      name: avisvc-lb
-      namespace: red
-    spec:
-      type: LoadBalancer
-      ports:
-      - port: 80
-        targetPort: 8080
-        nodePort: 31013
-        name: eighty
-      selector:
-        app: avi-server
+```
+apiVersion: v1
+kind: Service
+metadata:
+  name: avisvc-lb
+  namespace: red
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 8080
+    nodePort: 31013
+    name: eighty
+  selector:
+    app: avi-server
+```
 
 In the above example, AKO creates a dedicated virtual service for this object in kubernetes that refers to reserving a virtual IP for it. If there are 3 nodes in the cluster with Internal IP being `10.0.0.100, 10.0.0.101, 10.0.0.102` and assuming that there’s no node label selectors used, AKO populates pool server as: `10.0.0.100:31013, 10.0.0.101:31013, 10.0.0.101:31013`.
 

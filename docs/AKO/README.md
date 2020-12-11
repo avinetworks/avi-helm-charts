@@ -3,114 +3,123 @@
 ### Run AKO
 
 AKO runs as a POD inside the Kubernetes cluster.
- 
+
 #### Pre-requisites
 
 To Run AKO you need the following pre-requisites:
- - ***Step 1***: Configure an Avi Controller with a vCenter [cloud](https://avinetworks.com/docs/18.2/installing-avi-vantage-for-vmware-vcenter/). The Avi Controller should be versioned 18.2.10 / 20.1.2 or later. 
 
- - ***Step 2***: 
-     - Make sure a PG network is part of the NS IPAM configured in the vCenter 
-
- - ***Step 3***: If your POD CIDRs are not routable:
-    - Create a Service Engine Group dedicated to a Kubernetes cluster.
-    
-    Data path flow is as described below:
-    
-    ![Alt text](data_path_flow.png?raw=true "Title")
-    
-    The markers in the drawing are described below:
-    
+* <i>**Step 1**</i>: Configure an Avi Controller with a vCenter [cloud](https://avinetworks.com/docs/18.2/installing-avi-vantage-for-vmware-vcenter/). The Avi Controller should be versioned 18.2.10 / 20.1.2 or later.
+* <i>**Step 2**</i>:
+    * Make sure a PG network is part of the NS IPAM configured in the vCenter
+* <i>**Step 3**</i>: If your POD CIDRs are not routable:
+Data path flow is as described below:
+![Alt text](data_path_flow.png?raw=true)
+The markers in the drawing are described below:
     1. The client requests a specified hostname/path.
-    2. The DNS VS returns an IP address corresponding to the hostname. 
+    2. The DNS VS returns an IP address corresponding to the hostname.
     3. The request is forwarded to the resolved IP address that corresponds to a Virtual IP hosted on an Avi Service Engine.
-       The destination IP in the packet is set as the POD IP address on which the application runs.
+    The destination IP in the packet is set as the POD IP address on which the application runs.
     4. Service Engines use the static route information to reach the POD IP via the next-hop address of the host on which the pod is running.
-    5. The pod responds and the request is sent back to the client. 
-      
- - ***Step 3.1***: If your POD CIDRs are routable then you can skip step 2. Ensure that you skip static route syncing in this case using the `disableStaticRouteSync` flag in the `values.yaml` of your helm chart.
- - ***Step 4:*** Kubernetes 1.16+.
- - ***Step 5:*** `helm` cli pointing to your kubernetes cluster.
- NOTE: We only support `helm 3`
+    5. The pod responds and the request is sent back to the client.
+    * Create a Service Engine Group dedicated to a Kubernetes cluster.
+* <i>**Step 3.1**</i>: If your POD CIDRs are routable then you can skip step 2. Ensure that you skip static route syncing in this case using the `disableStaticRouteSync` flag in the `values.yaml` of your helm chart.
+* <i>**Step 4:**</i> Kubernetes 1.16+.
+* <i>**Step 5:**</i> `helm` cli pointing to your kubernetes cluster.
+NOTE: We only support `helm 3`
 
 #### Install using *helm*
 
-  Step 1: Create the `avi-system` namespace:
+Step 1: Create the `avi-system` namespace:
 
-    kubectl create ns avi-system
+```
+kubectl create ns avi-system
+```
 
-  Step 2: Add this repository to your helm CLI
-    
-    helm repo add ako https://avinetworks.github.io/avi-helm-charts/charts/stable/ako
+Step 2: Add this repository to your helm CLI
 
-Use the `values.yaml` from this repository to edit values related to Avi configuration. Values and their corresponding index can be found [here](#parameters) 
+```
+helm repo add ako https://avinetworks.github.io/avi-helm-charts/charts/stable/ako
+```
 
-  Step 3: Search the available charts for AKO
+Use the `values.yaml` from this repository to edit values related to Avi configuration. Values and their corresponding index can be found [here](#parameters)
 
-    helm search repo
+Step 3: Search the available charts for AKO
 
-    NAME                 	CHART VERSION	APP VERSION	DESCRIPTION
-    ako/ako              	1.2.1        	1.2.1      	A helm chart for Avi Kubernetes Operator
-    
+```
+helm search repo
 
- Step 4: Install AKO
+NAME                 	CHART VERSION	APP VERSION	DESCRIPTION
+ako/ako              	1.2.1        	1.2.1      	A helm chart for Avi Kubernetes Operator
+```
 
-    helm install  ako/ako  --generate-name --version 1.2.1 -f values.yaml  --set ControllerSettings.controllerIP=<controller_ip> --set avicredentials.username=<avi-ctrl-username> --set avicredentials.password=<avi-ctrl-password> --namespace=avi-system
-      
-  Step 5: Check the installation
-  
-    helm list -n avi-system
-    
-    NAME          	NAMESPACE 	
-    ako-1593523840	avi-system	
+Step 4: Install AKO
 
+```
+helm install  ako/ako  --generate-name --version 1.2.1 -f values.yaml  --set ControllerSettings.controllerIP=<controller_ip> --set avicredentials.username=<avi-ctrl-username> --set avicredentials.password=<avi-ctrl-password> --namespace=avi-system
+```
 
+Step 5: Check the installation
 
+```
+helm list -n avi-system
+
+NAME          	NAMESPACE 	
+ako-1593523840	avi-system
+```
 
 #### Uninstall using *helm*
 
 Simply run:
 
-
 *Step1:*
 
-    helm delete <ako-release-name> -n avi-system
-    
- Note: the ako-release-name is obtained by doing helm list as shown in the previous step,
- 
-*Step 2:* 
+```
+helm delete <ako-release-name> -n avi-system
+```
 
-    kubectl delete ns avi-system
-    
+Note: the ako-release-name is obtained by doing helm list as shown in the previous step,
+
+*Step 2:*
+
+```
+kubectl delete ns avi-system
+```
+
 #### Upgrade AKO using *helm*
 
 If you are upgrading from an older AKO release then simply run the helm upgrade command. For example:
 
 *Step1*
 
-    helm list -n avi-system
-    
-    NAME          	NAMESPACE 	REVISION	UPDATED                             	STATUS  	CHART    	APP VERSION
-    ako-1593523840	avi-system	1       	2020-09-16 13:44:31.609195757 +0000 UTC	deployed	ako-1.1.1	1.1.1-9032
+```
+helm list -n avi-system
+
+NAME          	NAMESPACE 	REVISION	UPDATED                             	STATUS  	CHART    	APP VERSION
+ako-1593523840	avi-system	1       	2020-09-16 13:44:31.609195757 +0000 UTC	deployed	ako-1.1.1	1.1.1-9032
+```
 
 *Step2*
 
-    helm upgrade ako-1593523840 ako/ako -f values.yaml --version 1.2.1 --set ControllerSettings.controllerIP=<IP> --set avicredentials.password=<username> --set avicredentials.username=<username> --namespace=avi-system
-    
-Note: 
-- Seamless upgrade to version 1.2.1 is not supported. Before upgrading to 1.2.1, uninstall ako, delete all objects from AVI and install ako 1.2.1 using helm.
-- Do not delete the configmap avi-k8s-config manually, unless you are doing a complete helm uninstall. AKO pod has to be rebooted if you delete and recreate the avi-k8s-config configmap.
+```
+helm upgrade ako-1593523840 ako/ako -f values.yaml --version 1.2.1 --set ControllerSettings.controllerIP=<IP> --set avicredentials.password=<username> --set avicredentials.username=<username> --namespace=avi-system
+```
+
+Note:
+
+* Seamless upgrade to version 1.2.1 is not supported. Before upgrading to 1.2.1, uninstall ako, delete all objects from AVI and install ako 1.2.1 using helm.
+* Do not delete the configmap avi-k8s-config manually, unless you are doing a complete helm uninstall. AKO pod has to be rebooted if you delete and recreate the avi-k8s-config configmap.
 
 ## Parameters
-
 
 The following table lists the configurable parameters of the AKO chart and their default values. Please refer to this link for more details on [each parameter](values.md).
 
 | **Parameter** | **Description** | **Default** |
-| --- | --- | --- |
+| --------- | ----------- | ------- |
 | `ControllerSettings.controllerVersion` | Avi Controller version | 18.2.10 |
 | `ControllerSettings.controllerIP` | Specify Avi controller IP | `nil` |
 | `ControllerSettings.cloudName` | Name of the VCenter cloud managed in Avi | Default-Cloud |
+| `ControllerSettings.tenantsPerCluster` | Set to true if user want to map each kubernetes cluster uniquely to a tenant in Avi | false |
+| `ControllerSettings.tenantName` | Name of the tenant where all the AKO objects will be created in AVI. | admin |
 | `L7Settings.shardVSSize` | Shard VS size enum values: LARGE, MEDIUM, SMALL | LARGE |
 | `AKOSettings.fullSyncFrequency` | Full sync frequency | 1800 |
 | `L7Settings.defaultIngController` | AKO is the default ingress controller | true |
@@ -141,7 +150,7 @@ Please refer to this [page](objects.md) for details on how AKO interprets the Ku
 
 ### FAQ
 
-For some frequently asked question refer [here](faq.md) 
+For some frequently asked question refer [here](faq.md)
 
 ### AKO in Openshift Cluster
 
@@ -150,6 +159,7 @@ AKO can be used in openshift cluster to configure Routes and Services of type Lo
 #### Pre-requisites for running AKO in Openshift Cluster
 
 Follow the steps 1 to 2, given in section [Pre-requisites](https://github.com/avinetworks/avi-helm-charts/tree/master/docs/AKO#pre-requisites). Additionally, the following points have to be noted for openshift environment.
+
 1. Make Sure Openshift version is >= 4.4
 2. Openshift routes and services of type load balancer are supported in AKO
 3. Ingresses, if created in the openshift cluster won't be handled by AKO.
@@ -157,7 +167,9 @@ Follow the steps 1 to 2, given in section [Pre-requisites](https://github.com/av
 5. Set `state_based_dns_registration` to false in AVI cloud configuration. Follow the instructions mentioned in https://avinetworks.com/docs/20.1/dns-record-additions-independent-of-vs-state/.
 
 #### Features of Openshift Route supported in AKO
+
 AKO supports the following Layer 7 functions of the OpenShift Route object:
+
 1. Insecure Routes.
 2. Insecure Routes with alternate backends.
 3. Secure routes with edge termination policy.
@@ -169,18 +181,44 @@ AKO supports the following Layer 7 functions of the OpenShift Route object:
 
 Service of type `NodePort` can be used to send traffic to the pods using nodeports.
 
-This feature supports Ingress/Route attached to Service of type `NodePort`. Service of type LoadBalancer is also supported, since kubernetes populates `NodePort` by default. AKO will function either in `NodePort` mode or in `ClusterIP` mode. 
+This feature supports Ingress/Route attached to Service of type `NodePort`. Service of type LoadBalancer is also supported, since kubernetes populates `NodePort` by default. AKO will function either in `NodePort` mode or in `ClusterIP` mode.
 
 A new parameter serviceType has been introduced as config option in AKO's values.yaml. To use this feature, set the value of the parameter to **NodePort**.
 
 | **Parameter** | **Description** | **Default** |
-| --- | --- | --- |
+| --------- | ----------- | ------- |
 | `configs.serviceType` | Type of Service to be used as backend for Routes/Ingresses | ClusterIP |
 | `nodeSelectorLabels.key` | Key used as a label based selection for the nodes in NodePort mode. | empty |
 | `nodeSelectorLabels.value` | Value used as a label based selection for the nodes in NodePort mode. | empty |
 
 Kubernetes populates NodePort by default for service of type LoadBalancer. If config.serviceType is set to NodePort, AKO would use NodePort as backend for service of type Loadbalancer instead of using Endpoints, which is the default behaviour with config.serviceType set as ClusterIP.
 
-### AWS and Azure IaaS Cloud in NodePort mode of AKO
-Supports AWS and Azure IaaS cloud with Avi DNS.
+### Tenancy support in AKO
 
+This feature allows AKO to map each kubernetes / OpenShift cluster uniquely to a tenant in Avi. `ControllerSettings.tenantsPerCluster` needs to be set to `true` to enable this feature.
+
+#### Steps to enable Tenancy in AKO
+
+* Create seperate tenant for each cluster in AVI. For the below steps, lets assume `billing` tenant is created by the Avi controller admin.
+![Alt text](images/tenant_path.png?raw=true)
+* Click `create`
+![Alt text](images/new_tenant.png?raw=true)
+* Create the [`ako-admin`](roles/ako-admin.json) and[`ako-tenant`](roles/ako-tenant.json) roles which gives appropriate previliges to the ako user in `admin` and `billing` tenant.
+![Alt text](images/role_list.png?raw=true)
+* Create a new user for AKO in AVI under `Administration->Accounts->Tenants`
+![Alt text](images/user_path.png?raw=true)
+* Click `create`
+![Alt text](images/new_user.png?raw=true)
+* Assign [`ako-admin`](roles/ako-admin.json) and [`ako-tenant`](roles/ako-tenant.json) roles to admin and billing tenant respectively.
+![Alt text](images/new_user_role.png?raw=true)
+* In **AKO**, Set the `ControllerSettings.tenantsPerCluster` to `true` and `ControllerSettings.tenantName` to the tenant created in the earlier steps.
+* In **AKO**, Set the `avicredentials.username` and `avicredentials.password` to the user credentials created above.
+
+With the above settings AKO will map the `billing` cluster to the `billing` tenant and all the objects will be created in that tenant.
+
+Note:
+- In `NodePort` mode of AKO (when `L7Settings.serviceType` is set to `NodePort`), VRFContext permissions are not required in `admin` tenant in AVI Controller. 
+
+### AWS and Azure IaaS Cloud in NodePort mode of AKO
+
+Supports AWS and Azure IaaS cloud with Avi DNS.
