@@ -1,6 +1,6 @@
 ## AKOConfig Custom Resource
 
-This is what a sample AKOConfig looks like:
+The `AKOConfig` custom resource is used to deploy and manage the AKO controller and is meant to be consumed by the AKO operator. This is what a sample AKOConfig looks like:
 ```yaml
 apiVersion: ako.vmware.com/v1alpha1
 kind: AKOConfig
@@ -10,16 +10,16 @@ metadata:
   name: ako-sample
   namespace: avi-system
 spec:
-  imageRepository: "10.10.10.10/ako:latest"
+  imageRepository: "ako:latest"
   imagePullPolicy: "IfNotPresent"
   akoSettings:
-    logLevel: "INFO"
+    logLevel: "WARN"
     fullSyncFrequency: "1800"
     apiServerPort: 8080
     deleteConfig: false
     disableStaticRouteSync: false
     clusterName: "k8s-cluster"
-    cniPlugin: "calico"
+    cniPlugin: "antrea"
     namespaceSelector:
       labelKey: ""
       labelValue: ""
@@ -42,7 +42,7 @@ spec:
 
   controllerSettings:
     serviceEngineGroupName: "Default-Group"
-    controllerVersion: "20.1.1"
+    controllerVersion: "20.1.2"
     cloudName: "Default-Cloud"
     controllerIP: "10.10.10.11"
     tenantsPerCluster: false

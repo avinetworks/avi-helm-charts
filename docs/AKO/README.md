@@ -146,6 +146,7 @@ The following table lists the configurable parameters of the AKO chart and their
 
 ## AKO Operator
 If you want to install and manage the AKO Controller from one place, you should use the AKO Operator. The AKO Operator deploys and manages an instance of the AKO Controller.
+
 ### Install and Manage AKO using the AKO operator
 Please follow [this](AKO_Operator.md) to:
 1. Install the AKO operator
