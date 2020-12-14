@@ -9,7 +9,7 @@ A sample HTTPRule object looks like this:
     apiVersion: ako.vmware.com/v1alpha1
     kind: HTTPRule
     metadata:
-       name: my-http-rules
+       name: my-http-rule
        namespace: purple-l7
     spec:
       fqdn: foo.avi.internal
@@ -20,7 +20,7 @@ A sample HTTPRule object looks like this:
           hash: LB_ALGORITHM_CONSISTENT_HASH_SOURCE_IP_ADDRESS
         tls: ## This is a re-encrypt to pool
           type: reencrypt # Mandatory [re-encrypt]
-          sslProfile: "System-Default"
+          sslProfile: avi-ssl-profile
 
 __NOTE__ : The HTTPRule only applies to paths in the Ingress/Route objects which are specified in the same namespace as the HTTPRule CRD.
 
@@ -66,6 +66,15 @@ A sample setting with these fields would look like this:
  If the `hostHeader` is specified in any other case it's ignored.
  If the algorithm isn't `LB_ALGORITHM_CONSISTENT_HASH` then the `hash` field is ignored.
 
+#### Express health monitors
+HTTPRule CRD can be used to express health monitor references. The health monitor reference should have been created in the Avi Controller prior to this CRD creation.
+
+      healthMonitors:
+      - my-health-monitor-1
+      - my-health-monitor-2
+
+ The health monitors can be used to verify server health. A server (kubernetes pods in this case) will be marked UP only when all the health monitors return successful responses.
+
 #### Reencrypt traffic to the services
 
 While AKO can terminate TLS traffic, it also provides and option where the users can choose to re-encrypt the traffic between the Avi SE and the
@@ -73,9 +82,9 @@ backend application server. The following option is provided for `reencrypt`:
 
         tls: ## This is a re-encrypt to pool
           type: reencrypt # Mandatory [re-encrypt]
+          sslProfile: avi-ssl-profile
           
-If the `sslProfile` is not defined, AKO defaults to sslProfile `System-Standard` to exchange the tls parameters like TLS versions,
-ciphers etc.
+`sslProfile`, additionally, can be used to determine the set of SSL versions and ciphers to accept for SSL/TLS terminated connections. If the `sslProfile` is not defined, AKO defaults to sslProfile `System-Standard` defined in Avi.
 
 As a further enhancement, the HTTPRule CRD would also allow specification of a Destination CA, that could be used as a pki profile to validate
 the server certificates.
