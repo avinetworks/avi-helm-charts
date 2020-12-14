@@ -87,9 +87,17 @@ kubectl delete ns avi-system
 
 #### Upgrade AKO using *helm*
 
-If you are upgrading from an older AKO release then simply run the helm upgrade command. For example:
+Follow these steps if you are upgrading from an older AKO release.
 
 *Step1*
+
+Helm does not upgrade the CRDs during a release upgrade. Before you upgrade a release, run the following command to upgrade the CRDs:
+
+```
+kubectl apply -f https://github.com/avinetworks/avi-helm-charts/tree/master/charts/stable/ako/crds/
+```
+
+*Step2*
 
 ```
 helm list -n avi-system
@@ -98,7 +106,7 @@ NAME          	NAMESPACE 	REVISION	UPDATED                             	STATUS  
 ako-1593523840	avi-system	1       	2020-09-16 13:44:31.609195757 +0000 UTC	deployed	ako-1.1.1	1.1.1-9032
 ```
 
-*Step2*
+*Step3*
 
 ```
 helm upgrade ako-1593523840 ako/ako -f values.yaml --version 1.2.1 --set ControllerSettings.controllerIP=<IP> --set avicredentials.password=<username> --set avicredentials.username=<username> --namespace=avi-system
@@ -108,6 +116,7 @@ Note:
 
 * Seamless upgrade to version 1.2.1 is not supported. Before upgrading to 1.2.1, uninstall ako, delete all objects from AVI and install ako 1.2.1 using helm.
 * Do not delete the configmap avi-k8s-config manually, unless you are doing a complete helm uninstall. AKO pod has to be rebooted if you delete and recreate the avi-k8s-config configmap.
+* In order to update CRDs, make sure to run the `kubect apply` as mentioned above, before running helm upgrade. 
 
 ## Parameters
 
