@@ -73,7 +73,7 @@ HTTPRule CRD can be used to express health monitor references. The health monito
       - my-health-monitor-1
       - my-health-monitor-2
 
- The health monitors can be used to verify server health. A server (kubernetes pods in this case) will be marked UP only when all the health monitors return successful responses.
+ The health monitors can be used to verify server health. A server (kubernetes pods in this case) will be marked UP only when all the health monitors return successful responses. Health monitors provided here overwrite the default health monitor configuration set by AKO i.e. `System-TCP` for HTTP/TCP traffic and `System-UDP` for UDP traffic based on the ingress/service configuration.
 
 #### Reencrypt traffic to the services
 
