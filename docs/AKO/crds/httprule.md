@@ -24,6 +24,10 @@ A sample HTTPRule object looks like this:
         tls: ## This is a re-encrypt to pool
           type: reencrypt # Mandatory [re-encrypt]
           sslProfile: avi-ssl-profile
+          destinationCA:  |-
+            -----BEGIN CERTIFICATE-----
+            [...]
+            -----END CERTIFICATE-----
 
 __NOTE__ : The HTTPRule only applies to paths in the Ingress/Route objects which are specified in the same namespace as the HTTPRule CRD.
 
@@ -86,11 +90,14 @@ backend application server. The following option is provided for `reencrypt`:
         tls: ## This is a re-encrypt to pool
           type: reencrypt # Mandatory [re-encrypt]
           sslProfile: avi-ssl-profile
+          destinationCA:  |-
+            -----BEGIN CERTIFICATE-----
+            [...]
+            -----END CERTIFICATE-----
           
 `sslProfile`, additionally, can be used to determine the set of SSL versions and ciphers to accept for SSL/TLS terminated connections. If the `sslProfile` is not defined, AKO defaults to sslProfile `System-Standard` defined in Avi.
 
-As a further enhancement, the HTTPRule CRD would also allow specification of a Destination CA, that could be used as a pki profile to validate
-the server certificates.
+In case of reencrypt, if `destinationCA` is specified in the HTTPRule CRD, as shown in the example, a corresponding PKI profile is created for that pool (host path combination).
 
 #### Status Messages
 

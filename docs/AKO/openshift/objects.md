@@ -108,7 +108,7 @@ The formula to derive the SNI virtualservice's pools for route is as follows:
           [...]
           -----END CERTIFICATE-----
 
-In case case of reencrypt, an SNI VS is created for each hostname and for each host/path combination corresponds to a PoolGroup in Avi. Ssl is enabled in each pool for such Virtualservices with SSL profile set to System-Standard. In additon, if destinationCACertificate is specified, a PKI profile with the destinationCACertificate is created for each pool. 
+In case of reencrypt, an SNI VS is created for each hostname and for each host/path combination corresponds to a PoolGroup in Avi. Ssl is enabled in each pool for such Virtualservices with SSL profile set to System-Standard. In additon, if destinationCACertificate is specified, a PKI profile with the destinationCACertificate is created for each pool. 
 
 
 ### Secure Route insecureEdgeTerminationPolicy Redirect:
