@@ -15,6 +15,9 @@ A sample HTTPRule object looks like this:
       fqdn: foo.avi.internal
       paths:
       - target: /foo
+        healthMonitors:
+        - my-health-monitor-1
+        - my-health-monitor-2
         loadBalancerPolicy:
           algorithm: LB_ALGORITHM_CONSISTENT_HASH
           hash: LB_ALGORITHM_CONSISTENT_HASH_SOURCE_IP_ADDRESS
