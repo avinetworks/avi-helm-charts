@@ -239,7 +239,7 @@ vsName = clusterName + "--" + namespace + "-" + svcName`
 The following formula is used to derive the L4 pool names:
 
 ```
-poolname = vsName + "-" + listener_port`
+poolName = vsName + "-" + listener_port`
 ```
 
 Here the `listener_port` refers to the service port on which the virtualservice listens on. As it can be intepreted that the number of pools will be directly associated with the number of listener ports configured in the kubernetes service object.
@@ -268,7 +268,7 @@ ShardVSName = clusterName + "--Shared-L7-" + <shardNum>
 The formula to derive the Shared VS pool is as follows:
 
 ```
-poolgroupname = clusterName + "--" + priorityLabel + "-" + namespace + "-" + ingName
+poolName = clusterName + "--" + priorityLabel + "-" + namespace + "-" + ingName
 ```
 
 Here the `priorityLabel` is a combination of the host/path combination specified in each rule of the kubernetes ingress object. `ingName` refers to the name of the ingress object while `namespace` refers to the namespace on which the ingress object is found in kubernetes.
@@ -306,7 +306,7 @@ The difference in naming is done because with namespace based sharding only one 
 The formula to derive the SNI virtualservice's pools is as follows:
 
 ```
-poolname = clusterName + "--" + namespace + "-" + host + "_" + path + "-" + ingName
+poolName = clusterName + "--" + namespace + "-" + host + "_" + path + "-" + ingName
 ```
 
 Here the `host` and `path` variables denote the secure hosts' hostname and path specified in the ingress object.
@@ -320,6 +320,14 @@ poolgroupname = clusterName + "--" + namespace + "-" + host + "_" + path + "-" +
 ```
 
 Some of these naming conventions can be used to debug/derive corresponding Avi object names that could prove as a tool for first level trouble shooting.
+
+##### Pool pkiprofile names
+
+The formula to derive the pool's PKIprofile is as follows:
+
+```
+pkiprofilenam = poolName + "-pkiprofile"
+```
 
 ### NodePort Mode
 
