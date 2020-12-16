@@ -45,7 +45,7 @@ For more details refer to this [document](https://avinetworks.com/docs/20.1/conf
 
 ##### Routing in GCP Two-Arm Mode with the same backend subnet
 
-When multiple clusters are syncing to the same cloud the POD CIDR’s can overlap.  Currently, In AKO for each cluster, SE Group is created. In addition to Service Engine Group each cluster should be in unique VPC in GCP cloud. This config is supplied in the Service Engine Group during the cloud setup by the admin.
+When multiple clusters are syncing to the same cloud the POD CIDR’s can overlap. Currently, In AKO for each cluster, SE Group is created. In addition to Service Engine Group each cluster should be in unique VPC in GCP cloud. This config is supplied in the Service Engine Group during the cloud setup by the admin.
 
 ![Alt text](images/public_cloud/gcp_routing.png?raw=true)
 
@@ -57,13 +57,13 @@ Following lists the Day 0 preparation work required to set up AKO in GCP
 
 #### GCP Side Preparation
 
-* Kubernetes clusters hosted in GCP are already running applications connected to the backend VPC subnet.
+* Kubernetes / Openshift clusters running in their own dedicated VPC.
 * Kubernetes and Openshift cluster node VM’s should have **IP forwarding** enabled in the [GCP VM's](https://cloud.google.com/vpc/docs/using-routes#canipforward).
-* Create a dedicated backend VPC  for each of the clusters.
+* Create a dedicated backend VPC for each of the clusters.
 
 #### AVI side preparation
 
-* Create an GCP cloud in Avi.  Skip this step if the IaaS cloud is already created.
+* Create a GCP cloud in Avi. Skip this step if the IaaS cloud is already created.
 * Create a Service Engine group for each cluster.
 * Override the backend vpc subnet in each of the SEG.
   * If there are two clusters `cluster1` and `cluster2`
@@ -78,7 +78,7 @@ This section covers the support for ClusterIP mode support for Azure IaaS cloud 
 
 ### Routing in Azure with two Kubernetes clusters syncing to the same Azure Cloud
 
-When multiple clusters are syncing to the same cloud the POD CIDR’s can overlap.  Currently, In AKO for each cluster, SE Group is created. For Azure cloud in addition to the creation of an SE group, SE Network/ subnet needs to be overridden in the SE group which will be a unique per cluster
+When multiple clusters are syncing to the same cloud the POD CIDR’s can overlap. Currently, In AKO for each cluster, SE Group is created. For Azure cloud in addition to the creation of an SE group, SE Network/ subnet needs to be overridden in the SE group which will be a unique per cluster
 
 ![Alt text](images/public_cloud/azure_routing.png?raw=true)
 
@@ -90,17 +90,20 @@ Following lists the Day 0 preparation work required to set up AKO in Azure
 
 #### Azure Side Preparation
 
-* Kubernetes clusters hosted in Azure are already running applications in the same VNET.
-* Create a dedicated subnet for each of the clusters in **VNET1** for SE to be provisioned in.
-  * `subnet1` and `subnet2` are created for `cluster1` and `cluster2` respectively
+* Kubernetes / Openshift clusters running in Azure.
+  * The clusters need to be in same **VNET** as the SE.
+* Create a dedicated subnet for each of the clusters in **VNET** for SE to be provisioned in.
+    * `subnet1` and `subnet2` are created for `cluster1` and `cluster2` respectively
 * Create Route Table in Azure for each subnet created above and associate it to the SE subnet.
   * Create `RouteTable1` and `RouteTable2` and associate to `subnet1` and `subnet2` respectively.
 * Configure NSG Rules in kubernetes cluster’s subnet to allow traffic from SE Subnet.
 * Give permissions to tha AVI cloud credential to write on route tables.
+  * Avi Controller role for the AKO [`avi-controller-ako`](roles/avicontroller-ako.json)
+  * Use the above role to configure the cloud in the Avi. Details for the same are in this [link](https://avinetworks.com/docs/20.1/role-setup-for-installation-into-microsoft-azure/).
 
 #### AVI side preparation
 
-* Create an GCP cloud in Avi.  Skip this step if the IaaS cloud is already created.
+* Create an Azure cloud in Avi. Skip this step if the IaaS cloud is already created.
 * Create a Service Engine group for each cluster.
 * Override the backend vpc subnet in each of the SEG.
   * If there are two clusters `cluster1` and `cluster2`

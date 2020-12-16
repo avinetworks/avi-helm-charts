@@ -90,7 +90,7 @@
         "resource": "PERMISSION_PINGACCESSAGENT"
     },
     {
-        "type": "READ_ACCESS",
+        "type": "WRITE_ACCESS",
         "resource": "PERMISSION_PKIPROFILE"
     },
     {

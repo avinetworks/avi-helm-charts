@@ -4,11 +4,11 @@ This feature allows AKO to map each kubernetes / OpenShift cluster uniquely to a
 
 ## Steps to enable Tenancy in AKO
 
-* Create seperate tenant for each cluster in AVI. For the below steps, lets assume `billing` tenant is created by the Avi controller admin.
+* Create separate tenant for each cluster in AVI. For the below steps, lets assume `billing` tenant is created by the Avi controller admin.
 ![Alt text](images/tenant_path.png?raw=true)
 * Click `create`
 ![Alt text](images/new_tenant.png?raw=true)
-* Create the [`ako-admin`](roles/ako-admin.json) and[`ako-tenant`](roles/ako-tenant.json) roles which gives appropriate previliges to the ako user in `admin` and `billing` tenant.
+* Create the [`ako-admin`](roles/ako-admin.json) and [`ako-tenant`](roles/ako-tenant.json) roles which gives appropriate privileges to the ako user in `admin` and `billing` tenant.
 ![Alt text](images/role_list.png?raw=true)
 * Create a new user for AKO in AVI under `Administration->Accounts->Tenants`
 ![Alt text](images/user_path.png?raw=true)
