@@ -23,6 +23,33 @@ spec:
 
 AKO creates a dedicated virtual service for this object in kubernetes that refers to reserving a virtual IP for it. The layer 4 virtual service uses a pool section logic based on the ports configured on the service of type loadbalancer. In this case, the incoming port is port `80` and hence the virtual service listens on this ports for client requests. AKO selects the pods associated with this service as pool servers associated with the virtualservice.
 
+#### Service of type loadbalancer with preferred IP
+
+Kubernetes' service objects allow controllers/cloud providers to create services with user-specified IPs using the `loadBalancerIP` field. AKO supports the `loadBalancerIP` field usage where-in the corresponding Layer 4 virtualservice objects are created with the user provided IP. Example usage for this could look something like this:
+
+```
+apiVersion: v1
+kind: Service
+metadata:
+  name: avisvc-lb
+  namespace: red
+spec:
+  loadBalancerIP: 10.10.10.11
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 8080
+    name: eighty
+  selector:
+    app: avi-server
+```
+
+Avi does not allow users to update preferred virtual IPs bound to a particular virtualservice. Therefore in order to update the user preferred IP, it is required to re-create the Service object, failing which Avi/AKO throws an error. The following transition cases should be kept in mind, and for these, an explicit Service re-create with changed configuration is required.
+ - updating loadBalancerIP value, from `loadBalancerIP: 10.10.10.11` to `loadBalancerIP: 10.10.10.22`.
+ - adding `loadBalancerIP` value after the Service is assigned an IP from Avi.
+ - removing `loadBalancerIP` value after the Service is assigned an IP from Avi.
+Recreating the Service object deletes the Layer 4 virtualservice in Avi, frees up the applied virtual IP and post that the Service creation with update configuration should result in the intended virtualservice configuration.
+
 ### Insecure Ingress.
 
 Let's take an example of an insecure hostname specification from a Kubernetes ingress object:
