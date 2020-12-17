@@ -85,7 +85,7 @@ helm upgrade ako-1593523840 ako/ako -f values.yaml --version 1.2.1 --set Control
 
 ## Parameters
 
-The following table lists the configurable parameters of the AKO chart and their default values. Please refer to this link for more details on [each parameter](values.md).
+The following table lists the configurable parameters of the AKO chart and their default values. Please refer to this link for more details on [each parameter](../values.md).
 
 | **Parameter** | **Description** | **Default** |
 | --------- | ----------- | ------- |
