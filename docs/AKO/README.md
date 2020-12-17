@@ -199,6 +199,10 @@ Please refer to this [page](public_clouds.md) for details on support for Cluster
 
 Please refer to this [page](ako_tenancy.md) for support in AKO to map each kubernetes / OpenShift cluster uniquely to a tenant in Avi.
 
+### Networking/v1 Ingress Support
+
+Please refer to this [page](ingress/README.md) for details on how AKO supports and implements networking/v1 Ingress and IngressClass.
+
 ### AKO objects
 
 Please refer to this [page](objects.md) for details on how AKO interprets the Kubernetes objects and translates them to Avi objects.

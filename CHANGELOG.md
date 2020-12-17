@@ -72,5 +72,5 @@ All notable changes to this project will be documented in this file. The format 
  - Global RHI support.
  - AKO support for avi controller object deletion updates via statefulset conditions.
  - AKO support for multiple new fields in HTTPRule/HostRule CRD.
- - Tolerance support for Ingress 1.19
+ - Tolerance support for networking/v1 Ingress in k8s 1.19
  
