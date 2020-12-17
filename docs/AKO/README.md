@@ -31,6 +31,8 @@ NOTE: We only support `helm 3`
 
 For instructions on installing AKO using helm please use this [link](install/helm.md)
 
+### Install AKO using AKO Operator
+
 For instructions on installing AKO using the AKO operator, please use this [link](install/operator.md)
 
 #### IMPORTANT: Existing installations using helm migrating to AKO operator
