@@ -107,11 +107,11 @@ The first sorted sub-domain in chosen, so we recommend using this parameter if y
 This field is used to specify the Avi controller version. While AKO is backward compatible with most of the 18.2.x Avi controllers,
 the tested and preferred controller version is `18.2.10`
 
-### ControllerSettings.controllerIP
+### ControllerSettings.controllerHost
 
 This field is usually not present in the `value.yaml` by default but can be provided with the `helm` install command to specify
-the Avi Controller's IP address. If you are using a containerized deployment of the controller, pls use a fully qualified controler
-IP address/FQDN. For example, if the controller is hosted on 8443, then controllerIP should: `x.x.x.x:8443`
+the Avi Controller's IP address or Hostname. If you are using a containerized deployment of the controller, pls use a fully qualified controller
+IP address/FQDN. For example, if the controller is hosted on 8443, then controllerHost should: `x.x.x.x:8443`
 
 ### ControllerSettings.cloudName
 

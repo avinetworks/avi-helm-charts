@@ -55,7 +55,7 @@ ako/ako              	1.2.1        	1.2.1      	A helm chart for Avi Kubernetes 
 Step 4: Install AKO
 
 ```
-helm install  ako/ako  --generate-name --version 1.2.1 -f values.yaml  --set ControllerSettings.controllerIP=<controller_ip> --set avicredentials.username=<avi-ctrl-username> --set avicredentials.password=<avi-ctrl-password> --namespace=avi-system
+helm install  ako/ako  --generate-name --version 1.2.1 -f values.yaml  --set ControllerSettings.controllerHost=<controller IP or Hostname> --set avicredentials.username=<avi-ctrl-username> --set avicredentials.password=<avi-ctrl-password> --namespace=avi-system
 ```
 
 Step 5: Check the installation
@@ -109,7 +109,7 @@ ako-1593523840	avi-system	1       	2020-09-16 13:44:31.609195757 +0000 UTC	deplo
 *Step3*
 
 ```
-helm upgrade ako-1593523840 ako/ako -f values.yaml --version 1.2.1 --set ControllerSettings.controllerIP=<IP> --set avicredentials.password=<username> --set avicredentials.username=<username> --namespace=avi-system
+helm upgrade ako-1593523840 ako/ako -f values.yaml --version 1.2.1 --set ControllerSettings.controllerHost=<IP or Hostname> --set avicredentials.password=<username> --set avicredentials.username=<username> --namespace=avi-system
 ```
 
 Note:
@@ -125,7 +125,7 @@ The following table lists the configurable parameters of the AKO chart and their
 | **Parameter** | **Description** | **Default** |
 | --------- | ----------- | ------- |
 | `ControllerSettings.controllerVersion` | Avi Controller version | 18.2.10 |
-| `ControllerSettings.controllerIP` | Specify Avi controller IP | `nil` |
+| `ControllerSettings.controllerHost` | Specify Avi controller IP or Hostname | `nil` |
 | `ControllerSettings.cloudName` | Name of the cloud managed in Avi | Default-Cloud |
 | `ControllerSettings.tenantsPerCluster` | Set to true if user want to map each kubernetes cluster uniquely to a tenant in Avi | false |
 | `ControllerSettings.tenantName` | Name of the tenant where all the AKO objects will be created in AVI. | admin |

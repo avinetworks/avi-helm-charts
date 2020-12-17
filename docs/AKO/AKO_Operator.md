@@ -36,7 +36,7 @@ Use the `values.yaml` from this repository to edit values related to Avi configu
 
  Step 4: Install AKO Operator
 
-    helm install  ako/ako-operator  --generate-name --version 1.3.1 -f values.yaml  --set ControllerSettings.controllerIP=<controller_ip> --set avicredentials.username=<avi-ctrl-username> --set avicredentials.password=<avi-ctrl-password> --namespace=avi-system
+    helm install  ako/ako-operator  --generate-name --version 1.3.1 -f values.yaml  --set ControllerSettings.controllerHost=<controller IP or Hostname> --set avicredentials.username=<avi-ctrl-username> --set avicredentials.password=<avi-ctrl-password> --namespace=avi-system
 
   Step 5: Check the installation
 
@@ -78,7 +78,7 @@ The following table lists the configurable parameters of the AKO chart and their
 | `operatorImage.repository` | Specify docker-registry that has the ako operator image | avinetworks/ako-operator |
 | `operatorImage.pullPolicy` | Specify when and how to pull the ako-operator's image | avinetworks/ako-operator |
 | `ControllerSettings.controllerVersion` | Avi Controller version | 18.2.10 |
-| `ControllerSettings.controllerIP` | Specify Avi controller IP | `nil` |
+| `ControllerSettings.controllerHost` | Specify Avi controller IP or Hostname | `nil` |
 | `ControllerSettings.cloudName` | Name of the cloud managed in Avi | Default-Cloud |
 | `L7Settings.shardVSSize` | Shard VS size enum values: LARGE, MEDIUM, SMALL | LARGE |
 | `AKOSettings.fullSyncFrequency` | Full sync frequency | 1800 |
