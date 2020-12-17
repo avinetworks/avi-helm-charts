@@ -54,3 +54,23 @@ All notable changes to this project will be documented in this file. The format 
 
  ### Removed:
  - VRF context support deprecated.
+ 
+ ## AKO-1.3.1
+
+### Changed:
+ - AKO support for IPAM without specification of networkName.
+ - AKO support for controller credential change.
+
+### Added:
+ - AKO tenancy support. 
+ - AKO operator feature.
+ - AKO public cloud with ClusterIP support for GCP/Azure.
+ - AKO support for GKE/AKS/EKS.
+ - AKO selective namespace sync for Ingress/Route.
+ - AKO support for static IP using LoadbalancerIP for L4.
+ - OpenShift wildcard certificate support.
+ - Global RHI support.
+ - AKO support for avi controller object deletion updates via statefulset conditions.
+ - AKO support for multiple new fields in HTTPRule/HostRule CRD.
+ - Tolerance support for Ingress 1.19
+ 
