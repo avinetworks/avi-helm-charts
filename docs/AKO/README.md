@@ -10,7 +10,7 @@ To Run AKO you need the following pre-requisites:
 
 * <i>**Step 1**</i>: Configure an Avi Controller with a vCenter [cloud](https://avinetworks.com/docs/18.2/installing-avi-vantage-for-vmware-vcenter/). The Avi Controller should be versioned 18.2.10 / 20.1.2 or later.
 * <i>**Step 2**</i>:
-    * Make sure a PG network is part of the NS IPAM configured in the vCenter
+  * Make sure a PG network is part of the NS IPAM configured in the vCenter
 * <i>**Step 3**</i>: If your POD CIDRs are not routable:
 Data path flow is as described below:
 ![Alt text](data_path_flow.png?raw=true)
@@ -21,7 +21,7 @@ The markers in the drawing are described below:
     The destination IP in the packet is set as the POD IP address on which the application runs.
     4. Service Engines use the static route information to reach the POD IP via the next-hop address of the host on which the pod is running.
     5. The pod responds and the request is sent back to the client.
-    * Create a Service Engine Group dedicated to a Kubernetes cluster.
+  * Create a Service Engine Group dedicated to a Kubernetes cluster.
 * <i>**Step 3.1**</i>: If your POD CIDRs are routable then you can skip step 2. Ensure that you skip static route syncing in this case using the `disableStaticRouteSync` flag in the `values.yaml` of your helm chart.
 * <i>**Step 4:**</i> Kubernetes 1.16+.
 * <i>**Step 5:**</i> `helm` cli pointing to your kubernetes cluster.
@@ -187,35 +187,17 @@ A new parameter serviceType has been introduced as config option in AKO's values
 
 Kubernetes populates NodePort by default for service of type LoadBalancer. If config.serviceType is set to NodePort, AKO would use NodePort as backend for service of type Loadbalancer instead of using Endpoints, which is the default behaviour with config.serviceType set as ClusterIP.
 
-### Tenancy support in AKO
-
-This feature allows AKO to map each kubernetes / OpenShift cluster uniquely to a tenant in Avi. `ControllerSettings.tenantsPerCluster` needs to be set to `true` to enable this feature.
-
-#### Steps to enable Tenancy in AKO
-
-* Create seperate tenant for each cluster in AVI. For the below steps, lets assume `billing` tenant is created by the Avi controller admin.
-![Alt text](images/tenant_path.png?raw=true)
-* Click `create`
-![Alt text](images/new_tenant.png?raw=true)
-* Create the [`ako-admin`](roles/ako-admin.json) and[`ako-tenant`](roles/ako-tenant.json) roles which gives appropriate previliges to the ako user in `admin` and `billing` tenant.
-![Alt text](images/role_list.png?raw=true)
-* Create a new user for AKO in AVI under `Administration->Accounts->Tenants`
-![Alt text](images/user_path.png?raw=true)
-* Click `create`
-![Alt text](images/new_user.png?raw=true)
-* Assign [`ako-admin`](roles/ako-admin.json) and [`ako-tenant`](roles/ako-tenant.json) roles to admin and billing tenant respectively.
-![Alt text](images/new_user_role.png?raw=true)
-* In **AKO**, Set the `ControllerSettings.tenantsPerCluster` to `true` and `ControllerSettings.tenantName` to the tenant created in the earlier steps.
-* In **AKO**, Set the `avicredentials.username` and `avicredentials.password` to the user credentials created above.
-
-With the above settings AKO will map the `billing` cluster to the `billing` tenant and all the objects will be created in that tenant.
-
-Note:
-- In `NodePort` mode of AKO (when `L7Settings.serviceType` is set to `NodePort`), VRFContext permissions are not required in `admin` tenant in AVI Controller. 
-
 ### AWS and Azure IaaS Cloud in NodePort mode of AKO
 
 Supports AWS and Azure IaaS cloud with Avi DNS.
+
+### AKO in Public Clouds
+
+Please refer to this [page](public_clouds.md) for details on support for ClusterIP mode for GCP and Azure IaaS cloud in Avi Controller.
+
+### Tenancy in AKO
+
+Please refer to this [page](ako_tenancy.md) for support in AKO to map each kubernetes / OpenShift cluster uniquely to a tenant in Avi.
 
 ### AKO objects
 
@@ -224,4 +206,5 @@ Please refer to this [page](objects.md) for details on how AKO interprets the Ku
 ### FAQ
 
 For some frequently asked question refer [here](faq.md) 
+
 

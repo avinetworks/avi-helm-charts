@@ -1,16 +1,22 @@
 # AKO Operator
+
 ## Overview
+
 This is an operator which is used to deploy, manage and remove an instance of the AKO controller. This operator when deployed creates an instance of the AKO controller and installs all the relevant objects like:
+
 1. AKO statefulset
 2. Clusterrole and Clusterrolbinding
 3. Configmap required for the AKO controller
 and other artifacts.
 
 ## Run AKO Operator
+
 ### Pre-requisites
+
 This is one of the ways to install the AKO controller. So, all the [pre-requisites](README.md#pre-requisites) that apply for installation of standalone AKO are also applicable for the AKO operator as well.
 
 #### Install using helm
+
   Step 1: Create the `avi-system` namespace:
 
     kubectl create ns avi-system
@@ -25,22 +31,22 @@ Use the `values.yaml` from this repository to edit values related to Avi configu
 
     helm search repo
 
-    NAME                 	        CHART VERSION	APP VERSION	DESCRIPTION
-    ako/ako-operator              1.3.1         1.3.1      	A helm chart for AKO Operator
-
+    NAME                          CHART VERSION APP VERSION DESCRIPTION
+    ako/ako-operator              1.3.1         1.3.1       A helm chart for AKO Operator
 
  Step 4: Install AKO Operator
 
     helm install  ako/ako-operator  --generate-name --version 1.3.1 -f values.yaml  --set ControllerSettings.controllerIP=<controller_ip> --set avicredentials.username=<avi-ctrl-username> --set avicredentials.password=<avi-ctrl-password> --namespace=avi-system
-      
+
   Step 5: Check the installation
 
     helm list -n avi-system
 
-    NAME          	            NAMESPACE
-    ako-operator-2889212993	    avi-system
+    NAME                       NAMESPACE
+    ako-operator-2889212993     avi-system
 
 **Note** that installing the AKO operator via `helm` will also add a `AKOConfig` object which in turn, will prompt the AKO operator to deploy the AKO controller. Please see [this](#AKOConfig-Custom-Resource) to know more about the `AKOConfig` object and how to manage the AKO controller using this object. List of CRDs added by the AKO operator installation:
+
 1. AKOConfig
 2. HostRule
 3. HTTPRule
@@ -97,17 +103,19 @@ The following table lists the configurable parameters of the AKO chart and their
 
 > Each AKO instance mapped to a given Avi cloud should have a unique clusterName parameter. This would maintain the uniqueness of object naming across Kubernetes clusters.
 
-
 ### AKOConfig Custom Resource
+
 AKO Operator manages the AKO Controller. To deploy and manage the controller, it takes in a custom resource object called `AKOConfig`. Please go through the [description](AKOConfig.md#AKOConfig-Custom-Resource) to understand the different fields of this object.
 
 #### Deploying the AKO Controller
+
 If the AKO operator was installed using helm, a default `AKOConfig` object called `ako-config` is already added and hence, this step is not required for helm based installation.
 **Note**: If the AKO operator was installed manually, then to install the AKO controller, add an `AKOConfig` object to the `avi-system` namespace.
 
     kubectl create -f ako-config.yaml -n avi-system
 
 #### Tweaking/Manage the AKO Controller
+
 If the user needs to change any properties of the AKO Controller, they can change the `AKOConfig` object and the changes will take effect once it is saved.
 
     kubectl edit akoconfig -n avi-system ako-config
@@ -115,9 +123,9 @@ If the user needs to change any properties of the AKO Controller, they can chang
 **Note** that if the user edits the AKO controller's configmap/statefulset out-of-band, the changes will be overwritten by the AKO operator.
 
 #### Removing the AKO Controller
+
 To remove the AKO Controller, simply delete the `AKOConfig` object:
 
 ```
 kubectl delete akoconfig -n avi-system ako-config
 ```
-

@@ -2,62 +2,62 @@
 
 #### AKO POD is not running
 
-#### Possible Reasons/Solutions:
+#### Possible Reasons/Solutions
 
-##### Check the reason why the POD didn't come up by doing the following:
+##### Check the reason why the POD didn't come up by doing the following
 
     kubectl get pods -n avi-system
     NAME                 READY   STATUS             RESTARTS   AGE
     ako-f776577b-5zpxh   0/1     ImagePullBackOff   0          15s
 
-##### Solution:
+##### Solution
 
     Ensure that you have your docker registry configured properly or the image is configured locally.
 
-#### AKO pod is restarting automatically and going to a state of crashloopbackoff after some time.
+#### AKO pod is restarting automatically and going to a state of crashloopbackoff after some time
 
-##### Possible Reasons/Solutions:
+##### Possible Reasons/Solutions
+
 From AKO logs check if any input is invalid:
 
     Invalid input detected, AKO will be rebooted to retry
 
-Check connectivity between AKO Pod and Avi controller. 
+Check connectivity between AKO Pod and Avi controller.
 
+#### AKO is not responding to my ingress object creations
 
-#### AKO is not responding to my ingress object creations.
+#### Possible Reasons/Solutions
 
-#### Possible Reasons/Solutions:
+##### Look into the AKO container logs and see if you find a reason on why the sync is disabled like this
 
-##### Look into the AKO container logs and see if you find a reason on why the sync is disabled like this:
-    
-    2020-06-26T10:27:26.032+0530	INFO	lib/lib.go:56	Setting AKOUser: ako-my-cluster for Avi Objects
-    2020-06-26T10:27:26.337+0530	ERROR	cache/controller_obj_cache.go:1814	Required param networkName not specified, syncing will be disabled.
-    2020-06-26T10:27:26.337+0530	WARN	cache/controller_obj_cache.go:1770	Invalid input detected, syncing will be disabled.
+    2020-06-26T10:27:26.032+0530 INFO lib/lib.go:56 Setting AKOUser: ako-my-cluster for Avi Objects
+    2020-06-26T10:27:26.337+0530 ERROR cache/controller_obj_cache.go:1814 Required param networkName not specified, syncing will be disabled.
+    2020-06-26T10:27:26.337+0530 WARN cache/controller_obj_cache.go:1770 Invalid input detected, syncing will be disabled.
 
 #### My Ingress object didn't sync in Avi
 
-#### Possible Reasons/Solutions:
+#### Possible Reasons/Solutions
 
     1. The ingress class is set as something other than "avi". defaultIngController is set to true. 
     2. For TLS ingress, the `Secret` object does not exist. Please ensure that the Secret object is pre-created.
     3. Check the connectivity between your AKO POD and the Avi Controller.
 
-#### My virtualservice returns a CONNECTION REFUSED after sometime.
- 
-#### Possible Reasons/Solutions:
- 
+#### My virtualservice returns a CONNECTION REFUSED after sometime
+
+#### Possible Reasons/Solutions
+
     Check if your virtualservice IP is in use somewhere else in your network.
 
-#### My out-of-band virtualservice setting just got overwritten.
+#### My out-of-band virtualservice setting just got overwritten
 
-#### Possible Reasons/Solutions:
+#### Possible Reasons/Solutions
 
     You don't recommend changing properties of a shared virtualservice out-of-band.  If AKO has an ingress update 
     that related to this shared VS, then AKO would overwrite the configuration.
-    
-#### Static routes are populated, but my pools are down.
 
-#### Possible Reasons/Solutions:
+#### Static routes are populated, but my pools are down
+
+#### Possible Reasons/Solutions
 
     Check if you have a dual nic kubernetes worker node setup. In case of a dual nic setup, AKO would populate the static
     routes using the default gateway network. However, the default gateway network might not be the port group network that
@@ -97,9 +97,9 @@ Case 3 : A dead AKO pod that uses a Persistent Volume Claim, in this case a back
 
 **Configuring PVC for the AKO pod:**
 
-We recommend using a Persistent Volume Claim for the ako pod. Refer this [link](https://kubernetes.io/docs/tasks/configure-pod-container/configure-persistent-volume-storage/) to create a persistent volume(PV) and a Persistent Volume Claim(PVC). 
+We recommend using a Persistent Volume Claim for the ako pod. Refer this [link](https://kubernetes.io/docs/tasks/configure-pod-container/configure-persistent-volume-storage/) to create a persistent volume(PV) and a Persistent Volume Claim(PVC).
 
-Below is an example of hostpath persistent volume. We recommend you use the PV based on the storage class of your kubernetes environment. 
+Below is an example of hostpath persistent volume. We recommend you use the PV based on the storage class of your kubernetes environment.
 
     #persistent-volume.yaml
     apiVersion: v1
@@ -117,7 +117,7 @@ Below is an example of hostpath persistent volume. We recommend you use the PV b
         - ReadWriteOnce
       hostPath:
         path: <any-host-path-dir>  # make sure that the directory exists
-        
+
 A persistent volume claim can be created using the following file
 
     #persistent-volume-claim.yaml
@@ -133,8 +133,8 @@ A persistent volume claim can be created using the following file
       resources:
         requests:
           storage: 3Gi
-          
-Add PVC name into the ako/helm/ako/values.yaml before the creation of the ako pod like 
+
+Add PVC name into the ako/helm/ako/values.yaml before the creation of the ako pod like
 
     persistentVolumeClaim: ako-pvc
     mountPath: /log
@@ -179,24 +179,23 @@ Sample Output with PVC :
 
 ### How do I gather the controller tech support?
 
-
 It's recommended we collect the controller tech support logs as well. Please follow this [link](https://avinetworks.com/docs/18.2/collecting-tech-support-logs/)  for the controller tech support.
-
 
 ## Troubleshooting for AKO CRDs
 
-### Policy defined in the crd policy was not applied to the corresponding ingress/route objects.
+### Policy defined in the crd policy was not applied to the corresponding ingress/route objects
 
 1. Make sure that the policy object being referred by the CRD is present in avi.
 2. Ensure that connectivity between ako pod and avi controller is intact. For example if the avi controller is rebooting, connectivity may go down and we may face this problem.
 
 ## Troubleshooting for openshift route
 
-### Route objects did not sync to avi.
+### Route objects did not sync to avi
 
 There can be different reasons behind this. Some common issues can be categorized as follows:
 
 #### 1. The problem is for all routes
+
 Some configuration parameter is missing. Check for logs like
 
     Invalid input detected, syncing will be disabled
@@ -209,14 +208,15 @@ Check if subdomain of the route is valid as per avi controller configuration
 
     Didn't find match for hostname :foo.abc.com Available sub-domains:avi.internal
 
-#### 3. The problem is faced for One / very few routes 
+#### 3. The problem is faced for One / very few routes
 
 Check for status of route. If you see a message `MultipleBackendsWithSameServiceError`, then same service has been added multiple times in the backends. This is a wrong configuration and the route configuration has to be changed.
 
-#### 4. The route which is not getting synced, is a secure route.
+#### 4. The route which is not getting synced, is a secure route
 
 Check the following conditions:
- - Both key and cert are specified in the route spec. 
- - The default secret (router-certs-default) is present in avi-system Namespace.
+
+- Both key and cert are specified in the route spec.
+- The default secret (router-certs-default) is present in avi-system Namespace.
 
  If both of these conditions are false, AKO can't process a secure route correctly. Either the default secret has to be created in avi-system Namesapce, or key and cert have to be specified in the route spec.
