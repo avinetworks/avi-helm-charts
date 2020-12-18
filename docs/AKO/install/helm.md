@@ -110,6 +110,7 @@ The following table lists the configurable parameters of the AKO chart and their
 | `AKOSettings.logLevel` | logLevel enum values: INFO, DEBUG, WARN, ERROR. logLevel can be changed dynamically from the configmap | INFO |
 | `AKOSettings.deleteConfig` | set to true if user wants to delete AKO created objects from Avi. deleteConfig can be changed dynamically from the configmap | false |
 | `AKOSettings.disableStaticRouteSync` | Disables static route syncing if set to true | false |
+| `AKOSettings.apiServerPort` | Internal port for AKO's API server for the liveness probe of the AKO pod | 8080 |
 | `avicredentials.username` | Avi controller username | empty |
 | `avicredentials.password` | Avi controller password | empty |
 | `image.repository` | Specify docker-registry that has the AKO image | avinetworks/ako |
