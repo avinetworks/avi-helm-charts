@@ -37,6 +37,10 @@ The `clusterName` field primarily identifies your running AKO instance. AKO inte
 
 Each AKO instance mapped to a given Avi cloud should have a unique `clusterName` parameter. This would maintain uniqueness of object naming across Kubernetes clusters.
 
+### AKOSettings.apiServerPort
+
+The `apiServerPort` field is used to run the API server within the AKO pod. The kubernetes API server uses the `/api/status` API to verify the health of the AKO pod on the pod:port where the port is defined by this field. This is configurable, because some enviroments might block usage of the default `8080` port. This field is purely used for AKO's internal API server and must not be confused with a kubernetes pod port.
+
 ### AKOSettings.cniPlugin
 
 Use this flag only if you are using `calico`/`openshift` as a CNI and you are looking to a sync your static route configurations automatically.
