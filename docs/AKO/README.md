@@ -45,7 +45,7 @@ AKO operator is not supported to work with the standalone deployments of AKO, vi
 
 ### AKO in Openshift Cluster
 
-AKO can be used in openshift cluster to configure Routes and Services of type Loadbalancer. For details about how to AKO in an openshift cluster and features specific to openshift refer [here](openshift/openshift.md).
+AKO can be used in openshift cluster to configure Routes and Services of type Loadbalancer. For details about how to use AKO in an openshift cluster and features specific to openshift refer [here](openshift/openshift.md).
 
 ### Using NodePort mode
 
