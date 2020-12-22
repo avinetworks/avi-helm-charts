@@ -82,7 +82,7 @@ rbac:
 avicredentials:
   username:
   password:
-  certificateAuthorityData:
+  certificateAuthorityData: # optional - used for controller identity verification
 
 
 service:
