@@ -48,6 +48,7 @@ Avi does not allow users to update preferred virtual IPs bound to a particular v
  - updating loadBalancerIP value, from `loadBalancerIP: 10.10.10.11` to `loadBalancerIP: 10.10.10.22`.
  - adding `loadBalancerIP` value after the Service is assigned an IP from Avi.
  - removing `loadBalancerIP` value after the Service is assigned an IP from Avi.
+
 Recreating the Service object deletes the Layer 4 virtualservice in Avi, frees up the applied virtual IP and post that the Service creation with update configuration should result in the intended virtualservice configuration.
 
 ### Insecure Ingress.

@@ -100,7 +100,7 @@ HostRule CRD can be used to express error page profile references. The error pag
 
 
 #### Express datascripts
-HostRule CRD can be used to express error datascript references. The datascript reference should have been created in the Avi Controller prior to this CRD creation.
+HostRule CRD can be used to express error datascript references. The datascript references should have been created in the Avi Controller prior to this CRD creation.
 
         datascript:
         - avi-datascript-redirect-app1
