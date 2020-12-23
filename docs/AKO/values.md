@@ -145,8 +145,17 @@ The `subnetIP` and `subnetPrefix` are not required for AWS and Azure Cloud.
 
 ### avicredentials.username and avicredentials.password
 
-The username/passwword of the Avi controller is specified with this flag. The username/password are base64 encoded by helm and a corresponding secret
+The username/password of the Avi controller is specified with this flag. The username/password are base64 encoded by helm and a corresponding secret
 object is used to maintain the same. Editing this field requires a restart (delete/re-create) of the AKO pod.
+
+### avicredentials.certificateAuthorityData
+This field allows setting the rootCA of the Avi controller, that AKO uses to verify the server certificate provided by the Avi Controller during the TLS handshake. This also enables AKO to connect securely over SSL, which is not possible in case the field is not provided.
+The field can be set as follows:
+
+    certificateAuthorityData: |-
+      -----BEGIN CERTIFICATE-----
+      ...
+      -----END CERTIFICATE-----
 
 ### image.repository
 
