@@ -51,6 +51,13 @@ Avi does not allow users to update preferred virtual IPs bound to a particular v
 
 Recreating the Service object deletes the Layer 4 virtualservice in Avi, frees up the applied virtual IP and post that the Service creation with update configuration should result in the intended virtualservice configuration.
 
+#### DNS for Layer 4
+
+If the Avi Controller cloud is not configured with an IPAM DNS profile then AKO will sync the Service of type Loadbalancer but not an FQDN. The user has the choice
+to add FQDNs for Service of type Loadbalancer using the `autoFQDN` [value](values.md#l4settingsautofqdn) feature.
+
+AKO also supports the external-dns(https://github.com/kubernetes-sigs/external-dns/blob/master/docs/faq.md#how-do-i-specify-a-dns-name-for-my-kubernetes-objects) format for specifying layer 4 FQDNs using the annotation `external-dns.alpha.kubernetes.io/hostname` on the Loadbalancer object. This annotation overrides the  `autoFQDN` feature for service of type Loadbalancer.
+
 ### Insecure Ingress.
 
 Let's take an example of an insecure hostname specification from a Kubernetes ingress object:
