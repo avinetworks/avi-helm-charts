@@ -42,6 +42,10 @@ AKO operator is not supported to work with the standalone deployments of AKO, vi
 2. Install the AKO operator (follow [this](install/operator.md#Install-using-helm) for helm based installation).
 3. Deploy and manage the AKO controller via the operator (follow [this](install/operator.md#AKOConfig-Custom-Resource)).
 
+### AKO CRDs
+
+Read more about AKO CRDs [this] (https://github.com/avinetworks/avi-helm-charts/blob/sudswas-one-1.3.1/docs/AKO/crds/overview.md)
+
 
 ### AKO in Openshift Cluster
 
