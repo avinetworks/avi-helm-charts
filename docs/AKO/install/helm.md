@@ -8,12 +8,12 @@ kubectl create ns avi-system
 
 Step 2: Add this repository to your helm CLI
 
-Note: The helm charts are present in VMWare's public harbor repository
 
 ```
 helm repo add ako https://projects.registry.vmware.com/chartrepo/ako
 
 ```
+Note: The helm charts are present in VMWare's public harbor repository
 
 Step 3: Search the available charts for AKO
 
