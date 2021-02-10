@@ -114,7 +114,7 @@ This knob is used to control how the layer 4 service of type Loadbalancer's FQDN
 
 - flat: In this case, the FQDN format is <svc-name>-<namespace>.<sub-domain>
 
-- disabled: In this case, FQDNs are not generated for the Layer 4 services.
+- disabled: In this case, FQDNs are not generated for service of type Loadbalancers.
 
 ### ControllerSettings.controllerVersion
 
