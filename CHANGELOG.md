@@ -74,3 +74,13 @@ All notable changes to this project will be documented in this file. The format 
  - AKO support for multiple new fields in HTTPRule/HostRule CRD.
  - Tolerance support for networking/v1 Ingress in k8s 1.19
  
+ ## AKO-1.3.3
+ 
+ ### Changed:
+  - DNS IPAM configuration not required for L4.
+  - Ingress class related fixes.
+  - RHI knob related changes.
+ 
+ 
+ ### Added:
+  - Added auto-fqdn support
