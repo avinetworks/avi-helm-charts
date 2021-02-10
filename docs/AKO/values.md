@@ -106,6 +106,16 @@ If you have multiple sub-domains configured in your Avi cloud, use this knob to 
 This is used to generate the FQDN for the Service of type loadbalancer. If unspecified, the behavior works on a sorting logic.
 The first sorted sub-domain in chosen, so we recommend using this parameter if you want to be in control of your DNS resolution for service of type LoadBalancer.
 
+### L4Settings.autoFQDN
+
+This knob is used to control how the layer 4 service of type Loadbalancer's FQDN is generated. AKO supports 3 options:
+
+- default: In this case, the FQDN format is <svc-name>.<namespace>.<sub-domain> where the namespace refers to the Service's namespace. sub-domain is picked up from the IPAM DNS profile.
+
+- flat: In this case, the FQDN format is <svc-name>-<namespace>.<sub-domain>
+
+- disabled: In this case, FQDNs are not generated for service of type Loadbalancers.
+
 ### ControllerSettings.controllerVersion
 
 This field is used to specify the Avi controller version. While AKO is backward compatible with most of the 18.2.x Avi controllers,
