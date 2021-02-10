@@ -136,7 +136,7 @@ The following table lists the configurable parameters of the AKO chart and their
 | `NetworkSettings.subnetPrefix` | Subnet Prefix of the data network | **required** |
 | `NetworkSettings.networkName` | Network Name of the data network | **required** |
 | `NetworkSettings.enableRHI` | Publish route information to BGP peers | false |
-| `L4Settings.defaultDomain` | Specify a default sub-domain for L4 LB services | First domainname found in cloud's dnsprofile 
+| `L4Settings.defaultDomain` | Specify a default sub-domain for L4 LB services | First domainname found in cloud's dnsprofile |
 | `L4Settings.autoFQDN`  | Specify the layer 4 FQDN format | default |  
 | `L7Settings.l7ShardingScheme` | Sharding scheme enum values: hostname, namespace | hostname |
 | `AKOSettings.cniPlugin` | CNI Plugin being used in kubernetes cluster. Specify one of: calico, canal, flannel | **required** for calico setups |
