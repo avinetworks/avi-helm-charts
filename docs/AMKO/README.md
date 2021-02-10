@@ -61,28 +61,41 @@ The extra `update` permission is to update the `GSLBConfig` and `GlobalDeploymen
    ```
    $ kubectl create ns avi-system
    ```
+
 2. Add this repository to your helm client:
    ```
-   $ helm repo add amko https://avinetworks.github.io/avi-helm-charts/charts/stable/amko
+   $ helm repo add amko https://projects.registry.vmware.com/chartrepo/ako
+
    ```
-   Use the `values.yaml` from this repository to provide values related to Avi configuration. Check [here](#parameters) for the required values.
-4. Search the available charts for AMKO:
+   Note: The helm charts are present in VMWare's public harbor repository
+
+3. Search the available charts for AMKO:
    ```
    $ helm search repo
 
    NAME     	CHART VERSION    	APP VERSION      	DESCRIPTION
-   amko/amko	1.2.1	            1.2.1	            A helm chart for Avi Multicluster Kubernetes Operator
+   ako/amko	1.3.1	            1.3.1	            A helm chart for Avi Multicluster Kubernetes Operator
+
    ```
+
+4. Use the `values.yaml` from this repository to provide values related to Avi configuration. To get the values.yaml for a release, run the following command
+
+   ```
+   helm show values ako/amko --version 1.3.1 > values.yaml
+
+   ```
+   Values and their corresponding index can be found [here](#parameters)
+
 5. Install AMKO:
    ```
-   $ helm install  amko/amko  --generate-name --version 1.2.1 -f values.yaml  --set configs.gsllbLeaderController=<leader_controller_ip> --namespace=avi-system
+   $ helm install  ako/amko  --generate-name --version 1.3.1 -f /path/to/values.yaml  --set configs.gsllbLeaderController=<leader_controller_ip> --namespace=avi-system
    ```
 6. Check the installation:
    ```
    $ helm list -n avi-system
 
    NAME           	NAMESPACE 	REVISION	UPDATED                                	STATUS  	CHART                 	APP VERSION
-   amko-1598451370	avi-system	1       	2020-08-26 14:16:21.889538175 +0000 UTC	deployed	amko-1.2.1	            1.2.1
+   amko-1598451370	avi-system	1       	2020-08-26 14:16:21.889538175 +0000 UTC	deployed	amko-1.3.1	            1.3.1
    ```
 
 #### Troubleshooting and Log collection

@@ -8,11 +8,12 @@ kubectl create ns avi-system
 
 Step 2: Add this repository to your helm CLI
 
-```
-helm repo add ako https://avinetworks.github.io/avi-helm-charts/charts/stable/ako
-```
 
-Use the `values.yaml` from this repository to edit values related to Avi configuration. Values and their corresponding index can be found [here](#parameters)
+```
+helm repo add ako https://projects.registry.vmware.com/chartrepo/ako
+
+```
+Note: The helm charts are present in VMWare's public harbor repository
 
 Step 3: Search the available charts for AKO
 
@@ -20,13 +21,23 @@ Step 3: Search the available charts for AKO
 helm search repo
 
 NAME                 	CHART VERSION	APP VERSION	DESCRIPTION
-ako/ako              	1.2.1        	1.2.1      	A helm chart for Avi Kubernetes Operator
+ako/ako              	1.3.1        	1.3.1      	A helm chart for Avi Kubernetes Operator
+
 ```
+
+Use the `values.yaml` from this chart to edit values related to Avi configuration. To get the values.yaml for a release, run the following command
+
+```
+helm show values ako/ako --version 1.3.1 > values.yaml
+
+```
+
+Values and their corresponding index can be found [here](#parameters)
 
 Step 4: Install AKO
 
 ```
-helm install  ako/ako  --generate-name --version 1.2.1 -f values.yaml  --set ControllerSettings.controllerHost=<controller IP or Hostname> --set avicredentials.username=<avi-ctrl-username> --set avicredentials.password=<avi-ctrl-password> --namespace=avi-system
+helm install  ako/ako  --generate-name --version 1.3.1 -f /path/to/values.yaml  --set ControllerSettings.controllerHost=<controller IP or Hostname> --set avicredentials.username=<avi-ctrl-username> --set avicredentials.password=<avi-ctrl-password> --namespace=avi-system
 ```
 
 Step 5: Check the installation
@@ -74,13 +85,35 @@ kubectl apply -f https://raw.githubusercontent.com/avinetworks/avi-helm-charts/m
 helm list -n avi-system
 
 NAME          	NAMESPACE 	REVISION	UPDATED                             	STATUS  	CHART    	APP VERSION
-ako-1593523840	avi-system	1       	2020-09-16 13:44:31.609195757 +0000 UTC	deployed	ako-1.1.1	1.1.1-9032
+ako-1593523840	avi-system	1       	2020-09-16 13:44:31.609195757 +0000 UTC	deployed	ako-1.3.1	1.3.1
 ```
 
 *Step3*
 
+Update the helm repo URL
+
 ```
-helm upgrade ako-1593523840 ako/ako -f values.yaml --version 1.2.1 --set ControllerSettings.controllerHost=<IP or Hostname> --set avicredentials.password=<username> --set avicredentials.username=<username> --namespace=avi-system
+helm repo add --force-update ako https://projects.registry.vmware.com/chartrepo/ako
+
+"ako" has been added to your repositories
+
+```
+Note: From AKO 1.3.3, we are migrating our charts repo to VMWare's harbor repository and hence a force update of the repo URL is required for a successful upgrade process from 1.3.1
+
+*Step4*
+
+Get the values.yaml for the latest AKO version
+
+```
+helm show values ako/ako --version 1.3.3 > values.yaml
+
+```
+
+Upgrade the helm chart
+
+```
+helm upgrade ako-1593523840 ako/ako -f /path/to/values.yaml --version 1.3.3 --set ControllerSettings.controllerHost=<IP or Hostname> --set avicredentials.password=<username> --set avicredentials.username=<username> --namespace=avi-system
+
 ```
 
 ## Parameters
@@ -105,7 +138,7 @@ The following table lists the configurable parameters of the AKO chart and their
 | `NetworkSettings.networkName` | Network Name of the data network | **required** |
 | `NetworkSettings.enableRHI` | Publish route information to BGP peers | false |
 | `L4Settings.defaultDomain` | Specify a default sub-domain for L4 LB services | First domainname found in cloud's dnsprofile |
-| `L4Settings.autoFQDN` | Specify the layer 4 FQDN format | default |
+| `L4Settings.autoFQDN`  | Specify the layer 4 FQDN format | default |  
 | `L7Settings.l7ShardingScheme` | Sharding scheme enum values: hostname, namespace | hostname |
 | `AKOSettings.cniPlugin` | CNI Plugin being used in kubernetes cluster. Specify one of: calico, canal, flannel | **required** for calico setups |
 | `AKOSettings.logLevel` | logLevel enum values: INFO, DEBUG, WARN, ERROR. logLevel can be changed dynamically from the configmap | INFO |
