@@ -98,6 +98,7 @@ helm repo add --force-update ako https://projects.registry.vmware.com/chartrepo/
 "ako" has been added to your repositories
 
 ```
+Note: From AKO 1.3.3, we are migrating our charts repo to VMWare's harbor repository and hence a force update of the repo URL is required for a successful upgrade process from 1.3.1
 
 *Step4*
 
