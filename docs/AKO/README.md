@@ -44,7 +44,7 @@ AKO operator is not supported to work with the standalone deployments of AKO, vi
 
 ### AKO CRDs
 
-Read more about AKO CRDs [this](crds/overview.md)
+Read more about AKO [CRDs](crds/overview.md)
 
 
 ### AKO in Openshift Cluster
