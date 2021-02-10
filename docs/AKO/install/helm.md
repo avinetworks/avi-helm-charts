@@ -8,10 +8,11 @@ kubectl create ns avi-system
 
 Step 2: Add this repository to your helm CLI
 
-Note: The helm charts are present in VMWare's public harbor reposiory
+Note: The helm charts are present in VMWare's public harbor repository
 
 ```
 helm repo add ako https://projects.registry.vmware.com/chartrepo/ako
+
 ```
 
 Step 3: Search the available charts for AKO
@@ -24,10 +25,10 @@ ako/ako              	1.3.1        	1.3.1      	A helm chart for Avi Kubernetes 
 
 ```
 
-Use the `values.yaml` from this release to edit values related to Avi configuration. To get the values.yaml for a release, run the following command
+Use the `values.yaml` from this chart to edit values related to Avi configuration. To get the values.yaml for a release, run the following command
 
 ```
-helm show values ako/ako --version 1.3.1
+helm show values ako/ako --version 1.3.1 > values.yaml
 
 ```
 
@@ -95,20 +96,23 @@ Update the helm repo URL
 helm repo add --force-update ako https://projects.registry.vmware.com/chartrepo/ako
 
 "ako" has been added to your repositories
+
 ```
 
 *Step4*
 
-Get the values.yaml for the latest version and save it in the local directory path.
+Get the values.yaml for the latest AKO version
 
 ```
-helm show values ako/ako --version 1.3.3
+helm show values ako/ako --version 1.3.3 > values.yaml
+
 ```
 
-Upgrade the helm chart to the latest version 
+Upgrade the helm chart
 
 ```
 helm upgrade ako-1593523840 ako/ako -f /path/to/values.yaml --version 1.3.3 --set ControllerSettings.controllerHost=<IP or Hostname> --set avicredentials.password=<username> --set avicredentials.username=<username> --namespace=avi-system
+
 ```
 
 ## Parameters
