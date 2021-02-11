@@ -13,7 +13,7 @@ A sample HostRule CRD looks like this:
     spec:
       virtualhost:
         fqdn: foo.com # mandatory
-        enableVirtualhost: true
+        enableVirtualHost: true
         tls: # optional
           sslKeyCertificate:
             name: avi-ssl-key-cert
@@ -24,7 +24,7 @@ A sample HostRule CRD looks like this:
           policySets:
           - avi-secure-policy-ref
           overwrite: false
-        datascript:
+        datascripts:
         - avi-datascript-redirect-app1
         wafPolicy: avi-waf-policy
         applicationProfile: avi-app-ref
@@ -102,7 +102,7 @@ HostRule CRD can be used to express error page profile references. The error pag
 #### Express datascripts
 HostRule CRD can be used to express error datascript references. The datascript references should have been created in the Avi Controller prior to this CRD creation.
 
-        datascript:
+        datascripts:
         - avi-datascript-redirect-app1
 
 This property can be applied only for secure FQDNs and cannot be applied for insecure routes. The datascripts can be used to apply custom scripts to data traffic. The order of evaluation of the datascripts is in the same order they appear in the CRD definition.
