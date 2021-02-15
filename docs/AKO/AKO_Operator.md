@@ -63,7 +63,13 @@ To uninstall the AKO operator and the AKO controller, use the following steps:
 
     helm delete <ako-operator-release-name> -n avi-system
 
- Note: the `ako-operator-release-name` is obtained by doing helm list as shown in the previous step
+ The `ako-operator-release-name` is obtained by doing helm list as shown in the previous step.
+
+ **Note** that this step won't remove the `AKOConfig` object. The finalizer called `ako.vmware.com/cleanup` prevents this `AKOConfig` object from getting deleted. So, after `helm delete`, use:
+
+    kubectl edit akoconfig -n avi-system aviconfig
+
+  And, remove the finalizer string: `ako.vmware.com/cleanup`. This step would clean up the `AKOConfig` object too.
 
 *Step 3:* Delete the `avi-system` namespace.
 
@@ -124,8 +130,15 @@ If the user needs to change any properties of the AKO Controller, they can chang
 
 #### Removing the AKO Controller
 
-To remove the AKO Controller, simply delete the `AKOConfig` object:
-
+The AKO Controller can be deleted via these steps:
+1. Delete the `AKOConfig` object:
 ```
 kubectl delete akoconfig -n avi-system ako-config
 ```
+This would prompt the AKO Operator to remove all the manifests related to the AKO Controller instance. **Note** that this step won't remove the `AKOConfig` object itself, but the resources managed by the AKO Operator.
+
+2. Remove the finalizer from the `AKOConfig` object:
+```
+kubectl edit akoconfig -n avi-system ako-config
+```
+This will remove the dangling `AKOConfig` object.
