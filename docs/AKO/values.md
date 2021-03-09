@@ -49,6 +49,10 @@ on an older version of calico where `blockaffinity` is not present, then leave t
 
 AKO will then determine the static routes based on the Kubernetes Nodes object as done with other CNIs.
 
+### AKOSettings.layer7Only
+
+Use this flag if you want AKO to act as a pure layer 7 ingress controller. AKO needs to be rebooted for this flag change to take effect. If the configmap is edited while AKO is running, then the change will not take effect. If AKO was working for both L4-L7 prior to this change and then this flag is set to `true`, then AKO will delete the layer 4 LB virtual services from the Avi controller and keep only the Layer 7 virtualservices. Similar transition behavior is expected when this flag is flipped during regular AKO reboots.
+
 ### AKOSetttings.namespaceSelector.labelKey and AKOSetttings.namespaceSelector.labelValue
 
 AKO allows ingresses/routes from specific namespace/s to be synced to Avi controller. This key-value pair represent a label that is used by AKO to filter out namespace/s. If one of key/values specified empty, then ingresses/routes from all namespaces will be synched to Avi controller.
