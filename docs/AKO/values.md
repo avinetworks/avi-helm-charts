@@ -51,7 +51,7 @@ AKO will then determine the static routes based on the Kubernetes Nodes object a
 
 ### AKOSettings.layer7Only
 
-Use this flag if you want AKO to act as a pure layer 7 ingress controller. AKO needs to be rebooted for this flag change to take effect. If the configmap is edited while AKO is running, then the change will not take effect. If AKO was working for both L4-L7 prior to this change and then this flag is set to `true`, then AKO will delete the layer 4 LB virtual services from the Avi controller and keep only the Layer 7 virtualservices. Similar transition behavior is expected when this flag is flipped during regular AKO reboots.
+Use this flag if you want AKO to act as a pure layer 7 ingress controller. AKO needs to be rebooted for this flag change to take effect. If the configmap is edited while AKO is running, then the change will not take effect. If AKO was working for both L4-L7 prior to this change and then this flag is set to `true`, then AKO will delete the layer 4 LB virtual services from the Avi controller and keep only the Layer 7 virtualservices. If the flag is set to `false` the service of type Loadbalancers would be synced and Layer 4 virtualservices would be created.
 
 ### AKOSetttings.namespaceSelector.labelKey and AKOSetttings.namespaceSelector.labelValue
 
