@@ -61,3 +61,56 @@ spec:
 Alternatively, if the `ingressClassName` is empty, AKO checks for `ingressclass.kubernetes.io/is-default-class` to be set to true on an IngressClass belonging to AKO (with `.spec.controller: ako.vmware.com/avi-lb`).
 
 Removing an Avi IngressClass from the cluster would delete all Ingress associated objects from Avi, therefore it is suggested to handle IngressClass with caution.
+
+### Default Secret for Ingress
+
+This feature can be used when the user wants to apply a common key-cert for multiple Ingresses, e.g. a wild carded secret which can be used for all host names in the same subdomain.
+
+To use this feature: 
+- A Secret with name `router-certs-default` has to be created in the same namespace where AKO pod is running (avi-system). The Secret must have tls.crt and tls.key fields in its data section.
+- The annotation "ako.vmware.com/enable-tls" has to be added in the desired Ingresses with its value set to "true"
+
+An example of the default secret is given bellow:
+
+```yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: router-certs-default
+  namespace: avi-system
+type: kubernetes.io/tls
+data:
+  tls.crt: 
+    -----BEGIN PRIVATE KEY-----
+    [...]
+    -----END PRIVATE KEY-----
+  tls.key:
+    -----BEGIN CERTIFICATE-----
+    [...]
+    -----END CERTIFICATE-----
+```
+
+Example of an Ingress using this default secret via annotation is given bellow:
+
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress1
+  annotations:
+    ako.vmware.com/enable-tls: "true"
+spec:
+  ingressClassName: avi-lb
+  rules:
+  - host: "ingr1.avi.internal"
+    http:
+      paths:
+      - path: /foo
+        backend:
+          service:
+            name: avisvc1
+            port:
+              number: 80
+```
+
+It has to be noted that if any Host Rule specifies a AVI SSL Key Cert for the same host, then default Secret won't be used. Similarly if a Secret is specified in the TLS section of the Ingress Spec, then the default Secret won't be used.
