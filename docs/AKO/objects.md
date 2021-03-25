@@ -385,4 +385,24 @@ spec:
 
 In the above example, AKO creates a dedicated virtual service for this object in kubernetes that refers to reserving a virtual IP for it. If there are 3 nodes in the cluster with Internal IP being `10.0.0.100, 10.0.0.101, 10.0.0.102` and assuming that there’s no node label selectors used, AKO populates pool server as: `10.0.0.100:31013, 10.0.0.101:31013, 10.0.0.101:31013`.
 
+### NodePortLocal Mode
+
+With Antrea as CNI, there is an option to use NodePortLocal feature using which a Pod can be directly reached from an external network through a port in the Node. In this mode, Like serviceType NodePort, ports from the kubernetes Nodes are used to reach application in the kubernetes cluster. But unlike serviceType NodePort, with NodePortLocal, an external Load Balancer can reach the Pod directly without any interference of kube-proxy.
+
+To use NodePortlocal, the feature has to be enabled in the feature gates of [Antrea](https://github.com/vmware-tanzu/antrea/blob/main/docs/feature-gates.md). After that, the eligible Pods would get tagged with an annotation nodeportlocal.antrea.io, for example:
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+ annotations:
+   nodeportlocal.antrea.io: '[{"podPort":8080,"nodeIP":"10.102.47.229","nodePort":40002}]'
+```
+
+In AKO, this data is obtained from Pod Informers, and used while populating Pool Servers. For instance, in this case for the eligible pool, a server would be added with IP address 10.102.47.229 and port number 40002. All other objects would be created in Avi, similar to clusterIP mode.
+
+To use NodePortLocal in standalone mode in Antrea without AKO, users have to annotate a service to make the backend Pods(s) eligible for NodePortLocal. In AKO, this is automated and the user does not have to annotate any service. AKO would annotate the services matching any one of the following criteria:
+- All services of type LoadBalancer.
+- For all ingresses, the backend ClusterIP Services would be obtained by AKO, and they would be annotated for enabling NPL. In case Ingress Class is being used, only the the ingresses for which Avi is the Ingress Class would be used for enabling NodePortLocal. 
+
 For the Openshift objects: [Openshift](https://github.com/avinetworks/avi-helm-charts/tree/master/docs/AKO/openshift/objects.md)
