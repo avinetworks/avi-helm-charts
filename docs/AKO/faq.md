@@ -174,3 +174,19 @@ For secure routes having termination type edge/reencrypt, key and certificate mu
 #### What happens if a route is created with multiple backends having same service name ?
 
 AKO would reject those routes, as each backend should be unique ith it's own weight. Multiple backends having same service would make weight calculation indeterministic.
+
+#### Is NodePortLocal feature available for all CNIs ?
+
+No. The feature NodePortLocal can be used only with Antrea CNI and the feature must be enabled in Antrea feature gates.
+
+#### Can we use kubernetes Service of type NodePort as backend of an Ingress in NodePortLocal mode ?
+
+No. Users can only use service of type ClusterIP as backend of Ingresses in this mode.
+
+#### Can we use serviceType NodePort or ClusterIP in AKO, if the CNI type is Antrea and NodePortLocal feature is enabled in Antrea ?
+
+Yes. AKO would create AVI objects based on the relevant serviceType set in AKO.
+
+#### Can the serviceType in AKO be changed dynamically ?
+
+No. After changing the serviceType, AKO has to be rebooted and all objects which are not required, would be deleted as part of the reboot process.

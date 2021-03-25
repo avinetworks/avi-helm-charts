@@ -178,7 +178,7 @@ with the private registry name.
 
 ### L7Settings.serviceType
 
-This option specifies whether the AKO functions in ClusterIP mode or NodePort mode. By default it is set to `ClusterIP`. Allowed values are `ClusterIP` and `NodePort`.
+This option specifies whether the AKO functions in ClusterIP mode or NodePort mode. By default it is set to `ClusterIP`. Allowed values are `ClusterIP`, `NodePort`. If CNI type for the cluster is `antrea`, then another serviceType named `NodePortLocal` is allowed.
 
 ### nodeSelectorLabels.key and nodeSelectorLabels.value
 
