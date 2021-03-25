@@ -53,6 +53,12 @@ AKO will then determine the static routes based on the Kubernetes Nodes object a
 
 Use this flag if you want AKO to act as a pure layer 7 ingress controller. AKO needs to be rebooted for this flag change to take effect. If the configmap is edited while AKO is running, then the change will not take effect. If AKO was working for both L4-L7 prior to this change and then this flag is set to `true`, then AKO will delete the layer 4 LB virtual services from the Avi controller and keep only the Layer 7 virtualservices. If the flag is set to `false` the service of type Loadbalancers would be synced and Layer 4 virtualservices would be created.
 
+### AKOSettings.enableEVH
+
+Use this flag if you want to create Enhanced Virtual Hosting model for Virtual Service objects in AVI. It is disabled by default. Set the flag to `true` to enable the flag.
+
+Before enabling the flag in the existing deployment make sure to delete the config and enable the flag. This will ensure SNI based VS's are deleted before creating EVH VS's.
+
 ### AKOSetttings.namespaceSelector.labelKey and AKOSetttings.namespaceSelector.labelValue
 
 AKO allows ingresses/routes from specific namespace/s to be synced to Avi controller. This key-value pair represent a label that is used by AKO to filter out namespace/s. If one of key/values specified empty, then ingresses/routes from all namespaces will be synched to Avi controller.
@@ -114,11 +120,11 @@ The first sorted sub-domain in chosen, so we recommend using this parameter if y
 
 This knob is used to control how the layer 4 service of type Loadbalancer's FQDN is generated. AKO supports 3 options:
 
-- default: In this case, the FQDN format is <svc-name>.<namespace>.<sub-domain> where the namespace refers to the Service's namespace. sub-domain is picked up from the IPAM DNS profile.
+* default: In this case, the FQDN format is <svc-name>.<namespace>.<sub-domain> where the namespace refers to the Service's namespace. sub-domain is picked up from the IPAM DNS profile.
 
-- flat: In this case, the FQDN format is <svc-name>-<namespace>.<sub-domain>
+* flat: In this case, the FQDN format is <svc-name>-<namespace>.<sub-domain>
 
-- disabled: In this case, FQDNs are not generated for service of type Loadbalancers.
+* disabled: In this case, FQDNs are not generated for service of type Loadbalancers.
 
 ### ControllerSettings.controllerVersion
 
@@ -138,19 +144,20 @@ then specify the `name` of the cloud name with this field. This helps AKO determ
 
 ### ControllerSettings.tenantsPerCluster
 
-If this field is set to `true`, AKO will map each Kubernetes / OpenShift cluster uniquely to a tenant in AVI. 
+If this field is set to `true`, AKO will map each Kubernetes / OpenShift cluster uniquely to a tenant in AVI.
 If enabled, then tenant should be created in AVI to map to a cluster and needs to be specified in `ControllerSettings.tenantName` field.
 
 ### ControllerSettings.tenantName
 
-The `tenantName` field  is used to specify the name of the tenant where all the AKO objects will be created in AVI. This field is only required if `tenantsPerCluster` is set to `true`. 
-The tenant in AVI needs to be created by the AVI controller admin before the AKO bootup. 
+The `tenantName` field  is used to specify the name of the tenant where all the AKO objects will be created in AVI. This field is only required if `tenantsPerCluster` is set to `true`.
+The tenant in AVI needs to be created by the AVI controller admin before the AKO bootup.
 
 ### ControllerSettings.cloudName
 
 This field is used to specify the name of the IaaS cloud in Avi controller. For example, if you have the VCenter cloud named as "Demo"
 then specify the `name` of the cloud name with this field. This helps AKO determine the IaaS cloud to create the service engines on.
 <br>
+
 #### AWS and Azure Cloud in NodePort mode of AKO
 
 If the IaaS cloud is Azure then subnet name is specified in `networkName`. Azure IaaS cloud is supported only in `NodePort` mode of AKO.
@@ -163,6 +170,7 @@ The username/password of the Avi controller is specified with this flag. The use
 object is used to maintain the same. Editing this field requires a restart (delete/re-create) of the AKO pod.
 
 ### avicredentials.certificateAuthorityData
+
 This field allows setting the rootCA of the Avi controller, that AKO uses to verify the server certificate provided by the Avi Controller during the TLS handshake. This also enables AKO to connect securely over SSL with the Avi Controller, which is not possible in case the field is not provided.
 The field can be set as follows:
 
