@@ -84,3 +84,24 @@ All notable changes to this project will be documented in this file. The format 
  
  ### Added:
   - Added auto-fqdn support
+
+ ## AKO-1.3.4
+
+ ### Added:
+  - Option to use AKO as pure L7 ingress controller without L4 functionalities.
+  - Option to enable/disable hostname addition for Services of type LB.
+
+ ## AKO-1.4.1-beta
+ 
+ ### Changed:
+  - Namespace Shard mode is deprecated.
+ 
+ ### Added:
+  - AviInfraSetting CRD for selecting specific Avi controller infra attributes.
+  - Granular RBAC support.
+  - Selective namespace sync for L4 objects including ServiceAPI and Services of type LB.
+  - Option to add global fqdn for a hostname via Host Rule.
+  - Temporary support for HTTP Caching for secure ingresses/routes via Pool objects.
+  - Option to use dedicated Virtual Service per Ingress hostname.
+  - Support for Node Port Local with Antrea CNI.
+  - Option to use a default secret for Ingresses via annotation.
