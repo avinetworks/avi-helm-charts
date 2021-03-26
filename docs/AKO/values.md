@@ -59,7 +59,7 @@ AKO allows ingresses/routes from specific namespace/s to be synced to Avi contro
 
 ### AKOSetttings.servicesAPI
 
-Use this flag to enable AKO to watch over Gateway API structures i.e. GatewayClasses and Gateways. AKO only supports Gateway APIs with Layer 4 Services. Setting this to `true` would enable users to configure GatewayClass and Gateway CRs to aggregate multiple Layer 4 Services and create one VirtualService per Gateway Object. 
+Use this flag to enable AKO to watch over Gateway API CRDs i.e. GatewayClasses and Gateways. AKO only supports Gateway APIs with Layer 4 Services. Setting this to `true` would enable users to configure GatewayClass and Gateway CRs to aggregate multiple Layer 4 Services and create one VirtualService per Gateway Object. 
 
 ### NetworkSettings.nodeNetworkList
 

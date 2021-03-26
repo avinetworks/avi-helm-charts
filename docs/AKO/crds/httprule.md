@@ -79,7 +79,7 @@ HTTPRule CRD can be used to express application persistence profile references. 
 
       applicationPersistence: cookie-userid-persistence
 
-The application persistence profile can be used to maintain stickyness to a server instance based on cookie values, headers etc.
+The application persistence profile can be used to maintain stickyness to a server instance based on cookie values, headers etc. for a desired duration of time.
 
 #### Express health monitors
 HTTPRule CRD can be used to express health monitor references. The health monitor reference should have been created in the Avi Controller prior to this CRD creation.

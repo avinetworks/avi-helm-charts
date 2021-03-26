@@ -1,6 +1,6 @@
 ### AviInfraSetting
 
-AviInfraSetting provides a way to segregate Layer4/Layer7 VirtualServices to have properties based on different underlying infrastructure components,
+AviInfraSetting provides a way to segregate Layer-4/Layer-7 VirtualServices to have properties based on different underlying infrastructure components,
 like ServiceEngineGroup, intended VIP Network etc.
 
 A sample AviInfraSetting CRD looks like this:
@@ -100,7 +100,7 @@ AviInfraSetting CRD can be used to configure VIP networks for virtualservices cr
           names:
             - vip-network-10-10-10-0-24
 
-Note that multiple networks names can be added to the CRD. This would configure the Avi virtualservices to acquire a VIP from the specified network.
+Note that multiple networks names can be added to the CRD. The Avi virtualservices will acquire a VIP from each of these specified networks. If Avi fails to allocate a VIP due to IP exhaustion, then theAKO, from v1.4.1 request is not honoured.
 
 #### Enable/Disable Route Health Injection
 

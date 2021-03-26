@@ -1,4 +1,4 @@
-AKO, as of v1.3.1 claims partial support for networking/v1 Ingress, released for general availability starting kubernetes 1.19. 
+AKO, from v1.3.1 claims partial support for networking/v1 Ingress, released for general availability starting kubernetes 1.19. 
 
 
 #### networking/v1 Ingress specific features supported in AKO
