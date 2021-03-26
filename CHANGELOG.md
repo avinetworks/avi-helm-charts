@@ -99,7 +99,7 @@ All notable changes to this project will be documented in this file. The format 
  ### Added:
   - AviInfraSetting CRD for selecting specific Avi controller infra attributes.
   - Granular RBAC support.
-  - Selective namespace sync for L4 objects including ServiceAPI and Services of type LB.
+  - Selective namespace sync for L4 objects including GatewayAPI and Services of type LB.
   - Option to add global fqdn for a hostname via Host Rule.
   - Temporary support for HTTP Caching for secure ingresses/routes via Pool objects.
   - Option to use dedicated Virtual Service per Ingress hostname.
