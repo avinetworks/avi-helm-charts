@@ -89,9 +89,9 @@ matchRules:
 
 5. `ttl`: Time To Live, ranging from 1-86400 seconds that determines the frequency with which clients need to obtain fresh steering information for client requests. If none is specified in the GDP object, the value defaults to the one specified in the DNS application profile.
 
-6. `healthMonitorRefs`: Provide federated custom health monitors. If this option is used and refs are specified, the default path based health monitoring will be deleted for the GslbServices.
+6. `healthMonitorRefs`: Provide federated custom health monitors. If this option is used and refs are specified, the default path based health monitoring will be deleted for the GslbServices. If no custom health monitors are specified, AMKO sets the default health monitors for all GslbServices.
 
-7. `sitePersistence`: Provide an Application Persistence Profile ref (pre-created in Avi Controller). This has to be a federated profile. Please follow the steps [here](https://avinetworks.com/docs/20.1/gslb-site-cookie-persistence/#outline-of-steps-to-be-taken) to create a federated Application Persistence Profile on the Avi Controller. If no reference is provided, Site Persistence is disabled.
+7. `sitePersistenceRef`: Provide an Application Persistence Profile ref (pre-created in Avi Controller). This has to be a federated profile. Please follow the steps [here](https://avinetworks.com/docs/20.1/gslb-site-cookie-persistence/#outline-of-steps-to-be-taken) to create a federated Application Persistence Profile on the Avi Controller. If no reference is provided, Site Persistence is disabled.
 
 ### Notes
 * Only one `GDP` object is allowed.
