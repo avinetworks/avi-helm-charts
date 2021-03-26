@@ -85,7 +85,6 @@ All notable changes to this project will be documented in this file. The format 
  ### Added:
   - Added auto-fqdn support
 
-<<<<<<< HEAD
  ## AKO-1.3.4
 
  ### Added:
@@ -106,7 +105,6 @@ All notable changes to this project will be documented in this file. The format 
   - Option to use dedicated Virtual Service per Ingress hostname.
   - Support for Node Port Local with Antrea CNI.
   - Option to use a default secret for Ingresses via annotation.
-=======
 ## AMKO-1.4.1-beta
 
 ### Changed:
@@ -118,4 +116,3 @@ All notable changes to this project will be documented in this file. The format 
   - AMKO support for `GSLBHostRule`.
   - AMKO support for GslbService properties: TTL, Site Persistence and Custom Health Monitors via `GlobalDeploymentPolicy` and `GSLBHostRule`.
   - AMKO support for adding third party site members via `GSLBHostRule`.
->>>>>>> Add AMKO 1.4.1 beta changes
