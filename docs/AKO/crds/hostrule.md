@@ -12,7 +12,7 @@ A sample HostRule CRD looks like this:
       namespace: red
     spec:
       virtualhost:
-        fqdn: foo.com # mandatory
+        fqdn: foo.region1.com # mandatory
         enableVirtualHost: true
         tls: # optional
           sslKeyCertificate:
@@ -20,6 +20,8 @@ A sample HostRule CRD looks like this:
             type: ref
           sslProfile: avi-ssl-profile
           termination: edge
+        gslb:
+          fqdn: foo.com
         httpPolicy: 
           policySets:
           - avi-secure-policy-ref
@@ -126,6 +128,18 @@ The `name` field refers to an Avi object if `type` specifies the value as `ref`.
 
 Currently only one of type of termination is supported viz. `edge`. In the future, we should be able to support other types of termination policies.
 
+#### Configure GSLB FQDN
+
+A GSLB FQDN can be specified within the HostRule CRD. This is only used if AKO is used with AMKO and not otherwise.
+
+        gslb:
+          fqdn: foo.com
+
+This additional FQDN inherits all the properties of the root FQDN specified under the the `virtualHost` section.
+Use this flag if you would want traffic with a GSLB FQDN to get routed to a site local FQDN. For example, in the above CRD, the client request from a GSLB
+DNS will arrive with the host header as foo.com to the VIP hosting foo.region1.com in region1. This CRD property would ensure that the request is routed appropriately to the backend service of `foo.region1.com`
+
+This knob is currently only supported with the SNI model and not with Extended Virtual Hosting model.
 
 #### Status Messages
 
