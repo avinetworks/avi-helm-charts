@@ -9,7 +9,7 @@ metadata:
 spec:
   fqdn: foo.avi.internal
   sitePersistence:
-  - enabled: true
+    enabled: true
     profileRef: "gap-1"  # only enabled for secure ingresses/routes
   thirdPartyMembers:
   - site: non-avi-site
