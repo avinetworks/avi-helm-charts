@@ -17,6 +17,7 @@ spec:
     - clusterContext: cluster2-admin
   refreshInterval: 1800
   logLevel: "INFO"
+  useCustomGlobalFqdn: false
 ```
 1. `apiVersion`: The api version for this object has to be `avilb.k8s.io/v1alpha1`.
 2. `kind`: the object kind is `GSLBConfig`.
@@ -28,6 +29,7 @@ spec:
 8. `memberClusters`: The kubernetes/openshift cluster contexts which are part of this GSLB cluster. See [here](#Multi-cluster kubeconfig) to create contexts for multiple kubernetes clusters.
 9.  `refreshInterval`: This is an internal cache refresh time interval, on which syncs up with the AVI objects and checks if a sync is required.
 10. `logLevel`: Define the log level that the amko pod prints. The allowed levels are: `[INFO, DEBUG, WARN, ERROR]`.
+11. `useCustomGlobalFqdn`: If set to true, AMKO will look for AKO HostRules to derive the GslbService name using the local to global fqdn mapping. If set to false (default case), AMKO ignores AKO HostRules and uses the default way of deriving GslbService names by just looking at the local fqdn in the ingress/route/service type LB. See [Local and Global Fqdn](../docs/local_and_global_fqdn.md).
 
 ### Notes
 * Only one `GSLBConfig` object is allowed.
