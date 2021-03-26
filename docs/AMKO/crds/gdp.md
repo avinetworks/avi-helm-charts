@@ -87,7 +87,7 @@ matchRules:
 
 4. `trafficSplit` is required if we want to route a percentage of traffic to objects in a given cluster. Weights for these clusters range from 1 to 20.
 
-5. `ttl`: Time To Live, ranging from 1-86400 seconds that determines the frequency with which clients need to obtain fresh steering information for client requests. If none is specified in the GDP object, the value defaults to the one specified in the DNS application profile.
+5. `ttl`: Use this flag to set the Time To Live value. The value can range from 1-86400 seconds. This determines the frequency with which clients need to obtain fresh steering information for client requests. If none is specified in the GDP object, the value defaults to the one specified in the DNS application profile.
 
 6. `healthMonitorRefs`: Provide federated custom health monitors. If this option is used and refs are specified, the default path based health monitoring will be deleted for the GslbServices. If no custom health monitors are specified, AMKO sets the default health monitors for all GslbServices.
 
