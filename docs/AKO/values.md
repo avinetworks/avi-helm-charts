@@ -83,6 +83,12 @@ AKO uses a sharding logic for Layer 7 ingress objects. A sharded VS involves hos
 one virtual IP or VIP. Having a shared virtual IP allows lesser IP usage since reserving IP addresses particularly in public clouds
 incur greater cost.
 
+### L7Settings.noPGForSNI
+
+Currently http caching is not available on PoolGroups from the Avi controller. AKO uses poolgroups for canary style deployments. If a customer does not require canary deployments and they an immediate requirement for HTTP caching then this flag can be helpful. This flag is set to `false` by default that means AKO encourages users to not use this feature because it would be deprecated in the future when pool groups implement http caching in the Avi controller.
+
+If this flag is set to `true` then AKO would program http policy set rules to switch between pools instead of poolgroups. This feature only applies to secure FQDNs.
+
 ### L7Settings.passthroughShardSize
 
 This is applicable only in openshift environment.
