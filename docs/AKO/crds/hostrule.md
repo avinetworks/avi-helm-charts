@@ -47,7 +47,7 @@ HostRule CRD can be used to enable/disable corresponding virtual services create
 
 This property can be applied only for secure FQDNs and cannot be applied for insecure routes. The default value is `true`.
 
-#### Express httpolicyset object refs.
+#### Express HTTP policy object refs.
 
 HostRule CRD can be used to express httppolicyset references. These httppolicyset objects should be pre-created in the Avi controller.
 
