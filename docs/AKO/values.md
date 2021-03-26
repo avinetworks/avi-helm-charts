@@ -57,6 +57,10 @@ Use this flag if you want AKO to act as a pure layer 7 ingress controller. AKO n
 
 AKO allows ingresses/routes from specific namespace/s to be synced to Avi controller. This key-value pair represent a label that is used by AKO to filter out namespace/s. If one of key/values specified empty, then ingresses/routes from all namespaces will be synched to Avi controller.
 
+### AKOSetttings.servicesAPI
+
+Use this flag to enable AKO to watch over Gateway API CRDs i.e. GatewayClasses and Gateways. AKO only supports Gateway APIs with Layer 4 Services. Setting this to `true` would enable users to configure GatewayClass and Gateway CRs to aggregate multiple Layer 4 Services and create one VirtualService per Gateway Object. 
+
 ### NetworkSettings.nodeNetworkList
 
 The `nodeNetworkList` lists the Networks and Node CIDR's where the k8s Nodes are created. This is only used in the ClusterIP deployment of AKO and in vCenter cloud and only when disableStaticRouteSync is set to false.

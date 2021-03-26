@@ -15,6 +15,7 @@ A sample HTTPRule object looks like this:
       fqdn: foo.avi.internal
       paths:
       - target: /foo
+        applicationPersistence: cookie-userid-persistence
         healthMonitors:
         - my-health-monitor-1
         - my-health-monitor-2
@@ -70,8 +71,15 @@ A sample setting with these fields would look like this:
           hash: LB_ALGORITHM_CONSISTENT_HASH_CUSTOM_HEADER
           hostHeader: foo
  
- If the `hostHeader` is specified in any other case it's ignored.
- If the algorithm isn't `LB_ALGORITHM_CONSISTENT_HASH` then the `hash` field is ignored.
+If the `hostHeader` is specified in any other case it's ignored.
+If the algorithm isn't `LB_ALGORITHM_CONSISTENT_HASH` then the `hash` field is ignored.
+
+#### Express application persistence profile
+HTTPRule CRD can be used to express application persistence profile references. The application persistence profile reference should have been created in the Avi Controller prior to this CRD creation.
+
+      applicationPersistence: cookie-userid-persistence
+
+The application persistence profile can be used to maintain stickyness to a server instance based on cookie values, headers etc. for a desired duration of time.
 
 #### Express health monitors
 HTTPRule CRD can be used to express health monitor references. The health monitor reference should have been created in the Avi Controller prior to this CRD creation.
@@ -80,7 +88,7 @@ HTTPRule CRD can be used to express health monitor references. The health monito
       - my-health-monitor-1
       - my-health-monitor-2
 
- The health monitors can be used to verify server health. A server (kubernetes pods in this case) will be marked UP only when all the health monitors return successful responses. Health monitors provided here overwrite the default health monitor configuration set by AKO i.e. `System-TCP` for HTTP/TCP traffic and `System-UDP` for UDP traffic based on the ingress/service configuration.
+The health monitors can be used to verify server health. A server (kubernetes pods in this case) will be marked UP only when all the health monitors return successful responses. Health monitors provided here overwrite the default health monitor configuration set by AKO i.e. `System-TCP` for HTTP/TCP traffic and `System-UDP` for UDP traffic based on the ingress/service configuration.
 
 #### Reencrypt traffic to the services
 
