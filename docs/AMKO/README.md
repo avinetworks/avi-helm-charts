@@ -74,28 +74,28 @@ The extra `update` permission is to update the `GSLBConfig` and `GlobalDeploymen
    $ helm search repo
 
    NAME     	CHART VERSION    	APP VERSION      	DESCRIPTION
-   ako/amko	1.4.1	            1.4.1	            A helm chart for Avi Multicluster Kubernetes Operator
+   ako/amko	1.4.1-beta	            1.4.1-beta	            A helm chart for Avi Multicluster Kubernetes Operator
 
    ```
 
 4. Use the `values.yaml` from this repository to provide values related to Avi configuration. To get the values.yaml for a release, run the following command
 
    ```
-   helm show values ako/amko --version 1.4.1 > values.yaml
+   helm show values ako/amko --version 1.4.1-beta > values.yaml
 
    ```
    Values and their corresponding index can be found [here](#parameters)
 
 5. Install AMKO:
    ```
-   $ helm install  ako/amko  --generate-name --version 1.4.1 -f /path/to/values.yaml  --set configs.gsllbLeaderController=<leader_controller_ip> --namespace=avi-system
+   $ helm install  ako/amko  --generate-name --version 1.4.1-beta -f /path/to/values.yaml  --set configs.gsllbLeaderController=<leader_controller_ip> --namespace=avi-system
    ```
 6. Check the installation:
    ```
    $ helm list -n avi-system
 
    NAME           	NAMESPACE 	REVISION	UPDATED                                	STATUS  	CHART                 	APP VERSION
-   amko-1598451370	avi-system	1       	2020-08-26 14:16:21.889538175 +0000 UTC	deployed	amko-1.3.1	            1.4.1
+   amko-1598451370	avi-system	1       	2020-08-26 14:16:21.889538175 +0000 UTC	deployed	amko-1.3.1-beta	            1.4.1-beta
    ```
 
 #### Troubleshooting and Log collection
@@ -126,7 +126,7 @@ kubectl delete ns avi-system
 | `configs.memberClusters.clusterContext`          | K8s member cluster context for GSLB                                                                                      | `cluster1-admin` and `cluster2-admin` |
 | `configs.refreshInterval`                        | The time interval which triggers a AVI cache refresh                                                                     | 1800 seconds                           |
 | `configs.logLevel`                         | Log level to be used by AMKO to print the type of logs, supported values are `INFO`, `DEBUG`, `WARN` and `ERROR` | `INFO`                                   |
-| `configs.useCustomGlobalFqdn`                         | Select the GslbService FQDN mode for AMKO. If set to `true`, AMKO looks observes HostRules to look for mapping between local and global FQDNs | `false`                                   |
+| `configs.useCustomGlobalFqdn`                         | Select the GslbService FQDN mode for AMKO. If set to `true`, AMKO observes the HostRules to look for mapping between local and global FQDNs | `false`                                   |
 | `gdpConfig.appSelector.label{.key,.value}`       | Selection criteria for applications, label key and value are provided                                                    | Nil                                   |
 | `gdpConfig.namespaceSelector.label{.key,.value}` | Selection criteria for namespaces, label key and value are provided                                                      | Nil                                   |
 | `gdpConfig.matchClusters`                        | List of clusters (names must match the names in configs.memberClusters) from where the objects will be selected          | Nil                                   |
