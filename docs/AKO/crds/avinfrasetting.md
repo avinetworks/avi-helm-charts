@@ -30,7 +30,7 @@ AviInfraSetting resources can be attached to Services using Gateway APIs, or sim
 
 ##### Using Gateway API
 
-Gateway APIs provide interfaces to structure Kubernetes service networking. More information around Gateway API can be found [here](https://gateway-api.sigs.k8s.io/). AKO provides support for Gateway APIs via the `gatewayAPI` flag in the `values.yaml`.
+Gateway APIs provide interfaces to structure Kubernetes service networking. More information around Gateway API can be found [here](https://gateway-api.sigs.k8s.io/). AKO provides support for Gateway APIs via the `servicesAPI` flag in the `values.yaml`.
 More details related to how AKO integrates with Gateway API is covered as part of the [gateway-api](https://github.com/avinetworks/avi-helm-charts/docs/AKO/gateway-api/gateway-api.md) documentation.
 The AviInfraSetting resource can be attached to a GatewayClass object, via the `.spec.parametersRef` as shown below
 
@@ -49,7 +49,7 @@ spec:
 
 ##### Using annotation
 
-In case the `gatewayAPI` flag is NOT set to `true`, and AKO is not watching over the Gateway APIs, Services of Type `LoadBalancer` can specify the AviInfraSetting using an annotation as shown below
+In case the `servicesAPI` flag is NOT set to `true`, and AKO is not watching over the Gateway APIs, Services of Type `LoadBalancer` can specify the AviInfraSetting using an annotation as shown below
 
 ```
   annotations:
