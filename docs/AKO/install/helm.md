@@ -20,15 +20,15 @@ Step 3: Search the available charts for AKO
 ```
 helm search repo
 
-NAME                 	CHART VERSION	APP VERSION	DESCRIPTION
-ako/ako              	1.3.1        	1.3.1      	A helm chart for Avi Kubernetes Operator
+NAME                 	CHART VERSION	    APP VERSION	        DESCRIPTION
+ako/ako              	1.4.1-beta        	1.4.1-beta      	A helm chart for Avi Kubernetes Operator
 
 ```
 
 Use the `values.yaml` from this chart to edit values related to Avi configuration. To get the values.yaml for a release, run the following command
 
 ```
-helm show values ako/ako --version 1.3.1 > values.yaml
+helm show values ako/ako --version 1.4.1-beta > values.yaml
 
 ```
 
@@ -37,7 +37,7 @@ Values and their corresponding index can be found [here](#parameters)
 Step 4: Install AKO
 
 ```
-helm install  ako/ako  --generate-name --version 1.3.1 -f /path/to/values.yaml  --set ControllerSettings.controllerHost=<controller IP or Hostname> --set avicredentials.username=<avi-ctrl-username> --set avicredentials.password=<avi-ctrl-password> --namespace=avi-system
+helm install  ako/ako  --generate-name --version 1.4.1-beta -f /path/to/values.yaml  --set ControllerSettings.controllerHost=<controller IP or Hostname> --set avicredentials.username=<avi-ctrl-username> --set avicredentials.password=<avi-ctrl-password> --namespace=avi-system
 ```
 
 Step 5: Check the installation
@@ -84,8 +84,8 @@ kubectl apply -f https://raw.githubusercontent.com/avinetworks/avi-helm-charts/m
 ```
 helm list -n avi-system
 
-NAME          	NAMESPACE 	REVISION	UPDATED                             	STATUS  	CHART    	APP VERSION
-ako-1593523840	avi-system	1       	2020-09-16 13:44:31.609195757 +0000 UTC	deployed	ako-1.3.1	1.3.1
+NAME          	NAMESPACE 	REVISION	UPDATED                             	    STATUS  	CHART    	APP VERSION
+ako-1593523840	avi-system	1       	2020-09-16 13:44:31.609195757 +0000 UTC	    deployed	ako-1.3.1	1.3.1
 ```
 
 *Step3*
@@ -98,21 +98,21 @@ helm repo add --force-update ako https://projects.registry.vmware.com/chartrepo/
 "ako" has been added to your repositories
 
 ```
-Note: From AKO 1.3.3, we are migrating our charts repo to VMWare's harbor repository and hence a force update of the repo URL is required for a successful upgrade process from 1.3.1
+Note: From AKO 1.3.3, we are migrating our charts repo to VMWare's harbor repository and hence a force update of the repo URL is required for a successful upgrade process from 1.3.3
 
 *Step4*
 
 Get the values.yaml for the latest AKO version
 
 ```
-helm show values ako/ako --version 1.3.3 > values.yaml
+helm show values ako/ako --version 1.4.1-beta > values.yaml
 
 ```
 
 Upgrade the helm chart
 
 ```
-helm upgrade ako-1593523840 ako/ako -f /path/to/values.yaml --version 1.3.3 --set ControllerSettings.controllerHost=<IP or Hostname> --set avicredentials.password=<username> --set avicredentials.username=<username> --namespace=avi-system
+helm upgrade ako-1593523840 ako/ako -f /path/to/values.yaml --version 1.4.1-beta --set ControllerSettings.controllerHost=<IP or Hostname> --set avicredentials.password=<username> --set avicredentials.username=<username> --namespace=avi-system
 
 ```
 
