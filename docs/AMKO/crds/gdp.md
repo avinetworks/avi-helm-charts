@@ -1,8 +1,12 @@
 ## GlobalDeploymentPolicy CRD for AMKO
-A CRD called GlobalDeploymentPolicy allows users to select kubernetes/openshift objects based on certain rules. The selection policy applies to all the clusters which are mentioned in the GDP object. A typical GlobalDeploymentPolicy looks like this:
+A CRD called GlobalDeploymentPolicy allows users to select kubernetes/openshift objects based on certain rules. The selection policy applies to all the clusters which are mentioned in the GDP object.
+
+**Note** that `v1alpha1` for the GDP object is deprecated now and AMKO won't honor any changes in the `v1alpha1` version of a GDP object.
+
+A typical GlobalDeploymentPolicy looks like this:
 
 ```yaml
-apiVersion: "amko.k8s.io/v1alpha1"
+apiVersion: "amko.k8s.io/v1alpha2"
 kind: "GlobalDeploymentPolicy"
 metadata:
   name: "global-gdp"
@@ -25,6 +29,13 @@ spec:
       weight: 8
     - cluster: cluster2
       weight: 2
+
+  ttl: 10
+
+  healthMonitorRefs:
+  - my-health-monitor1
+
+  sitePersistenceRef: gap-1
 ```
 1. `namespace`: namespace of this object must be `avi-system`.
 2. `matchRules`: This allows users to select objects using either application labels (configured as labels on Ingress/Route objects) or via namespace labels (configured as labels on the namespace objects). `matchRules` are defined as:
@@ -76,6 +87,17 @@ matchRules:
 
 4. `trafficSplit` is required if we want to route a percentage of traffic to objects in a given cluster. Weights for these clusters range from 1 to 20.
 
+5. `ttl`: Time To Live, ranging from 1-86400 seconds that determines the frequency with which clients need to obtain fresh steering information for client requests. If none is specified in the GDP object, the value defaults to the one specified in the DNS application profile.
+
+6. `healthMonitorRefs`: Provide federated custom health monitors. If this option is used and refs are specified, the default path based health monitoring will be deleted for the GslbServices.
+
+7. `sitePersistence`: Provide an Application Persistence Profile ref (pre-created in Avi Controller). This has to be a federated profile. Please follow the steps [here](https://avinetworks.com/docs/20.1/gslb-site-cookie-persistence/#outline-of-steps-to-be-taken) to create a federated Application Persistence Profile on the Avi Controller. If no reference is provided, Site Persistence is disabled.
+
 ### Notes
 * Only one `GDP` object is allowed.
+
 * If using `helm install`, a `GDP` object is created by picking up values from `values.yaml` file. User can then edit this GDP object to modify their selection of objects.
+
+* `trafficSplit`, `ttl`, `sitePersistence` and `healthMonitorRefs` provided in the GDP object are applicable on all the GslbServices. These properties, however, can be overridden via `GSLBHostRule` created for a GslbService. More details [here](gslbhostrule.md).
+
+* Site Persistence, if specified, will only be enabled for the GslbServices which have secure ingresses or secure routes as the members and will be disabled for all other cases.
