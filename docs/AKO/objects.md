@@ -185,7 +185,7 @@ the `Service`. This is mandatory for this feature to work.
 
 ### Namespace Sync in AKO
 
-Namespace Sync feature allows the user to sync Ingresses/Routes from specific namespace/s to Avi controller.
+Namespace Sync feature allows the user to sync objects from specific namespace/s with Avi controller.
 
 New parameters has been introduced as config options in AKO's values.yaml. To use this feature, set the value of these parametes to a non-empty string.
 
@@ -194,7 +194,7 @@ New parameters has been introduced as config options in AKO's values.yaml. To us
 | `AKOSettings.namespaceSelector.labelKey` | Key used as a label based selection for the namespaces. | empty |
 | `AKOSettings.namespaceSelector.labelValue` | Value used as a label based selection for the namespaces. | empty |
 
-Empty value to any one of the mentioned parameters will result in disabling namespace sync functionality and will result in syncing up ingresses/routes from all namespace with Avi controller. Any changes in values of these parameters will require AKO reboot.
+If either of the above values is left empty then AKO would sync objects from all namespaces with AVI controller. Any changes in values of these parameters will require AKO reboot.
 
 Once user boots up AKO with this setting, user has to label a namespace with same key:value pair mentioned in values of labelKey and labelValues. For example, if user has specified values as labelKey:"app" and labelValue: "migrate" in values.yaml, then user has to label namespace with "app: migrate".
 
@@ -216,13 +216,14 @@ Once user boots up AKO with this setting, user has to label a namespace with sam
       phase: Active
 ```
 
-Valid labelling of a namespace will sync ingresses/routes from that namespace with Avi controller.
+AKO will sync all objects from correctly labelled namespace/s.
 
-Ingresses/Routes from namespaces, with no labels or invalid labels, will not be synched with Avi Controller.
+If the label of 'red' namespace is changed from "app: migrate" (valid) to "app: migrate1" (invalid), then following objects of 'red' namespace will be deleted from AVI controller
+- pools associated with, insecure ingresses/routes 
+- SNI VSes associated with secure ingresses/routes 
+- VSes associated with L4 objects 
 
-If user changes a label of a namespace from valid to invalid, then it will result in pool deletion for an insecure ingress/route and a SNI VS deletion for a secure ingress/route from Avi controller. For example, let say label of 'red' namespace is changed from "app: migrate" (valid) to "app: migrate1" (invalid), then pools associated with, insecure ingresses/routes and SNI VSes associated with secure ingresses/routes of a namespace 'red', will be deleted from Avi Controller.
-
-If user changes label of a namespace from invalid to valid, then it will result in adding ingresses/routes of that namespace with Avi controller.
+AKO will sync back objects of a namespace with AVI controller if namespace label is changed from an invalid lable to a valid label.
 
 ### AKO created object naming conventions
 
