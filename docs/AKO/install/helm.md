@@ -73,10 +73,17 @@ Follow these steps if you are upgrading from an older AKO release.
 
 *Step1*
 
-Helm does not upgrade the CRDs during a release upgrade. Before you upgrade a release, run the following command to upgrade the CRDs:
+Helm does not upgrade the CRDs during a release upgrade. Before you upgrade a release, run the following command to download and upgrade the CRDs:
 
 ```
-kubectl apply -f https://raw.githubusercontent.com/avinetworks/avi-helm-charts/master/charts/stable/ako/crds.yaml
+helm template ako/ako --version 1.4.1-beta --include-crds --output-dir <output_dir>
+```
+
+This will save the helm files to an output directory which will contain the CRDS corresponding to the AKO version.
+To install the CRDS:
+
+```
+kubectl apply -f <output_dir>/ako/crds/
 ```
 
 *Step2*
