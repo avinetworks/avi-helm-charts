@@ -18,7 +18,7 @@ Note: The helm charts are present in VMWare's public harbor repository
 Step 3: Search the available charts for AKO
 
 ```
-helm search repo
+helm search repo --devel
 
 NAME                 	CHART VERSION	    APP VERSION	        DESCRIPTION
 ako/ako              	1.4.1-beta        	1.4.1-beta      	A helm chart for Avi Kubernetes Operator
