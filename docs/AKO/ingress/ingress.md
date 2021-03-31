@@ -80,11 +80,11 @@ metadata:
   namespace: avi-system
 type: kubernetes.io/tls
 data:
-  tls.crt: 
+  tls.key: 
     -----BEGIN PRIVATE KEY-----
     [...]
     -----END PRIVATE KEY-----
-  tls.key:
+  tls.crt:
     -----BEGIN CERTIFICATE-----
     [...]
     -----END CERTIFICATE-----
