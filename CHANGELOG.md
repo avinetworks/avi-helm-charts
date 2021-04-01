@@ -23,7 +23,6 @@ All notable changes to this project will be documented in this file. The format 
  - SNI VS sharing on the basis of hostnames. Same hostname will create only 1 VS across namespaces.
  - Option to disable full sync. Change fullSyncFrequency to 0.
  - Unused shared VS deletion on reboot of AKO.
- - Persistence profile in HTTPRule CRD.
  - Multiple sub-domain support with a specification of default sub-domain in `values.yaml` for service of type LB.
  
  ### Removed:
@@ -105,7 +104,9 @@ All notable changes to this project will be documented in this file. The format 
   - Temporary support for HTTP Caching for secure ingresses/routes via Pool objects.
   - Option to use dedicated Virtual Service per Ingress hostname.
   - Support for Node Port Local with Antrea CNI.
+  - Persistence profile in HTTPRule CRD.
   - Option to use a default secret for Ingresses via annotation.
+  
 ## AMKO-1.4.1-beta
 
 ### Changed:
