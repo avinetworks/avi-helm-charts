@@ -104,7 +104,9 @@ All notable changes to this project will be documented in this file. The format 
   - Temporary support for HTTP Caching for secure ingresses/routes via Pool objects.
   - Option to use dedicated Virtual Service per Ingress hostname.
   - Support for Node Port Local with Antrea CNI.
+  - Persistence profile in HTTPRule CRD.
   - Option to use a default secret for Ingresses via annotation.
+  
 ## AMKO-1.4.1-beta
 
 ### Changed:
