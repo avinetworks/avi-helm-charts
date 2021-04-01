@@ -23,6 +23,7 @@ All notable changes to this project will be documented in this file. The format 
  - SNI VS sharing on the basis of hostnames. Same hostname will create only 1 VS across namespaces.
  - Option to disable full sync. Change fullSyncFrequency to 0.
  - Unused shared VS deletion on reboot of AKO.
+ - Persistence profile in HTTPRule CRD.
  - Multiple sub-domain support with a specification of default sub-domain in `values.yaml` for service of type LB.
  
  ### Removed:
