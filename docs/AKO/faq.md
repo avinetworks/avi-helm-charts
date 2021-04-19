@@ -190,3 +190,7 @@ Yes. AKO would create AVI objects based on the relevant serviceType set in AKO.
 #### Can the serviceType in AKO be changed dynamically ?
 
 No. After changing the serviceType, AKO has to be rebooted and all objects which are not required, would be deleted as part of the reboot process.
+
+#### If serviceType is changed from NodePortLocal, would AKO remove NPL annotation from the Services automatically ?
+
+No. After changing the serviceType, the users have to remove NPL annotation from the Services themselves.
