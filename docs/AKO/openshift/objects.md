@@ -1,5 +1,5 @@
 ### Openshift Route
-In Openshift cluster, AKO can be used to configure routes. Ingress configuration is not supported. Currently the shard mode supported for openshift route is hostname. 
+In Openshift cluster, AKO can be used to configure routes. Ingress configuration is not supported. 
 
 ### Insecure Route
 

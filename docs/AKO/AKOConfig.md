@@ -31,7 +31,6 @@ spec:
 
   l7Settings:
     defaultIngController: true
-    shardingScheme: "hostname"
     serviceType: "ClusterIP"
     shardVSSize: "LARGE" #enum
     passthroughShardSize: "SMALL"   #enum
@@ -93,7 +92,6 @@ spec:
     * `networkName`: Network name of the data network.
   - `l7Settings`: Settings for L7 Virtual Services
     * `defaultIngController`: Set to `true` if AKO controller is the default Ingress controller on the cluster.
-    * `shardingScheme`: Specify a scheme on which to shard the ingresses/routes on virtual services. Valid values: `hostname`, `namespace`.
     * `serviceType`: Type of services that we want to configure: Valid values: `ClusterIP` and `NodePort`.
     * `shardVSSize`: Use this to control the Avi Virtual service numbers. This applies to both secure/insecure VSes but does not apply for passthrough. Valud values: `LARGE`, `MEDIUM` and `SMALL`.
     * `passthroughShardSize`: Use this to control the passthrough virtualservice numbers. Valid values: `LARGE`, `MEDIUM` and `SMALL`.
