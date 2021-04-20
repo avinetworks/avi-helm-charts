@@ -184,6 +184,22 @@ No. Users can only use service of type ClusterIP as backend of Ingresses in this
 
 Yes. AKO would create AVI objects based on the relevant serviceType set in AKO.
 
+#### What are the steps for ServiceType change?
+
+The `serviceType` in AKO can be changed from `ClusterIP` to `NodePortLocal` or `NodePort`. The `serviceType` change is considered disruptive.
+Hence before the `serviceType` change, all the existing AKO configuration must be deleted. This can be achieved as follows:
+
+  - Set the `deleteConfig` flag to `true`.
+  - Wait for AKO to delete all the relevant Avi configuration and update the deletion status in AKO's statefulset status.
+  - Set the `deleteConfig` flag to `false`
+  - Change the `serviceType`
+  - Reboot AKO
+
+For example, during the change of `serviceType` from `ClusterIP` to `NodePortLocal`, the `deleteConfig` flag will:
+
+  - Delete the static routes.
+  - Delete the SE group labels.
+
 #### Can the serviceType in AKO be changed dynamically ?
 
 No. After changing the serviceType, AKO has to be rebooted and all objects which are not required, would be deleted as part of the reboot process.
