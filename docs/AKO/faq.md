@@ -68,6 +68,10 @@ Altering the shard VS number is considered as disruptive. This is because dynami
 the ingress to VS mapping. Hence if you want to alter the shard VS number, first delete the older configmap and trigger a complete
 cleanup of the VSes in the controller. Followed by an edit of the configmap and restart of AKO.
 
+#### What happens if the number of DNS records exceed a Shard VS?
+
+Currently, the number of A records allowed per virtual service is 1000. If a shard size of `SMALL` is selected and the number of A records via the Ingress objects exceed 1000, then a greater `shardSize` has to be configured via the `shardSize` knob. Alternatively one can create a separate IngressClass for a set of Ingress objects and specify a `shardSize` in the `AviInfraSettings` CRD which would allow AKO to place the A records scoped to the VS that is mapped to the IngressClass.
+
 #### What is the use of static routes?
 
 Static routes are created with cluster name as the label. While deploying AKO the admin or the operator decides a Service Engine Group for a given
