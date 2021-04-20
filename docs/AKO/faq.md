@@ -33,7 +33,7 @@ To re-create the objects in Avi, the configmap has to be edited to set deleteCon
 
 #### How is the Shared VS lifecycle controlled?
 
-In hostname based sharding, when an ingress object is created with multiple hostnames, AKO generates an md5 hash using the hostname and the Shard VS number. This uniquely maps an FQDN to a given Shared VS and avoids DNS conflicts. During initial clean bootup, if the Shared VS does not exist in Avi - AKO creates the same and then patches the ingress FQDN to it either in the form of a pool (for insecure routes) or in the form of an SNI child virtual service (in case of secure routes).
+AKO follows hostname based sharding to sync multiple ingresses with same hostname to a single virtual service. When an ingress object is created with multiple hostnames, AKO generates an md5 hash using the hostname and the Shard VS number. This uniquely maps an FQDN to a given Shared VS and avoids DNS conflicts. During initial clean bootup, if the Shared VS does not exist in Avi - AKO creates the same and then patches the ingress FQDN to it either in the form of a pool (for insecure routes) or in the form of an SNI child virtual service (in case of secure routes).
 
 The Shared VSes aren't deleted if all the FQDNs mapped to it are removed from Kubernetes. However, if the user wants AKO to delete unused shared VSes - a pod restart is required that would evaluate the VS and delete it appropriately.
 
@@ -57,11 +57,9 @@ that is - `LARGE` to account for future expansion.
 
 #### Can I change the Shard VS number?
 
-To Shard to virtual services, AKO uses a sharding mechanism that is driven either by the `namespace` on which the ingress object
-is created or the `hostname` of each rule within an ingress object. The latter is marked as default because it ensures that a unique
-hostname is always sharded consistently to the same virtual service.
+To Shard to virtual services, AKO uses a sharding mechanism that is driven by the `hostname` of each rule within an ingress object. This ensures that a unique hostname is always sharded consistently to the same virtual service.
 
-Since the sharding logics are determined by the number of Shard virtual services, changing the Shard VS number has the potential hazard
+Since the sharding logic is determined by the number of Shard virtual services, changing the Shard VS number has the potential hazard
 of messing up an existing cluster's already synced objects. Hence it's recommended that the Shard VS numbers are not changed once fixed.
 
 #### How do I alter the Shard VS number?
@@ -79,8 +77,7 @@ be L2 adjacent to your Kubernetes nodes.
 
 #### What happens if I have the same SNI host across multiple namespaces?
 
-The ingress API does not prohibit the user from creating the same SNI hostname across multiple namespaces. In the hostname sharding
-mode, AKO will create 1 SNI virtual service and gather all paths associated with it across namespaces to create corresponding switching
+The ingress API does not prohibit the user from creating the same SNI hostname across multiple namespaces. AKO will create 1 SNI virtual service and gather all paths associated with it across namespaces to create corresponding switching
 rules. However, the user needs to denote each ingress with the TLS secret for a given hostname to qualify the host for the SNI virtual service.
 
 Consider the below example:

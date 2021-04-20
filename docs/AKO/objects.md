@@ -78,8 +78,7 @@ spec:
             servicePort: 80
 ```
 
-For insecure host/path combinations, AKO uses a Sharded VS logic where based on either the `namespace` of this ingress or the `hostname`
-value (`myhost.avi.internal`), a pool object is created on a Shared VS. A shared VS typically denotes a virtualservice in Avi that
+For insecure host/path combinations, AKO uses a Sharded VS logic where based on the `hostname` value (`myhost.avi.internal`), a pool object is created on a Shared VS. A shared VS typically denotes a virtualservice in Avi that
 is shared across multiple ingresses. A priority label is associated on the poolgroup against it's member pool (that is created as a part of
 this ingress), with priority label of `myhost.avi.internal/foo`.
 
@@ -270,7 +269,7 @@ ShardVSName = clusterName + "--Shared-L7-" + <shardNum>
 ```
 
 `clusterName` is the value specified in values.yaml during install. "Shared-L7" is a constant identifier for Shared VSes
-`shardNum` is the number of the shared VS generated based on either hostname or namespace based shards.
+`shardNum` is the number of the shared VS generated based on hostname based shards.
 
 ##### Shared VS pool names
 
@@ -294,21 +293,11 @@ Name of the Shared VS Poolgroup is the same as the Shared VS name.
 
 ##### SNI child VS names
 
-The SNI child VSes namings vary between different sharding options.
-
-###### Hostname shard
+The following is the formula to derive the SNI child VS names:
 
 ```
 vsName = clusterName + "--" + sniHostName
 ```
-
-###### Namespace shard
-
-```
-vsName = clusterName + "--" + ingName + "-" + namespace + "-" + secret
-```
-
-The difference in naming is done because with namespace based sharding only one SNI child is created per ingress/per secret object while in hostname based sharding each SNI VS is unique to the hostname specified in the ingress object.
 
 ##### SNI pool names
 

@@ -108,12 +108,6 @@ ingress object.
 
 If you do not use ingress classes, then keep this knob untouched and AKO will take care of syncing all your ingress objects to Avi.
 
-### L7Settings.l7ShardingScheme
-
-AKO allows two types of sharding logic currently. These are `hostname` based or `namespace` based. The hostname based sharding uses
-the hostname specified in the Ingress rules to determine the shard VS number while the `namespace` based sharding logic shards the
-ingress object based on the namespace on which it is created.
-
 ### L4Settings.defaultDomain
 
 If you have multiple sub-domains configured in your Avi cloud, use this knob to specify the default sub-domain.
