@@ -68,6 +68,10 @@ Altering the shard VS number is considered as disruptive. This is because dynami
 the ingress to VS mapping. Hence if you want to alter the shard VS number, first delete the older configmap and trigger a complete
 cleanup of the VSes in the controller. Followed by an edit of the configmap and restart of AKO.
 
+#### What happens if the number of DNS records exceed a Shard VS?
+
+Currently, the number of A records allowed per virtual service is 1000. If a shard size of `SMALL` is selected and the number of A records via the Ingress objects exceed 1000, then a greater `shardSize` has to be configured via the `shardSize` knob. Alternatively one can create a separate IngressClass for a set of Ingress objects and specify a `shardSize` in the `AviInfraSettings` CRD which would allow AKO to place the A records scoped to the VS that is mapped to the IngressClass.
+
 #### What is the use of static routes?
 
 Static routes are created with cluster name as the label. While deploying AKO the admin or the operator decides a Service Engine Group for a given
@@ -183,6 +187,22 @@ No. Users can only use service of type ClusterIP as backend of Ingresses in this
 #### Can we use serviceType NodePort or ClusterIP in AKO, if the CNI type is Antrea and NodePortLocal feature is enabled in Antrea ?
 
 Yes. AKO would create AVI objects based on the relevant serviceType set in AKO.
+
+#### What are the steps for ServiceType change?
+
+The `serviceType` in AKO can be changed from `ClusterIP` to `NodePortLocal` or `NodePort`. The `serviceType` change is considered disruptive.
+Hence before the `serviceType` change, all the existing AKO configuration must be deleted. This can be achieved as follows:
+
+  - Set the `deleteConfig` flag to `true`.
+  - Wait for AKO to delete all the relevant Avi configuration and update the deletion status in AKO's statefulset status.
+  - Change the `serviceType`
+  - Set the `deleteConfig` flag to `false`
+  - Reboot AKO
+
+For example, during the change of `serviceType` from `ClusterIP` to `NodePortLocal`, the `deleteConfig` flag will:
+
+  - Delete the static routes.
+  - Delete the SE group labels.
 
 #### Can the serviceType in AKO be changed dynamically ?
 
