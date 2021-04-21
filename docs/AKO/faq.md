@@ -195,8 +195,8 @@ Hence before the `serviceType` change, all the existing AKO configuration must b
 
   - Set the `deleteConfig` flag to `true`.
   - Wait for AKO to delete all the relevant Avi configuration and update the deletion status in AKO's statefulset status.
-  - Set the `deleteConfig` flag to `false`
   - Change the `serviceType`
+  - Set the `deleteConfig` flag to `false`
   - Reboot AKO
 
 For example, during the change of `serviceType` from `ClusterIP` to `NodePortLocal`, the `deleteConfig` flag will:
