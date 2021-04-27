@@ -142,7 +142,7 @@ The following table lists the configurable parameters of the AKO chart and their
 | `AKOSettings.clusterName` | Unique identifier for the running AKO instance. AKO identifies objects it created on Avi Controller using this param. | **required** |
 | `NetworkSettings.subnetIP` | Subnet IP of the data network | **required** |
 | `NetworkSettings.subnetPrefix` | Subnet Prefix of the data network | **required** |
-| `NetworkSettings.networkName` | Network Name of the data network | **required** |
+| `NetworkSettings.vipNetworkList` | List of Network Names for VIP network, multiple networks allowed only for AWS Cloud | **required** |
 | `NetworkSettings.enableRHI` | Publish route information to BGP peers | false |
 | `L4Settings.defaultDomain` | Specify a default sub-domain for L4 LB services | First domainname found in cloud's dnsprofile |
 | `L4Settings.autoFQDN`  | Specify the layer 4 FQDN format | default |  
@@ -158,7 +158,7 @@ The following table lists the configurable parameters of the AKO chart and their
 | `avicredentials.password` | Avi controller password | empty |
 | `image.repository` | Specify docker-registry that has the AKO image | avinetworks/ako |
 
-> `networkName`, `subnetIP` and `subnetPrefix` are required fields which are used for allocating VirtualService IP by IPAM Provider module
+> `vipNetworkList`, `subnetIP` and `subnetPrefix` are required fields which are used for allocating VirtualService IP by IPAM Provider module
 
 > Each AKO instance mapped to a given Avi cloud should have a unique clusterName parameter. This would maintain the uniqueness of object naming across Kubernetes clusters.
 
