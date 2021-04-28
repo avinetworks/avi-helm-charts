@@ -9,7 +9,7 @@ Starting v1.4.1, AKO allows users to expose Kubernetes/Opennshift Services, outs
 
 #### GatewayClass
 
-GatewayClass aggregates a group of Gateway objects, similar to how IngressClass aggregates a group of Ingress objects. GatewayClasses formalize types of load balancing implementations which can be different for different load balancing vendors (Avi/Nginx/HAProxy etc.), or can point to different load balancing parameters for a single load balancing vendor (via the `Parameters` key).
+GatewayClass aggregates a group of Gateway objects, similar to how IngressClass aggregates a group of Ingress objects. GatewayClasses formalize types of load balancing implementations which can be different for different load balancing vendors (Avi/Nginx/HAProxy etc.), or can point to different load balancing parameters for a single load balancing vendor (via the `parametersRef` key).
 
 AKO identifies GatewayClasses that point to `ako.vmware.com/avi-lb` as the `.spec.controller` value, in the GatewayClass object. A sample GatewayClass object can look something like
 
@@ -26,9 +26,9 @@ spec:
     name: my-infrasetting
 ```
 
-It is important that the `.spec.controller` value specified MUST match `ako.vmware.com/avi-lb` for AKO to honour the GatewayClass.
+It is important that the `.spec.controller` value specified MUST match `ako.vmware.com/avi-lb` for AKO to honour the GatewayClass and corresponding Gateway objects.
 
-The `.spec.parametersRef` allows users to point to AKO's AviInfraSetting CRD (cluster-scoped), to fine tune Avi specific load balancing parameters like the VIP network, Service Engine Group etc. More information on AviInfraSetting CRD can be found [here](https://github.com/avinetworks/avi-helm-charts/docs/AKO/crds/aviinfrasetting.md)
+The `.spec.parametersRef` allows users to point to AKO's AviInfraSetting Custom Resource (cluster-scoped), to fine tune Avi specific load balancing parameters like the VIP network, Service Engine Group etc. More information on AviInfraSetting CRD can be found [here](https://github.com/avinetworks/avi-helm-charts/docs/AKO/crds/aviinfrasetting.md)
 
 
 #### Gateway
