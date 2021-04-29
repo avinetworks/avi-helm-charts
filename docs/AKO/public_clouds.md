@@ -145,9 +145,33 @@ Below points list down the EKS deployment options as well as the AKO deployment 
 * By default EKS cluster does not have any nodes configured on it. A new nodegroup/autoscaling group needs to be created in the same subnet as EKS and associate it to the cluster
 * Controller can be brought up on an altogether different subnet.
     * For the EKS nodes to be able to connect to controller, a custom security group needs to be added on the nodes which will allow access to the Controller subnet.
+* AKO supports Multi-AZ VIPs for AWS. VIPs can be in single subnet or multiple subnets across multiple AZs.
+    * For configuring MultiVIP, add the desired subnet ids to `NetworkSettings.vipNetworkList`. Single subnet id in vipNetworkList signifies single VIP mode. Such configuration serves as a global configuration for MultiVIP. Example config:
+    ```yaml
+    #values.yaml
+    [...]
+    NetworkSettings:
+        vipNetworkList:
+            - networkName: subnet-1
+            - networkName: subnet-2
+    [...]
+    ```
+    * For configuring a subset of VirtualServices with multiple vips, use `AviInfraSetting` CRD. The desired subnets can then be specified under `AviInfraSetting.network.names`. Such configuration overrides the global configuration. Example config:
+    ```yaml
+    #multivip-cr.yaml
+    apiVersion: ako.vmware.com/v1alpha1
+    kind: AviInfraSetting
+    metadata:
+        name: multivip-cr
+        namespace: multivip-namespace 
+    spec:
+        network:
+            names:
+                - subnet-1
+                - subnet-2
+    ```
+    * **NOTE**: When configuring MultiVIP, make sure that **ALL** subnets are capable of vip allocation. Failure in allocating even a single vip (for example, in case of IP exhaustion) **will** result in complete failure of entire request. *This is same as vip allocation failures in single vip.*
 
-Note:
-* AKO does not yet support Multi-AZ VIPs for AWS. All the VIPs will be in a single subnet and single AZ.
 ### AKO deployment in AKS
 
 Azure Kubernetes Service (AKS) is a a fully managed Kubernetes service which offers serverless Kubernetes, an integrated continuous integration and continuous delivery (CI/CD) experience and enterprise-grade security and governance.
