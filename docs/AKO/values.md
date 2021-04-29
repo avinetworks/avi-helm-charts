@@ -55,7 +55,7 @@ Use this flag if you want AKO to act as a pure layer 7 ingress controller. AKO n
 
 ### AKOSettings.enableEVH
 
-Use this flag if you want to create Enhanced Virtual Hosting model for Virtual Service objects in AVI. It is disabled by default. Set the flag to `true` to enable the flag.
+Use this flag if you want to create Enhanced Virtual Hosting model for Virtual Service objects in AVI. It is disabled by default. Set the flag to `true` to enable the flag. This feature is currently supported for kubernetes clusters only.
 
 Before enabling the flag in the existing deployment make sure to delete the config and enable the flag. This will ensure SNI based VS's are deleted before creating EVH VS's.
 
