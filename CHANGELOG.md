@@ -91,22 +91,28 @@ All notable changes to this project will be documented in this file. The format 
   - Option to use AKO as pure L7 ingress controller without L4 functionalities.
   - Option to enable/disable hostname addition for Services of type LB.
 
- ## AKO-1.4.1-beta
- 
- ### Changed:
-  - Namespace Shard mode is deprecated.
- 
+ ## AKO-1.4.1
+
  ### Added:
   - AviInfraSetting CRD for selecting specific Avi controller infra attributes.
-  - Granular RBAC support.
+  - Support for shared L4 VIP across multiple service of type loadbalancer. 
   - Selective namespace sync for L4 objects including GatewayAPI and Services of type LB.
   - Option to add global fqdn for a hostname via Host Rule.
   - Temporary support for HTTP Caching for secure ingresses/routes via Pool objects.
   - Option to use dedicated Virtual Service per Ingress hostname.
-  - Support for Node Port Local with Antrea CNI.
+  - Support for Node Port Local with Antrea CNI.(Supported from Antrea 0.13 onwards)
   - Persistence profile in HTTPRule CRD.
   - Option to use a default secret for Ingresses via annotation.
-  
+  - AWS mult-vip support.
+  - Extended Virtual Hosting support for Avi Enterprise License. (Tech preview)
+ 
+ ### Changed:
+  - `networkName` field in values.yaml is changed to `vipNetworkList`.
+  - AKO qualification for Kubernetes 1.19, 1.20, 1.21.
+ 
+ ### Removed:
+  - namespace sharding is deprecated starting from this release.
+
 ## AMKO-1.4.1-beta
 
 ### Changed:
