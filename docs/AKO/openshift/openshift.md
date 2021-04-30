@@ -38,13 +38,13 @@ metadata:
 type: kubernetes.io/tls
 data:
   tls.crt: 
-    -----BEGIN PRIVATE KEY-----
-    [...]
-    -----END PRIVATE KEY-----
-  tls.key:
     -----BEGIN CERTIFICATE-----
     [...]
     -----END CERTIFICATE-----
+  tls.key:
+    -----BEGIN PRIVATE KEY-----
+    [...]
+    -----END PRIVATE KEY-----
 ```
 
 After creating the secret, we can add a secure route without without key or cert in the spec, for example:
