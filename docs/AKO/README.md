@@ -31,17 +31,6 @@ NOTE: We only support `helm 3`
 
 For instructions on installing AKO using helm please use this [link](install/helm.md)
 
-### Install using AKO Operator
-
-For instructions on installing AKO using the AKO operator, please use this [link](install/operator.md)
-
-#### IMPORTANT: Migrating from helm based installs to AKO Operator
-
-AKO operator is not supported to work with the standalone deployments of AKO, via helm or otherwise (non-operator based installations). The reason for this is, the AKO Operator  completely manages the AKO controller and it's related artifacts. If users want to switch from a non-operator based deployment of AKO to AKO operator, follow these steps:
-1. Uninstall the existing AKO installation.
-2. Install the AKO operator (follow [this](install/operator.md#Install-using-helm) for helm based installation).
-3. Deploy and manage the AKO controller via the operator (follow [this](install/operator.md#AKOConfig-Custom-Resource)).
-
 ### AKO CRDs
 
 Read more about AKO [CRDs](crds/overview.md)
