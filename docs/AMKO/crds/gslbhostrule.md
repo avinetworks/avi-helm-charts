@@ -45,5 +45,30 @@ If this field is not provided in `GSLBHostRule`, the site persistence property w
 
 7. `ttl`: Override the default `ttl` value specified on the GDP object using this field.
 
+8. `poolAlgorithmSettings`: Override the default GslbService algorithm provided in the GDP object. Refer to [pool algorithm settings](#pool-algorithm-settings) for details. If this field is absent, GDP's pool algorithm's settings apply on this GslbService.
+
+## Pool Algorithm Settings
+The pool algorithm settings for GslbService(s) can be specified via the `GDP` or a `GSLBHostRule` objects. The GslbService uses the algorithm settings to distribute the traffic accordingly. To set the required settings, following fields must be used:
+```yaml
+  poolAlgorithmSettings:
+    lbAlgorithm:
+    hashMask:
+    geoFallback:
+      lbAlgorithm:
+      hashMask:
+```
+
+`lbAlgorithm` is used to specify the name of the algorithm. Supported algorithms are:
+1. GSLB_ALGORITHM_CONSISTENT_HASH (needs the hash mask in the `hashMask` field).
+2. GSLB_ALGORITHM_GEO (needs the fallback algorithm settings to be specified in `geoFallback` feilds)
+3. GSLB_ALGORITHM_ROUND_ROBIN (default)
+4. GSLB_ALGORITHM_TOPOLOGY
+
+If `GSLB_ALGORITHM_GEO` is set as the main algorithm, the user needs to specify the `geoFallback` settings. `geoFallback.lbAlgorithm` can have either of the two values:
+1. GSLB_ALGORITHM_CONSISTENT_HASH (needs the hash mask in `geoFallback.hashMask`)
+2. GSLB_ALGORITHM_ROUND_ROBIN
+
+For more details on the algorithm that best fits the user needs and it's configuration on the Avi Controller, follow [this](https://avinetworks.com/docs/20.1/gslb-architecture-terminology-object-model/#load-balancingalgorithms-for-gslb-pool-members) link.
+
 ## Caveats:
 * Site Persistence cannot be enabled for the GslbServices which have insecure ingresses or routes as the members.

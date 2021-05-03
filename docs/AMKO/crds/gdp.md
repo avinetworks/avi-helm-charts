@@ -36,6 +36,9 @@ spec:
   - my-health-monitor1
 
   sitePersistenceRef: gap-1
+
+  poolAlgorithmSettings:
+    lbAlgorithm: GSLB_ALGORITHM_ROUND_ROBIN
 ```
 1. `namespace`: namespace of this object must be `avi-system`.
 2. `matchRules`: This allows users to select objects using either application labels (configured as labels on Ingress/Route objects) or via namespace labels (configured as labels on the namespace objects). `matchRules` are defined as:
@@ -93,6 +96,8 @@ matchRules:
 
 7. `sitePersistenceRef`: Provide an Application Persistence Profile ref (pre-created in Avi Controller). This has to be a federated profile. Please follow the steps [here](https://avinetworks.com/docs/20.1/gslb-site-cookie-persistence/#outline-of-steps-to-be-taken) to create a federated Application Persistence Profile on the Avi Controller. If no reference is provided, Site Persistence is disabled.
 
+8. `poolAlgorithmSettings`: Provide the GslbService pool algorithm settings. Refer to [pool algorithm settings](gslbhostrule.md#pool-algorithm-settings) for details. If this field is absent, the default is assumed as Round Robin algorithm.
+ 
 ### Notes
 * Only one `GDP` object is allowed.
 
@@ -101,3 +106,5 @@ matchRules:
 * `trafficSplit`, `ttl`, `sitePersistence` and `healthMonitorRefs` provided in the GDP object are applicable on all the GslbServices. These properties, however, can be overridden via `GSLBHostRule` created for a GslbService. More details [here](gslbhostrule.md).
 
 * Site Persistence, if specified, will only be enabled for the GslbServices which have secure ingresses or secure routes as the members and will be disabled for all other cases.
+
+* HTTP Health Monitors can't be used for GslbServices with HTTPS objects as the members.
