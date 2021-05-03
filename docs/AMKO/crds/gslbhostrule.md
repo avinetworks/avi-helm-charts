@@ -58,17 +58,17 @@ The pool algorithm settings for GslbService(s) can be specified via the `GDP` or
       hashMask:
 ```
 
-`lbAlgorithm` takes in the name of the algorithm for the GslbService pool:
+`lbAlgorithm` is used to specify the name of the algorithm. Supported algorithms are:
 1. GSLB_ALGORITHM_CONSISTENT_HASH (needs the hash mask in the `hashMask` field).
 2. GSLB_ALGORITHM_GEO (needs the fallback algorithm settings to be specified in `geoFallback` feilds)
 3. GSLB_ALGORITHM_ROUND_ROBIN (default)
 4. GSLB_ALGORITHM_TOPOLOGY
 
-For `GSLB_ALGORITHM_GEO` as the main algorithm for a GslbService's pool, the user also needs to set the `geoFallback` settings. `geoFallback.lbAlgorithm` can have either of the two values:
+If `GSLB_ALGORITHM_GEO` is set as the main algorithm, the user needs to specify the `geoFallback` settings. `geoFallback.lbAlgorithm` can have either of the two values:
 1. GSLB_ALGORITHM_CONSISTENT_HASH (needs the hash mask in `geoFallback.hashMask`)
 2. GSLB_ALGORITHM_ROUND_ROBIN
 
-For more details on which algorithms fit best to the user's needs and how to configure addtional settings in Avi for them, follow [this](https://avinetworks.com/docs/20.1/gslb-architecture-terminology-object-model/#load-balancingalgorithms-for-gslb-pool-members) link.
+For more details on the algorithm that best fits the user needs and it's configuration on the Avi Controller, follow [this](https://avinetworks.com/docs/20.1/gslb-architecture-terminology-object-model/#load-balancingalgorithms-for-gslb-pool-members) link.
 
 ## Caveats:
 * Site Persistence cannot be enabled for the GslbServices which have insecure ingresses or routes as the members.
