@@ -133,4 +133,4 @@ spec:
 ```
 
 Each Service with the appropriate labels, corresponds to a single Avi Pool.
-Note that the Service namespace might or might not be in the same namespace, as that of the parent Gateway.
+Note that the Service namespace is not required to be in the same namespace as that of the parent Gateway.
