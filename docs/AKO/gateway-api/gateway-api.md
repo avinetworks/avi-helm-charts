@@ -28,7 +28,7 @@ spec:
 
 It is important that the `.spec.controller` value specified MUST match `ako.vmware.com/avi-lb` for AKO to honour the GatewayClass and corresponding Gateway objects.
 
-The `.spec.parametersRef` allows users to point to AKO's AviInfraSetting Custom Resource (cluster-scoped), to fine tune Avi specific load balancing parameters like the VIP network, Service Engine Group etc. More information on AviInfraSetting CRD can be found [here](https://github.com/avinetworks/avi-helm-charts/docs/AKO/crds/aviinfrasetting.md)
+The `.spec.parametersRef` allows users to point to AKO's AviInfraSetting Custom Resource (cluster-scoped), to fine tune Avi specific load balancing parameters like the VIP network, Service Engine Group etc. More information on AviInfraSetting CRD can be found [here](https://github.com/avinetworks/avi-helm-charts/blob/master/docs/AKO/crds/avinfrasetting.md)
 
 
 #### Gateway
