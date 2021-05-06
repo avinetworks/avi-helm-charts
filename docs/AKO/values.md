@@ -105,7 +105,7 @@ AKO uses a sharding logic for Layer 7 ingress objects. A sharded VS involves hos
 one virtual IP or VIP. Having a shared virtual IP allows lesser IP usage since reserving IP addresses particularly in public clouds
 incur greater cost.
 
-From AKO 1.4.1, we supported a DEDICATED VIP feature as well per ingress hostname. This feature can be turned out by specifying DEDICATED against
+We support a DEDICATED VIP feature as well per ingress hostname. This feature can be turned out by specifying DEDICATED against
 the shardVSSize.
 
 ### L7Settings.noPGForSNI
