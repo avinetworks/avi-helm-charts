@@ -112,3 +112,12 @@ AviInfraSetting CRD can be used to enable/disable Route Health Injection (RHI) o
 This overrides the global `enableRHI` flag for the virtualservices corresponding to the AviInfraSetting.
 
 
+#### Use dedicated vip for Ingress
+
+AviInfraSetting CRD can be used to allocate a dedicated vip per Ingress FQDN.
+
+        l7Settings:
+          shardSize: DEDICATED
+
+For the subset of ingresses, that refer to an ingress class which in turn refers to an AviInfraSetting CRD setting that has shardSize as DEDICATED, will get vip per Ingress FQDN.
+
