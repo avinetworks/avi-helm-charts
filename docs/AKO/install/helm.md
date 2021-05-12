@@ -21,14 +21,14 @@ Step 3: Search the available charts for AKO
 helm search repo
 
 NAME                 	CHART VERSION	    APP VERSION	        DESCRIPTION
-ako/ako              	1.4.1        	    1.4.1      	        A helm chart for Avi Kubernetes Operator
+ako/ako              	1.4.2        	    1.4.2      	        A helm chart for Avi Kubernetes Operator
 
 ```
 
 Use the `values.yaml` from this chart to edit values related to Avi configuration. To get the values.yaml for a release, run the following command
 
 ```
-helm show values ako/ako --version 1.4.1 > values.yaml
+helm show values ako/ako --version 1.4.2 > values.yaml
 
 ```
 
@@ -37,7 +37,7 @@ Values and their corresponding index can be found [here](#parameters)
 Step 4: Install AKO
 
 ```
-helm install  ako/ako  --generate-name --version 1.4.1 -f /path/to/values.yaml  --set ControllerSettings.controllerHost=<controller IP or Hostname> --set avicredentials.username=<avi-ctrl-username> --set avicredentials.password=<avi-ctrl-password> --namespace=avi-system
+helm install  ako/ako  --generate-name --version 1.4.2 -f /path/to/values.yaml  --set ControllerSettings.controllerHost=<controller IP or Hostname> --set avicredentials.username=<avi-ctrl-username> --set avicredentials.password=<avi-ctrl-password> --namespace=avi-system
 ```
 
 Step 5: Check the installation
@@ -76,7 +76,7 @@ Follow these steps if you are upgrading from an older AKO release.
 Helm does not upgrade the CRDs during a release upgrade. Before you upgrade a release, run the following command to download and upgrade the CRDs:
 
 ```
-helm template ako/ako --version 1.4.1 --include-crds --output-dir <output_dir>
+helm template ako/ako --version 1.4.2 --include-crds --output-dir <output_dir>
 ```
 
 This will save the helm files to an output directory which will contain the CRDS corresponding to the AKO version.
@@ -112,14 +112,14 @@ Note: From AKO 1.3.3, we are migrating our charts repo to VMWare's harbor reposi
 Get the values.yaml for the latest AKO version
 
 ```
-helm show values ako/ako --version 1.4.1 > values.yaml
+helm show values ako/ako --version 1.4.2 > values.yaml
 
 ```
 
 Upgrade the helm chart
 
 ```
-helm upgrade ako-1593523840 ako/ako -f /path/to/values.yaml --version 1.4.1 --set ControllerSettings.controllerHost=<IP or Hostname> --set avicredentials.password=<username> --set avicredentials.username=<username> --namespace=avi-system
+helm upgrade ako-1593523840 ako/ako -f /path/to/values.yaml --version 1.4.2 --set ControllerSettings.controllerHost=<IP or Hostname> --set avicredentials.password=<username> --set avicredentials.username=<username> --namespace=avi-system
 
 ```
 
