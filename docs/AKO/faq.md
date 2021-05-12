@@ -55,6 +55,8 @@ respectively correspond to 8, 4 and 1 virtual service. The decision of selecting
 size of the Kubernetes cluster's ingress requirements. Typically, it's advised to always go with the highest possible Shard VS number
 that is - `LARGE` to account for future expansion.
 
+The shard size can be set to `DEDICATED` to disable shard mode to create dedicated Virtual Services per hostname.
+
 #### Can I change the Shard VS number?
 
 To Shard to virtual services, AKO uses a sharding mechanism that is driven by the `hostname` of each rule within an ingress object. This ensures that a unique hostname is always sharded consistently to the same virtual service.
