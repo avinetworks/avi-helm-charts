@@ -1,4 +1,4 @@
-name: ako-cluster-role
+name: <>
 allow_unlabelled_access: false
 filters:
 - enabled: true
