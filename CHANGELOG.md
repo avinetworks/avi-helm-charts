@@ -113,6 +113,19 @@ All notable changes to this project will be documented in this file. The format 
  ### Removed:
   - namespace sharding is deprecated starting from this release.
 
+ ## AKO-1.4.2
+ 
+ ### Bugs fixed:
+ 
+ - Fix: AKO removes LB status if annotations removal hits a snag
+ - Fix: Failure in lb-service obtaining ip after expanding ipam range which is previously exhausted
+ - Fix: EVH broken with SSL certs specified in HostRule
+ - Fix: Multi-vip with AWS always assigns IP address from a single subnet
+ - Fix: enable_rhi Error in ESSENTIALS license
+ - Fix: AKO 1.4.1 Doesn't Watch Endpoints Object in NodePort mode
+ - Fix: stale entries in httppolicysets cause AKO to panic
+ 
+
 ## AMKO-1.4.1-beta
 
 ### Changed:
