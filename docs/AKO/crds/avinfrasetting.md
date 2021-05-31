@@ -17,6 +17,9 @@ spec:
     names:
       - vip-network-10-10-10-0-24
     enableRhi: true
+    bgpPeerLabels:
+      - peer1
+      - peer2
   l7Settings:
     shardSize: MEDIUM
 ```
@@ -87,10 +90,14 @@ AviInrfaSetting integrates with Openshift Routes, via the annotation
 
 #### Configure ServiceEngineGroup 
 
-AviInfraSetting CRD can be used to configure Service Engine Groups for virtualservices created corresponding to Services/Ingresses/Openshift Routes. The Service Engine Group should have been created and configureed in the Avi Controller prior to this CRD creation.
+AviInfraSetting CRD can be used to configure Service Engine Groups (SEGs) for virtualservices created corresponding to Services/Ingresses/Openshift Routes. The Service Engine Group should have been created and configureed in the Avi Controller prior to this CRD creation.
 
         seGroup:
           name: compact-se-group
+
+AKO tries to configure labels on the SEG specified in the AviInfraSetting resources, which enables static route syncing on the member Service Engines. The labels are configured by AKO only when the SEGs do not have any other labels configured already. In case AKO finds the SEG configured with some different labels, the AviInfraSetting resource would be `Rejected`.
+Note that the member Service Engines, once deployed, do not reflect any changes related to label additions/updates on the SEGs. Therefore, label based static route syncing will not work on already deployed Service Engines.
+Please make sure that the SEGs have no member Service Engines deployed, before specifying the SEG in the AviInfraSetting resource, in order to correctly configure static routet syncing.
 
 #### Configure VIP Networks
 
@@ -111,6 +118,13 @@ AviInfraSetting CRD can be used to enable/disable Route Health Injection (RHI) o
 
 This overrides the global `enableRHI` flag for the virtualservices corresponding to the AviInfraSetting.
 
+#### Configure BGP Peer Labels for BGP VSes 
+
+AviInfraSetting CRD can be used to configure BGP Peer labels for BGP virtualservices. AKO configures the VSes with the appropriate peer labels, only when `enableRHI` is enabled, either during AKO installation via helm chart's `values.yaml` or via the AviInfraSetting CRD itself. If not set to `true`, the AviInfraSetting resource will be marked `Rejected`, 
+
+        bgpPeerLabels:
+          - peer1
+          - peer2
 
 #### Use dedicated vip for Ingress
 
