@@ -139,7 +139,7 @@ This additional FQDN inherits all the properties of the root FQDN specified unde
 Use this flag if you would want traffic with a GSLB FQDN to get routed to a site local FQDN. For example, in the above CRD, the client request from a GSLB
 DNS will arrive with the host header as foo.com to the VIP hosting foo.region1.com in region1. This CRD property would ensure that the request is routed appropriately to the backend service of `foo.region1.com`
 
-This knob is currently only supported with the SNI model and not with Extended Virtual Hosting model.
+This knob is currently only supported with the SNI model and not with Enhanced Virtual Hosting model.
 
 #### Status Messages
 
