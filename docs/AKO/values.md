@@ -99,6 +99,14 @@ This feature is available as a global setting in AKO which means if it's set to 
 
 Since RHI is a Layer 4 construct, the settings applies to all the host FQDNs patched as pools/SNI virtualservices to the parent shared virtualservice.
 
+#### NetworkSettings.bgpPeerLabels 
+
+This feature allows configuring BGP Peer labels for BGP virtualservices. AKO configures the VSes with the appropriate peer labels, only when `enableRHI` is set to `true`, using the `NetworkSettings.enableRHI` field in `values.yaml`. If `enableRHI` is not set to `true`, AKO will consider the provided configuration as invalid and will reboot.
+
+    bgpPeerLabels:
+      - peer1
+      - peer2
+
 ### L7Settings.shardVSSize
 
 AKO uses a sharding logic for Layer 7 ingress objects. A sharded VS involves hosting multiple insecure or secure ingresses hosted by
