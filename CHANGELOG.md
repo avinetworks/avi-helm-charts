@@ -104,7 +104,7 @@ All notable changes to this project will be documented in this file. The format 
   - Persistence profile in HTTPRule CRD.
   - Option to use a default secret for Ingresses via annotation.
   - AWS mult-vip support.
-  - Extended Virtual Hosting support for Avi Enterprise License. (Tech preview)
+  - Enhanced Virtual Hosting support for Avi Enterprise License. (Tech preview)
  
  ### Changed:
   - `networkName` field in values.yaml is changed to `vipNetworkList`.
