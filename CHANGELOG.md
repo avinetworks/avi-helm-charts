@@ -124,7 +124,8 @@ All notable changes to this project will be documented in this file. The format 
  - Fix: enable_rhi Error in ESSENTIALS license
  - Fix: AKO 1.4.1 Doesn't Watch Endpoints Object in NodePort mode
  - Fix: stale entries in httppolicysets cause AKO to panic
- 
+ - Fix: Unpredictable behavior in AKO for ingresses/routes with same FQDN and overlapping paths
+ - Fix: Uncertain behavior of AKO for ingresses/routes with same FQDN but different paths and one of the path is "/"
 
 ## AMKO-1.4.1-beta
 
