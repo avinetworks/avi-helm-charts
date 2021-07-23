@@ -67,7 +67,7 @@ The extra `update` permission is to update the `GSLBConfig` and `GlobalDeploymen
    $ helm repo add amko https://projects.registry.vmware.com/chartrepo/ako
 
    ```
-   Note: The helm charts are present in VMWare's public harbor repository
+   > **Note**: The helm charts are present in VMWare's public harbor repository
 
 3. Search the available charts for AMKO:
    ```

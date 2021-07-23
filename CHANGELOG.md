@@ -138,3 +138,13 @@ All notable changes to this project will be documented in this file. The format 
   - AMKO support for `GSLBHostRule`.
   - AMKO support for GslbService properties: TTL, Site Persistence and Custom Health Monitors via `GlobalDeploymentPolicy` and `GSLBHostRule`.
   - AMKO support for adding third party site members via `GSLBHostRule`.
+
+## AKO-1.4.3
+ 
+### Added:
+  - Support for allowing AKO to get installed in user-provided namespace (other than avi-system). 
+	
+### Bugs fixed:
+  - Skip status updates on Service of type LoadBalancer during bootup when `layer7Only` flag is set to `true`.
+  - Fix multi-host Ingress status updates during bootup.
+  - Unblock AKO run if CRDs are not installed in cluster.
