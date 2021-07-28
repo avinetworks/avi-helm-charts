@@ -148,3 +148,4 @@ All notable changes to this project will be documented in this file. The format 
   - Skip status updates on Service of type LoadBalancer during bootup when `layer7Only` flag is set to `true`.
   - Fix multi-host Ingress status updates during bootup.
   - Unblock AKO run if CRDs are not installed in cluster.
+  - Fixed incorrect virtual service uuid annotation update for openshift secure routes with InsecureEdgeTermination set to Allow
