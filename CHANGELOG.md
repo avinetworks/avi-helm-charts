@@ -149,3 +149,15 @@ All notable changes to this project will be documented in this file. The format 
   - Fix multi-host Ingress status updates during bootup.
   - Unblock AKO run if CRDs are not installed in cluster.
   - Fixed incorrect virtual service uuid annotation update for openshift secure routes with InsecureEdgeTermination set to Allow
+## AMKO-1.4.2
+
+### Added:
+  - Support for [federation](docs/AMKO/federation.md). It has to be enabled during installation.
+  - A new custom resource `AMKOCluster` for federation configuration.
+  - AMKO can now boot up, even if one of the member clusters is unreachable. If the cluster is available later on, AMKO will start it's informers.
+
+### Bugs fixed:
+  - Parsing error for TTL and hash mask fields after creation of GslbServices
+  - Path based health monitors gets unnecessarily created and then deleted sometimes, even if custom health monitor refs are provided
+  - GslbServices unnecessarily updated due to incorrect parsing of site persistence field
+  - AMKO doesn't panic if the GSLB leader details couldn't be fetched
