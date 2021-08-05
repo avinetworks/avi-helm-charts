@@ -170,6 +170,10 @@ AMKO uses a set of custom HTTP health monitors to determine the health of a GSLB
 The custom health monitors are created per host per path. Hence all host/path combinations for a given
 FQDN should be removed in order for the corresponding GSLB service to fail health monitor.
 
+#### Controller UUID missing in Ingress/Route annotations
+
+##### Possible Reason/Solution
+AKO has the responsibility to update the ingress/route annotations with the VS UUID and the controller cluster UUID. So, please check the AKO logs first. If it suggests that there was a permission error while getting uri `/api/cluster`, this means that, the user for AKO doesn't have proper permissions on the Avi Controller. Please add the permissions to get cluster information for the specified user. On how to modify RBACs for a user, follow this [link](https://avinetworks.com/docs/20.1/user-account-roles/).
 
 
 ## Log Collection
