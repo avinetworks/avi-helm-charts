@@ -1,6 +1,10 @@
 # Helm charts by Avi Networks
 
-This repository hosts the helm charts from Avi Networks (A VMware Company).
+**Note: This repository has been deprecated and docs for AKO (post 1.4.3)/AMKO (post 1.4.2) have bee moved to their resspective opensource repositoriess. Please follow the linkns mentioned below to find the relevant documentations.**
+* **[AKO - Avi Kubernetes Operator release-1.5.1 docs](https://github.com/vmware/load-balancer-and-ingress-services-for-kubernetes/tree/release-1.5.1/docs)**
+* **[AMKO - Avi Multicluster Kubernetes Operator release-1.5.1 docs](https://github.com/vmware/global-load-balancing-services-for-kubernetes/tree/release-1.5.1/docs)**
+
+This repository hosts the documentation from Avi Networks (A VMware Company), for AKO (1.4.3) and AMKO (1.4.2)
 
 ## Documentation
 Take a look at the following documentation for instructions on installing AKO/AMKO:
