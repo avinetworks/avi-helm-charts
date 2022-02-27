@@ -37,7 +37,7 @@ __NOTE__ : The HTTPRule only applies to paths in the Ingress/Route objects which
 The HTTPRule CRD does not have any Avi specific semantics. Hence the developers are free to express their preferences using this CRD
 without any knowledge of the Avi objects. Each HTTPRule CRD must be bound to a FQDN (both secure or insecure) to subscribe to rules for a specific hostpath combinations.
 
-#### Express loadbalancer alogrithm
+#### Express loadbalancer algorithm
 
 The loadbalancer policies are a predefined set of values which the user can choose from. Presently the following values are supported for
 loadbalancer policy:
