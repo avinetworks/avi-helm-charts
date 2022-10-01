@@ -94,7 +94,7 @@ Following steps have to be executed on all member clusters:
 
 6. Install AMKO:
    ```
-   $ helm install  ako/amko  --generate-name --version 1.4.2 -f /path/to/values.yaml  --set configs.gsllbLeaderController=<leader_controller_ip> --namespace=avi-system
+   $ helm install  amko/amko  --generate-name --version 1.4.2 -f /path/to/values.yaml  --set configs.gsllbLeaderController=<leader_controller_ip> --namespace=avi-system
    ```
 7. Check the installation:
    ```
